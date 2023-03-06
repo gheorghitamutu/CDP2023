@@ -34,3 +34,11 @@ Flow          | Description
 ------------- | -------------
 TCP           | receive_data_via_tcp(destination_path) => connection => for each file received (identification via initial header) write all its packets (iterative, sorted, with confirmation for every one of them)
 UDP           | receive_data_via_udp(destination_path) => connection => create a map with all the files and packages received => write everything when the client sends `Done` marker (keeping in mind that packages need to be reordered, some may be missing or maybe the initial header (containing filename, packages count, etc) is missing)
+
+### Command line arguments
+Script        | Description
+------------- | -------------
+client.py     | python3 <protocol> <source folder> <ip> <port> 
+client.py     | python3 UDP ./test/source 127.0.0.1 7003 
+server.py     | python3 <protocol> <destination folder> <ip> <port> 
+server.py     | python3 UDP ./test/destination 127.0.0.1 7003 

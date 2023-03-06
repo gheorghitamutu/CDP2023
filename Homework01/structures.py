@@ -18,8 +18,9 @@ class PackageType(IntEnum):
 
 class HeaderTCP:
     def __init__(self, data, delimiter):
-        data = data.decode().split(delimiter)
-        self.filename = data[0]
+        data = data.split(delimiter.encode())
+
+        self.filename = data[0].decode()
         self.file_size = int(data[1])
         self.number_of_packages = int(data[2])
 

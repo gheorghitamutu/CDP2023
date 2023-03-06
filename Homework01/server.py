@@ -38,23 +38,29 @@ def receive_data_via_tcp(destination_path):
         s.listen()
         conn, addr = s.accept()
         with conn:
-            print('New connection to', addr)
+            print('New connection from', addr)
 
             while True:
-                data = conn.recv(MAX_MESSAGE_SIZE_TCP)
+                data = conn.recv(1024)  # enough for the initial header with metadata
                 total_messages_received += 1
                 total_bytes_received += len(data)
                 if data == END_MARKER.encode():
+                    # print(f'Received end marker.')
                     break
 
                 header = HeaderTCP(data, DELIMITER_TCP)
                 conn.send(int(TCPState.Good).to_bytes(length=1, byteorder='little', signed=False))
+                total_bytes_received += len(data)
+                total_messages_received += 1
+
+                # print(f'Received file {header.filename} header with #{header.number_of_packages} packages.')
 
                 file_path = os.path.join(destination_path, header.filename)
                 with open(file_path, 'wb') as file:
 
                     package_index = 0
                     while package_index < header.number_of_packages:
+
                         data = conn.recv(MAX_MESSAGE_SIZE_TCP)
                         total_bytes_received += len(data)
                         total_messages_received += 1
@@ -63,8 +69,9 @@ def receive_data_via_tcp(destination_path):
                             conn.send(int(TCPState.Corrupted).to_bytes(length=1, byteorder='little', signed=False))
                         else:
                             file.write(data)
-                            package_index += 1
+                            # print(f'Received file {header.filename} package {package_index + 1}/{header.number_of_packages}.')
                             conn.send(int(TCPState.Good).to_bytes(length=1, byteorder='little', signed=False))
+                            package_index += 1
 
     return total_bytes_received, total_messages_received
 

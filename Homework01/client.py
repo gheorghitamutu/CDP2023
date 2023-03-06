@@ -47,23 +47,38 @@ def send_file_via_tcp(s, f, file_path, filename):
     bytes_sent += len(header)
     messages_send += 1
 
-    s.send(header)
-
-    package_content = b''
-    for i in range(0, number_of_packages):
+    while True:
+        s.send(header)
         data = s.recv(1)
-        if len(data) != 0:  # empty file
-            state = TCPState(data[0])
+        state = TCPState(data[0])
 
-            if state == TCPState.Good:
-                package_content = f.read(MAX_MESSAGE_SIZE_TCP)
+        if state == TCPState.Good:
+            break
+        elif state == TCPState.Corrupted:  # resend
+            s.send(header)
 
-            elif state == TCPState.Corrupted:  # resend
-                s.send(package_content)
+    # print(f'Sent file {filename} header with #{number_of_packages} packages.')
 
+    for i in range(0, number_of_packages):
+
+        package_content = f.read(MAX_MESSAGE_SIZE_TCP)
         bytes_sent += len(package_content)
         messages_send += 1
         s.send(package_content)
+
+        # print(f'Sent file {filename} package {i + 1}/{number_of_packages}.')
+
+        while True:
+            data = s.recv(1)
+            state = TCPState(data[0])
+
+            if state == TCPState.Good:
+                break
+
+            elif state == TCPState.Corrupted:  # resend
+                bytes_sent += len(package_content)
+                messages_send += 1
+                s.send(package_content)
 
     return bytes_sent, messages_send
 
@@ -86,6 +101,8 @@ def send_data_via_tcp(source_path):
         s.send(END_MARKER.encode())
         total_bytes_sent += len(END_MARKER)
         total_messages_send += 1
+
+        # print(f'Sent end marker.')
 
     return total_bytes_sent, total_messages_send
 

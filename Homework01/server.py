@@ -133,7 +133,7 @@ def receive_data_via_udp(destination_path):
                     with open(file_path, 'wb') as f:
                         for package in packages:
                             f.write(package.block)
-                            print(f'Written package #{package.package_index} of length {len(package.block)}!')
+                            # print(f'Written package #{package.package_index} of length {len(package.block)}!')
 
                 if WRITE_ONLY_VALID_FILES is False:
                     for header, packages in files:

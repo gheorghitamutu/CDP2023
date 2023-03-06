@@ -132,16 +132,16 @@ def send_file_via_udp(s, f, file_path, file_index, filename, address):
     return bytes_sent, messages_send
 
 
-def send_data_via_udp(path_sent):
+def send_data_via_udp(source_path):
     total_bytes_sent = 0
     total_messages_send = 0
     address = (HOST, PORT)
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
 
-        for (i, filename) in enumerate(os.listdir(path_sent)):
+        for (i, filename) in enumerate(os.listdir(source_path)):
 
-            file_path = os.path.join(path_sent, filename)
+            file_path = os.path.join(source_path, filename)
             with open(file_path, 'rb') as f:
                 bytes_sent, messages_send = send_file_via_udp(s, f, file_path, i, filename, address)
                 total_bytes_sent += bytes_sent

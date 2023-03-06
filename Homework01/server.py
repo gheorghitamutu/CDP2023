@@ -29,7 +29,7 @@ def show_stats(protocol, number_of_messages, number_of_bytes, start_time, end_ti
     print(f'Time: {end_time - start_time} seconds')
 
 
-def receive_data_via_tcp(source_path):
+def receive_data_via_tcp(destination_path):
     total_messages_received = 0
     total_bytes_received = 0
 
@@ -50,7 +50,7 @@ def receive_data_via_tcp(source_path):
                 header = HeaderTCP(data, DELIMITER_TCP)
                 conn.send(int(TCPState.Good).to_bytes(length=1, byteorder='little', signed=False))
 
-                file_path = os.path.join(source_path, header.filename)
+                file_path = os.path.join(destination_path, header.filename)
                 with open(file_path, 'wb') as file:
 
                     package_index = 0
@@ -80,7 +80,7 @@ def blocks_comparator(block):
     return block.package_index
 
 
-def receive_data_via_udp(source_path):
+def receive_data_via_udp(destination_path):
     total_messages_received = 0
     total_bytes_received = 0
 
@@ -129,7 +129,7 @@ def receive_data_via_udp(source_path):
                         continue
 
                     packages.sort(key=blocks_comparator)
-                    file_path = os.path.join(source_path, header.filename)
+                    file_path = os.path.join(destination_path, header.filename)
                     with open(file_path, 'wb') as f:
                         for package in packages:
                             f.write(package.block)
@@ -141,14 +141,14 @@ def receive_data_via_udp(source_path):
                             continue
 
                         packages.sort(key=blocks_comparator)
-                        file_path = os.path.join(source_path, header.filename)
+                        file_path = os.path.join(destination_path, header.filename)
                         with open(file_path, 'wb') as f:
                             for package in packages:
                                 f.write(package.block)
 
                     for header, packages in headless_files:
                         packages.sort(key=blocks_comparator)
-                        file_path = os.path.join(source_path, header.filename)
+                        file_path = os.path.join(destination_path, header.filename)
                         with open(file_path, 'wb') as f:
                             for package in packages:
                                 f.write(package.block)

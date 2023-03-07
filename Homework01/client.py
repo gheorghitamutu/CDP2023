@@ -44,18 +44,18 @@ def send_file_via_tcp(s, f, file_path, filename):
 
     number_of_packages = compute_packages_count(file_path, MAX_MESSAGE_SIZE_TCP)
     header = construct_header_tcp(filename, file_path, number_of_packages)
-    bytes_sent += len(header)
-    messages_send += 1
 
     while True:
         s.send(header)
         data = s.recv(1)
         state = TCPState(data[0])
+        bytes_sent += len(header)
+        messages_send += 1
 
         if state == TCPState.Good:
             break
         elif state == TCPState.Corrupted:  # resend
-            s.send(header)
+            continue
 
     # print(f'Sent file {filename} header with #{number_of_packages} packages.')
 

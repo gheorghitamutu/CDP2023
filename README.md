@@ -1,5 +1,5 @@
 # CDP2023
-CDP Homeworks
+Concurrent and Distributed Programming Homeworks (2023)
 
 ## Homework 01
 The homework is explained in [Requirements file](repo/blob/master/Homework01/docs/PCD_Homework1.pdf)
@@ -42,3 +42,35 @@ client.py     | python3 <protocol> <source folder> <ip> <port>
 client.py     | python3 UDP ./test/source 127.0.0.1 7003 
 server.py     | python3 <protocol> <destination folder> <ip> <port> 
 server.py     | python3 UDP ./test/destination 127.0.0.1 7003 
+  
+### Results
+Entity        | Description | Messages | Bytes | Time 
+------------- | ----------- | -------- | ----- | ---- 
+Message       | Batches of 100 bytes (+ UDP header to sort blocks)
+Files         | 8798 files with a total size of 381MB
+TCP (Client)  | Via TCP protocol | Messages sent: 4020687 | Bytes received: 400869938 | Time to receive/process: 384.31203961372375 seconds
+TCP (Server)  | Via TCP protocol | Messages received: 4020687 | Bytes received: 400869938 | Time to receive/process: 387.39903807640076 seconds
+UDP (Client)  | Via UDP protocol | Messages sent: 4011889 | Bytes sent: 551118578 | Time to send: 186.1149137020111 seconds | 
+UDP (Sever)   | Via UDP protocol | Messages received: 750097 | Bytes received: 102253457 | Time to receive/process: 215.37958908081055 seconds |
+
+### Conclusions
+Lost packages via UDP: 81.303146722155077%.
+  
+Lost packages via TCP: 0%.
+
+### TCP
+(+) Correct order of packages with confirmation.
+  
+(+) Way more reliable and less coding overhead than UDP.
+  
+(-) Confirmation and authentication takes a lot of time.
+  
+(-) Actual time was 79% slower than UDP.
+  
+### UDP 
+(+) Faster than TCP (79% faster).
+  
+(-) Lost packages percentage may vary. Not recommendable for files.
+  
+(-) Packages are unordered. Even if all of them are received, you need extra data for mapping and sorting (along with the overhead to implement these). If you write these packages to disk, the speed you are winning from using this protocol is lost on IO. If you choose not to, it requires a lot of RAM. Even if you somehow track and write the files to disk on completion (all packages received) you still remain with all the incomplete files (random packages from different files).
+

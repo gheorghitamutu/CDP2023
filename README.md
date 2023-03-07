@@ -2,7 +2,7 @@
 Concurrent and Distributed Programming Homeworks (2023)
 
 ## Homework 01
-The homework is explained in [Requirements file](repo/blob/main/Homework01/docs/PCD_Homework1.pdf)
+The homework is explained in [Requirements file](Homework01/docs/PCD_Homework1.pdf)
 
 The project is written in Python. It is a simple client-server application where the client uploads files to a server via TCP (stop-and-wait) or UDP (streaming) protocols.
 

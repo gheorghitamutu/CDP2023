@@ -198,7 +198,7 @@ def show_help():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 5 or len(sys.argv) > 6:
+    if len(sys.argv) < 5:
         show_help()
     elif sys.argv[1] == "TCP":
         HOST = sys.argv[3]
@@ -207,8 +207,6 @@ if __name__ == "__main__":
     elif sys.argv[1] == "UDP":
         HOST = sys.argv[3]
         PORT = int(sys.argv[4])
-        if len(sys.argv) == 6 and sys.argv[5] == "streaming":
-            WRITE_ONLY_VALID_FILES = True
         receive_data(Protocol.UDP, sys.argv[2])
     else:
         show_help()

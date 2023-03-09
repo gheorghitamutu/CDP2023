@@ -87,6 +87,51 @@ def blocks_comparator(block):
     return block.package_index
 
 
+def recompose_files(files, files_ids, packages_with_no_header, headless_files, files_without_header_id, destination_path):
+    for package in packages_with_no_header:
+        if package.file_index in files_ids:
+            index = get_file_index(package.file_index, files)
+            files[index][1].append(package)
+        elif package.file_index in files_without_header_id:
+            index = get_file_index(package.file_index, headless_files)
+            headless_files[index][1].append(package)
+        else:
+            p2 = package
+            p2.filename = f'MissingHeader-#{package.file_index}'
+            p2.package_type = PackageType.Header
+            headless_files.append([p2, [package]])
+            files_without_header_id.append(package.file_index)
+
+    for header, packages in files:
+        if header.number_of_packages != len(packages):  # ignore corrupted files
+            continue
+
+        packages.sort(key=blocks_comparator)
+        file_path = os.path.join(destination_path, header.filename)
+        with open(file_path, 'wb') as f:
+            for package in packages:
+                f.write(package.block)
+                # print(f'Written package #{package.package_index} of length {len(package.block)}!')
+
+    if WRITE_ONLY_VALID_FILES is False:
+        for header, packages in files:
+            if header.number_of_packages == len(packages):  # ignore valid files previously written
+                continue
+
+            packages.sort(key=blocks_comparator)
+            file_path = os.path.join(destination_path, header.filename)
+            with open(file_path, 'wb') as f:
+                for package in packages:
+                    f.write(package.block)
+
+        for header, packages in headless_files:
+            packages.sort(key=blocks_comparator)
+            file_path = os.path.join(destination_path, header.filename)
+            with open(file_path, 'wb') as f:
+                for package in packages:
+                    f.write(package.block)
+
+
 def receive_data_via_udp(destination_path):
     total_messages_received = 0
     total_bytes_received = 0
@@ -116,49 +161,13 @@ def receive_data_via_udp(destination_path):
             header = HeaderUDP(data, DELIMITER_UDP, END_MARKER)
 
             if header.done:
-
-                for package in packages_with_no_header:
-                    if package.file_index in files_ids:
-                        index = get_file_index(package.file_index, files)
-                        files[index][1].append(package)
-                    elif package.file_index in files_without_header_id:
-                        index = get_file_index(package.file_index, headless_files)
-                        headless_files[index][1].append(package)
-                    else:
-                        p2 = package
-                        p2.filename = f'MissingHeader-#{package.file_index}'
-                        p2.package_type = PackageType.Header
-                        headless_files.append([p2, [package]])
-                        files_without_header_id.append(package.file_index)
-
-                for header, packages in files:
-                    if header.number_of_packages != len(packages):  # ignore corrupted files
-                        continue
-
-                    packages.sort(key=blocks_comparator)
-                    file_path = os.path.join(destination_path, header.filename)
-                    with open(file_path, 'wb') as f:
-                        for package in packages:
-                            f.write(package.block)
-                            # print(f'Written package #{package.package_index} of length {len(package.block)}!')
-
-                if WRITE_ONLY_VALID_FILES is False:
-                    for header, packages in files:
-                        if header.number_of_packages == len(packages):  # ignore valid files previously written
-                            continue
-
-                        packages.sort(key=blocks_comparator)
-                        file_path = os.path.join(destination_path, header.filename)
-                        with open(file_path, 'wb') as f:
-                            for package in packages:
-                                f.write(package.block)
-
-                    for header, packages in headless_files:
-                        packages.sort(key=blocks_comparator)
-                        file_path = os.path.join(destination_path, header.filename)
-                        with open(file_path, 'wb') as f:
-                            for package in packages:
-                                f.write(package.block)
+                recompose_files(
+                    files,
+                    files_ids,
+                    packages_with_no_header,
+                    headless_files,
+                    files_without_header_id,
+                    destination_path)
 
                 # details(Protocol.UDP, total_bytes_received, total_bytes_received, start, time.time())
                 # init_start = True

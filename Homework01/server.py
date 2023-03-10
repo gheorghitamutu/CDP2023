@@ -19,7 +19,6 @@ PORT = server['PORT']
 MAX_MESSAGE_SIZE_TCP = int(server['MAX_MESSAGE_SIZE_TCP'])
 MAX_MESSAGE_SIZE_UDP = \
     int(server['MAX_MESSAGE_SIZE_UDP']) + len(f'{PackageType.Block}') + 3 * len(DELIMITER_UDP) + 2 * 4
-WRITE_ONLY_VALID_FILES = server['WRITE_ONLY_VALID_FILES']
 
 
 def show_stats(protocol, number_of_messages, number_of_bytes, start_time, end_time):
@@ -113,23 +112,22 @@ def recompose_files(files, files_ids, packages_with_no_header, headless_files, f
                 f.write(package.block)
                 # print(f'Written package #{package.package_index} of length {len(package.block)}!')
 
-    if WRITE_ONLY_VALID_FILES is False:
-        for header, packages in files:
-            if header.number_of_packages == len(packages):  # ignore valid files previously written
-                continue
+    for header, packages in files:
+        if header.number_of_packages == len(packages):  # ignore valid files previously written
+            continue
 
-            packages.sort(key=blocks_comparator)
-            file_path = os.path.join(destination_path, header.filename)
-            with open(file_path, 'wb') as f:
-                for package in packages:
-                    f.write(package.block)
+        packages.sort(key=blocks_comparator)
+        file_path = os.path.join(destination_path, header.filename)
+        with open(file_path, 'wb') as f:
+            for package in packages:
+                f.write(package.block)
 
-        for header, packages in headless_files:
-            packages.sort(key=blocks_comparator)
-            file_path = os.path.join(destination_path, header.filename)
-            with open(file_path, 'wb') as f:
-                for package in packages:
-                    f.write(package.block)
+    for header, packages in headless_files:
+        packages.sort(key=blocks_comparator)
+        file_path = os.path.join(destination_path, header.filename)
+        with open(file_path, 'wb') as f:
+            for package in packages:
+                f.write(package.block)
 
 
 def receive_data_via_udp(destination_path):

@@ -87,7 +87,8 @@ def blocks_comparator(block):
 
 
 def recompose_files(files, files_ids, packages_with_no_header, headless_files, files_without_header_id, destination_path):
-    for package in packages_with_no_header:
+
+    for package in packages_with_no_header:  # try recomposing missing packages from specific files
         if package.file_index in files_ids:
             index = get_file_index(package.file_index, files)
             files[index][1].append(package)
@@ -96,14 +97,17 @@ def recompose_files(files, files_ids, packages_with_no_header, headless_files, f
             headless_files[index][1].append(package)
         else:
             p2 = package
-            p2.filename = f'MissingHeader-#{package.file_index}'
+            p2.filename = f'HeaderMissing-#{package.file_index}'
             p2.package_type = PackageType.Header
             headless_files.append([p2, [package]])
             files_without_header_id.append(package.file_index)
 
+    files_no = len(files)
+    files_corrupted = 0
     for header, packages in files:
-        if header.number_of_packages != len(packages):  # ignore corrupted files
-            continue
+        if header.number_of_packages != len(packages):
+            header.filename = f'CorruptedFile-{header.filename}'
+            files_corrupted += 1
 
         packages.sort(key=blocks_comparator)
         file_path = os.path.join(destination_path, header.filename)
@@ -112,22 +116,16 @@ def recompose_files(files, files_ids, packages_with_no_header, headless_files, f
                 f.write(package.block)
                 # print(f'Written package #{package.package_index} of length {len(package.block)}!')
 
-    for header, packages in files:
-        if header.number_of_packages == len(packages):  # ignore valid files previously written
-            continue
-
-        packages.sort(key=blocks_comparator)
-        file_path = os.path.join(destination_path, header.filename)
-        with open(file_path, 'wb') as f:
-            for package in packages:
-                f.write(package.block)
-
     for header, packages in headless_files:
         packages.sort(key=blocks_comparator)
         file_path = os.path.join(destination_path, header.filename)
         with open(file_path, 'wb') as f:
             for package in packages:
                 f.write(package.block)
+
+    print(f'Good files: {files_no - files_corrupted}')
+    print(f'Corrupted files (missing packages): {files_corrupted}')
+    print(f'Corrupted files (missing header): {len(headless_files)}')
 
 
 def receive_data_via_udp(destination_path):

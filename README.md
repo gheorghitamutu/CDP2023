@@ -74,3 +74,5 @@ Lost packages via TCP: 0%.
   
 (-) Packages are unordered. Even if all of them are received, you need extra data for mapping and sorting (along with the overhead to implement these). If you write these packages to disk, the speed you are winning from using this protocol is lost on IO. If you choose not to, it requires a lot of RAM. Even if you somehow track and write the files to disk on completion (all packages received) you still remain with all the incomplete files (random packages from different files).
 
+(-) Without any kind of ACK the end marker package may be lost and the server doesn't know that the client finished sending data.
+

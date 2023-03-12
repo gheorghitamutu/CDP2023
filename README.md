@@ -76,3 +76,4 @@ Lost packages via TCP: 0%.
 
 (-) Without any kind of ACK the end marker package may be lost and the server doesn't know that the client finished sending data.
 
+(-) Even with some sort of ACK.. if the client waits for a confirmation, the confirmation itself may never arrive. This might happen either because the confirmation from the server didn't reach the client or the package from the client did not reach the server - in this case we need a timeout. With a given timeout, we may send unwanted duplicated packages using more bandwith than TCP and also being slower to do so.

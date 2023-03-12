@@ -3,21 +3,24 @@ import os
 import sys
 import time
 import configparser
-from structures import Protocol, TCPState, PackageType
+from structures import Protocol, TCPState, PackageType, UDPState
 
 config = configparser.ConfigParser()
 config.read(['config.cfg'])
 client = config['CLIENT']
 
 HOST = client['HOST']
-PORT = client['PORT']
+PORT = int(client['PORT'])
 MAX_MESSAGE_SIZE_TCP = int(client['MAX_MESSAGE_SIZE_TCP'])
 MAX_MESSAGE_SIZE_UDP = int(client['MAX_MESSAGE_SIZE_UDP'])
+TIMEOUT_UDP = int(client['TIMEOUT_UDP'])
 
 common = config['COMMON']
 DELIMITER_UDP = common['DELIMITER_UDP']
 DELIMITER_TCP = common['DELIMITER_TCP']
 END_MARKER = common['END_MARKER']
+CONFIRMATION_UDP = bool(common['CONFIRMATION_UDP'])
+CONFIRMATION_TCP = bool(common['CONFIRMATION_TCP'])
 
 
 def show_stats(protocol, number_of_messages, number_of_bytes, start_time, end_time):
@@ -47,15 +50,19 @@ def send_file_via_tcp(s, f, file_path, filename):
 
     while True:
         s.send(header)
-        data = s.recv(1)
-        state = TCPState(data[0])
-        bytes_sent += len(header)
-        messages_send += 1
 
-        if state == TCPState.Good:
+        if CONFIRMATION_TCP:
+            data = s.recv(1)
+            state = TCPState(data[0])
+            bytes_sent += len(header)
+            messages_send += 1
+
+            if state == TCPState.Good:
+                break
+            elif state == TCPState.Corrupted:  # resend
+                continue
+        else:
             break
-        elif state == TCPState.Corrupted:  # resend
-            continue
 
     # print(f'Sent file {filename} header with #{number_of_packages} packages.')
 
@@ -68,17 +75,18 @@ def send_file_via_tcp(s, f, file_path, filename):
 
         # print(f'Sent file {filename} package {i + 1}/{number_of_packages}.')
 
-        while True:
-            data = s.recv(1)
-            state = TCPState(data[0])
+        if CONFIRMATION_TCP:
+            while True:
+                data = s.recv(1)
+                state = TCPState(data[0])
 
-            if state == TCPState.Good:
-                break
+                if state == TCPState.Good:
+                    break
 
-            elif state == TCPState.Corrupted:  # resend
-                bytes_sent += len(package_content)
-                messages_send += 1
-                s.send(package_content)
+                elif state == TCPState.Corrupted:  # resend
+                    bytes_sent += len(package_content)
+                    messages_send += 1
+                    s.send(package_content)
 
     return bytes_sent, messages_send
 
@@ -128,23 +136,62 @@ def construct_block_udp(file_index, i_package, f):
     return data
 
 
+def send_package_via_udp_with_confirmation(s, data, address):
+    bytes_sent = 0
+    messages_send = 0
+
+    while True:
+        bytes_sent += len(data)
+        messages_send += 1
+        s.sendto(data, address)
+        # print(f"Sent {data} to {address}!")
+
+        s.settimeout(TIMEOUT_UDP)  # now we wait for confirmation
+        try:
+            confirmation_data, addr = s.recvfrom(1)
+            state = UDPState(confirmation_data[0])
+            if state == UDPState.Received:
+                break
+        except socket.timeout as _:
+            pass
+
+    return bytes_sent, messages_send
+
+
+def send_package_via_udp_without_confirmation(s, data, address):
+    bytes_sent = len(data)
+    messages_send = 1
+
+    s.sendto(data, address)
+
+    return bytes_sent, messages_send
+
+
 def send_file_via_udp(s, f, file_path, file_index, filename, address):
     bytes_sent = 0
     messages_send = 0
 
     number_of_packages = compute_packages_count(file_path, MAX_MESSAGE_SIZE_UDP)
     data = construct_header_udp(file_index, filename, file_path, number_of_packages)
-    bytes_sent += len(data)
-    messages_send += 1
 
-    s.sendto(data, address)
+    if CONFIRMATION_UDP:
+        a, b = send_package_via_udp_with_confirmation(s, data, address)
+    else:
+        a, b = send_package_via_udp_without_confirmation(s, data, address)
+    bytes_sent += a
+    messages_send += b
 
     for i in range(0, number_of_packages):
         data = construct_block_udp(file_index, i, f)
-        bytes_sent += len(data)
-        messages_send += 1
 
-        s.sendto(data, address)
+        if CONFIRMATION_UDP:
+            a, b = send_package_via_udp_with_confirmation(s, data, address)
+        else:
+            a, b = send_package_via_udp_without_confirmation(s, data, address)
+        bytes_sent += a
+        messages_send += b
+
+    print(f'File {filename} was sent to server!')
 
     return bytes_sent, messages_send
 
@@ -186,20 +233,16 @@ def send_data(protocol, path_sent):
 
 
 def show_help():
-    print('client.py <protocol> <source folder> <ip server> <port server>')
-    print('Example: client.py TCP /mnt/z/source_folder 127.0.0.1 7000')
+    print('client.py <protocol> <source folder>')
+    print('Example: client.py TCP /mnt/z/source_folder')
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 3:
         show_help()
     elif sys.argv[1] == "TCP":
-        HOST = sys.argv[3]
-        PORT = int(sys.argv[4])
         send_data(Protocol.TCP, sys.argv[2])
     elif sys.argv[1] == "UDP":
-        HOST = sys.argv[3]
-        PORT = int(sys.argv[4])
         send_data(Protocol.UDP, sys.argv[2])
     else:
         show_help()

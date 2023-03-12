@@ -11,6 +11,11 @@ class TCPState(IntEnum):
     Good = 1
 
 
+class UDPState(IntEnum):
+    Received = 0,
+    Error = 1
+
+
 class PackageType(IntEnum):
     Header = 0,
     Block = 1

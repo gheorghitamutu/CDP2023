@@ -3,7 +3,7 @@ import os
 import sys
 import time
 import configparser
-from structures import Protocol, TCPState, PackageType, HeaderTCP, HeaderUDP
+from structures import Protocol, TCPState, PackageType, HeaderTCP, HeaderUDP, UDPState
 
 config = configparser.ConfigParser()
 config.read(['config.cfg'])
@@ -12,13 +12,15 @@ common = config['COMMON']
 DELIMITER_UDP = common['DELIMITER_UDP']
 DELIMITER_TCP = common['DELIMITER_TCP']
 END_MARKER = common['END_MARKER']
+CONFIRMATION_UDP = bool(common['CONFIRMATION_UDP'])
 
 server = config['SERVER']
 HOST = server['HOST']
-PORT = server['PORT']
+PORT = int(server['PORT'])
 MAX_MESSAGE_SIZE_TCP = int(server['MAX_MESSAGE_SIZE_TCP'])
 MAX_MESSAGE_SIZE_UDP = \
     int(server['MAX_MESSAGE_SIZE_UDP']) + len(f'{PackageType.Block}') + 3 * len(DELIMITER_UDP) + 2 * 4
+TIMEOUT_UDP = int(server['TIMEOUT_UDP'])
 
 
 def show_stats(protocol, number_of_messages, number_of_bytes, start_time, end_time):
@@ -141,45 +143,54 @@ def receive_data_via_udp(destination_path):
         headless_files = list()
         files_without_header_id = list()
 
-        start = 0
-        init_start = True
-
         while True:
-            data, _ = s.recvfrom(MAX_MESSAGE_SIZE_UDP)
-
-            if init_start:
-                start = time.time()
-                init_start = False
+            if CONFIRMATION_UDP:
+                while True:
+                    try:
+                        s.settimeout(TIMEOUT_UDP)
+                        data, address = s.recvfrom(MAX_MESSAGE_SIZE_UDP)
+                        break
+                    except socket.timeout as _:
+                        pass
+            else:
+                data, _ = s.recvfrom(MAX_MESSAGE_SIZE_UDP)
 
             total_bytes_received += len(data)
             total_messages_received += 1
 
-            header = HeaderUDP(data, DELIMITER_UDP, END_MARKER)
+            if len(data) > 1:  # we know confirmation has been received
 
-            if header.done:
-                recompose_files(
-                    files,
-                    files_ids,
-                    packages_with_no_header,
-                    headless_files,
-                    files_without_header_id,
-                    destination_path)
+                header = HeaderUDP(data, DELIMITER_UDP, END_MARKER)
 
-                # details(Protocol.UDP, total_bytes_received, total_bytes_received, start, time.time())
-                # init_start = True
-                # continue
-                break
+                if header.done:
+                    recompose_files(
+                        files,
+                        files_ids,
+                        packages_with_no_header,
+                        headless_files,
+                        files_without_header_id,
+                        destination_path)
+                    break
 
-            if header.package_type == PackageType.Header:
-                files.append((header, []))
-                files_ids.append(header.file_index)
+                if header.package_type == PackageType.Header:
+                    files.append((header, []))
+                    files_ids.append(header.file_index)
 
-            elif header.package_type == PackageType.Block:
-                if header.file_index in files_ids:
-                    index = get_file_index(header.file_index, files)
-                    files[index][1].append(header)
-                else:
-                    packages_with_no_header.append(header)
+                elif header.package_type == PackageType.Block:
+                    if header.file_index in files_ids:
+                        index = get_file_index(header.file_index, files)
+                        files[index][1].append(header)
+                    else:
+                        packages_with_no_header.append(header)
+
+                if CONFIRMATION_UDP:
+                    s.sendto(int(UDPState.Received).to_bytes(length=1, byteorder='little', signed=False), address)
+                    # print(f"Sent {int(UDPState.Received).to_bytes(length=1, byteorder='little', signed=False)} to {address}!")
+
+            else:  # resend the confirmation message (the previous one may have been lost)
+                if CONFIRMATION_UDP:
+                    s.sendto(int(UDPState.Received).to_bytes(length=1, byteorder='little', signed=False), address)
+                    # print(f"Sent {int(UDPState.Received).to_bytes(length=1, byteorder='little', signed=False)} to {address}!")
 
     return total_bytes_received, total_messages_received
 
@@ -203,15 +214,11 @@ def show_help():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 3:
         show_help()
     elif sys.argv[1] == "TCP":
-        HOST = sys.argv[3]
-        PORT = int(sys.argv[4])
         receive_data(Protocol.TCP, sys.argv[2])
     elif sys.argv[1] == "UDP":
-        HOST = sys.argv[3]
-        PORT = int(sys.argv[4])
         receive_data(Protocol.UDP, sys.argv[2])
     else:
         show_help()

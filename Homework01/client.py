@@ -19,8 +19,10 @@ common = config['COMMON']
 DELIMITER_UDP = common['DELIMITER_UDP']
 DELIMITER_TCP = common['DELIMITER_TCP']
 END_MARKER = common['END_MARKER']
-CONFIRMATION_UDP = bool(common['CONFIRMATION_UDP'])
-CONFIRMATION_TCP = bool(common['CONFIRMATION_TCP'])
+CONFIRMATION_UDP = config.getboolean('COMMON', 'CONFIRMATION_UDP')
+CONFIRMATION_TCP = config.getboolean('COMMON', 'CONFIRMATION_TCP')
+PROTOCOL = common['PROTOCOL']
+WRITE_FILES = config.getboolean('COMMON', 'WRITE_FILES')
 
 
 def show_stats(protocol, number_of_messages, number_of_bytes, start_time, end_time):
@@ -50,12 +52,12 @@ def send_file_via_tcp(s, f, file_path, filename):
 
     while True:
         s.send(header)
+        bytes_sent += len(header)
+        messages_send += 1
 
         if CONFIRMATION_TCP:
             data = s.recv(1)
             state = TCPState(data[0])
-            bytes_sent += len(header)
-            messages_send += 1
 
             if state == TCPState.Good:
                 break
@@ -152,6 +154,8 @@ def send_package_via_udp_with_confirmation(s, data, address):
             state = UDPState(confirmation_data[0])
             if state == UDPState.Received:
                 break
+            else:
+                pass
         except socket.timeout as _:
             pass
 
@@ -191,7 +195,7 @@ def send_file_via_udp(s, f, file_path, file_index, filename, address):
         bytes_sent += a
         messages_send += b
 
-    print(f'File {filename} was sent to server!')
+    # print(f'File {filename} was sent to server!')
 
     return bytes_sent, messages_send
 
@@ -234,15 +238,18 @@ def send_data(protocol, path_sent):
 
 def show_help():
     print('client.py <protocol> <source folder>')
-    print('Example: client.py TCP /mnt/z/source_folder')
+    print('Example: client.py /mnt/z/source_folder')
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         show_help()
-    elif sys.argv[1] == "TCP":
-        send_data(Protocol.TCP, sys.argv[2])
-    elif sys.argv[1] == "UDP":
-        send_data(Protocol.UDP, sys.argv[2])
+        exit(0)
+
+    source_path = sys.argv[1]
+    if PROTOCOL == "TCP":
+        send_data(Protocol.TCP, source_path)
+    elif PROTOCOL == "UDP":
+        send_data(Protocol.UDP, source_path)
     else:
         show_help()

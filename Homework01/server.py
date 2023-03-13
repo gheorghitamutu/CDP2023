@@ -12,7 +12,10 @@ common = config['COMMON']
 DELIMITER_UDP = common['DELIMITER_UDP']
 DELIMITER_TCP = common['DELIMITER_TCP']
 END_MARKER = common['END_MARKER']
-CONFIRMATION_UDP = bool(common['CONFIRMATION_UDP'])
+CONFIRMATION_UDP = config.getboolean('COMMON', 'CONFIRMATION_UDP')
+CONFIRMATION_TCP = config.getboolean('COMMON', 'CONFIRMATION_TCP')
+PROTOCOL = common['PROTOCOL']
+WRITE_FILES = config.getboolean('COMMON', 'WRITE_FILES')
 
 server = config['SERVER']
 HOST = server['HOST']
@@ -42,37 +45,58 @@ def receive_data_via_tcp(destination_path):
             print('New connection from', addr)
 
             while True:
-                data = conn.recv(1024)  # enough for the initial header with metadata
+                data = conn.recv(256)  # enough for the initial header with metadata
                 total_messages_received += 1
                 total_bytes_received += len(data)
+
                 if data == END_MARKER.encode():
                     # print(f'Received end marker.')
                     break
 
-                header = HeaderTCP(data, DELIMITER_TCP)
-                conn.send(int(TCPState.Good).to_bytes(length=1, byteorder='little', signed=False))
-                total_bytes_received += len(data)
-                total_messages_received += 1
+                try:
+                    header = HeaderTCP(data, DELIMITER_TCP)
+                except Exception as _:
+                    pass
+
+                if CONFIRMATION_TCP:
+                    conn.send(int(TCPState.Good).to_bytes(length=1, byteorder='little', signed=False))
 
                 # print(f'Received file {header.filename} header with #{header.number_of_packages} packages.')
 
-                file_path = os.path.join(destination_path, header.filename)
-                with open(file_path, 'wb') as file:
+                if WRITE_FILES:
+                    packages = list()
 
-                    package_index = 0
-                    while package_index < header.number_of_packages:
+                package_index = 0
+                while package_index < header.number_of_packages:
 
-                        data = conn.recv(MAX_MESSAGE_SIZE_TCP)
-                        total_bytes_received += len(data)
-                        total_messages_received += 1
+                    data = conn.recv(MAX_MESSAGE_SIZE_TCP)
+                    total_bytes_received += len(data)
+                    total_messages_received += 1
 
-                        if not data:
+                    if not data:
+                        if CONFIRMATION_TCP:
                             conn.send(int(TCPState.Corrupted).to_bytes(length=1, byteorder='little', signed=False))
-                        else:
-                            file.write(data)
-                            # print(f'Received file {header.filename} package {package_index + 1}/{header.number_of_packages}.')
+                    else:
+                        # print(f'Received file {header.filename} package {package_index + 1}/{header.number_of_packages}.')
+
+                        if CONFIRMATION_TCP:
                             conn.send(int(TCPState.Good).to_bytes(length=1, byteorder='little', signed=False))
-                            package_index += 1
+
+                        if WRITE_FILES:
+                            packages.append(data)
+
+                        package_index += 1
+
+                        # failsafe
+                        if data == END_MARKER.encode():
+                            # print(f'Received end marker.')
+                            break
+
+                if WRITE_FILES:
+                    file_path = os.path.join(destination_path, header.filename)
+                    with open(file_path, 'wb') as file:
+                        for data in packages:
+                            file.write(data)
 
     return total_bytes_received, total_messages_received
 
@@ -111,19 +135,21 @@ def recompose_files(files, files_ids, packages_with_no_header, headless_files, f
             header.filename = f'CorruptedFile-{header.filename}'
             files_corrupted += 1
 
-        packages.sort(key=blocks_comparator)
-        file_path = os.path.join(destination_path, header.filename)
-        with open(file_path, 'wb') as f:
-            for package in packages:
-                f.write(package.block)
-                # print(f'Written package #{package.package_index} of length {len(package.block)}!')
+        if WRITE_FILES:
+            packages.sort(key=blocks_comparator)
+            file_path = os.path.join(destination_path, header.filename)
+            with open(file_path, 'wb') as f:
+                for package in packages:
+                    f.write(package.block)
+                    # print(f'Written package #{package.package_index} of length {len(package.block)}!')
 
-    for header, packages in headless_files:
-        packages.sort(key=blocks_comparator)
-        file_path = os.path.join(destination_path, header.filename)
-        with open(file_path, 'wb') as f:
-            for package in packages:
-                f.write(package.block)
+    if WRITE_FILES:
+        for header, packages in headless_files:
+            packages.sort(key=blocks_comparator)
+            file_path = os.path.join(destination_path, header.filename)
+            with open(file_path, 'wb') as f:
+                for package in packages:
+                    f.write(package.block)
 
     print(f'Good files: {files_no - files_corrupted}')
     print(f'Corrupted files (missing packages): {files_corrupted}')
@@ -143,6 +169,8 @@ def receive_data_via_udp(destination_path):
         headless_files = list()
         files_without_header_id = list()
 
+        address = tuple()
+
         while True:
             if CONFIRMATION_UDP:
                 while True:
@@ -151,9 +179,21 @@ def receive_data_via_udp(destination_path):
                         data, address = s.recvfrom(MAX_MESSAGE_SIZE_UDP)
                         break
                     except socket.timeout as _:
-                        pass
+                        if len(address) == 2:
+                            s.sendto(int(UDPState.Error).to_bytes(length=1, byteorder='little', signed=False), address)
             else:
-                data, _ = s.recvfrom(MAX_MESSAGE_SIZE_UDP)
+                s.settimeout(TIMEOUT_UDP)  # you may lose the end marker
+                try:
+                    data, _ = s.recvfrom(MAX_MESSAGE_SIZE_UDP)
+                except Exception as _:
+                    recompose_files(
+                        files,
+                        files_ids,
+                        packages_with_no_header,
+                        headless_files,
+                        files_without_header_id,
+                        destination_path)
+                    break
 
             total_bytes_received += len(data)
             total_messages_received += 1
@@ -189,8 +229,8 @@ def receive_data_via_udp(destination_path):
 
             else:  # resend the confirmation message (the previous one may have been lost)
                 if CONFIRMATION_UDP:
-                    s.sendto(int(UDPState.Received).to_bytes(length=1, byteorder='little', signed=False), address)
-                    # print(f"Sent {int(UDPState.Received).to_bytes(length=1, byteorder='little', signed=False)} to {address}!")
+                    s.sendto(int(UDPState.Error).to_bytes(length=1, byteorder='little', signed=False), address)
+                    # print(f"Sent {int(UDPState.Error).to_bytes(length=1, byteorder='little', signed=False)} to {address}!")
 
     return total_bytes_received, total_messages_received
 
@@ -214,11 +254,14 @@ def show_help():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         show_help()
-    elif sys.argv[1] == "TCP":
-        receive_data(Protocol.TCP, sys.argv[2])
-    elif sys.argv[1] == "UDP":
-        receive_data(Protocol.UDP, sys.argv[2])
+        exit(0)
+
+    destination_path = sys.argv[1]
+    if PROTOCOL == "TCP":
+        receive_data(Protocol.TCP, destination_path)
+    elif PROTOCOL == "UDP":
+        receive_data(Protocol.UDP, destination_path)
     else:
         show_help()

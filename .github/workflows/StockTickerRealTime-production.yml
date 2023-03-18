@@ -30,7 +30,7 @@ jobs:
         shell: pwsh
         working-directory: ./Homework02/StockTicker
         run: |
-          dotnet add package Microsoft.Azure.WebJobs.Extensions.ServiceBus
+          dotnet add StockTicker package Microsoft.Azure.WebJobs.Extensions.ServiceBus
 
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh

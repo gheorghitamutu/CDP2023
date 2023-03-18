@@ -1,4 +1,4 @@
-using System.Net.WebSockets;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -6,13 +6,14 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using System.Net.WebSockets;
 
 public static class StockTickerFunction
 {
     [FunctionName("StockTickerFunction")]
     public static async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "StockTicker")] HttpRequest req,
-        [ServiceBus("%EventHubName%", Connection = "EventHubConnection")] IAsyncCollector<string> eventHubMessages,
+        [ServiceBus("StockTickerRealTime", Connection = "Endpoint=sb://stock-ticker.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Q6Xjs7/o1044U2SH/RwKNB4UbcWuzPfe6+AEhAdW6uQ=")] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {
         log.LogInformation("StockTickerFunction HTTP trigger function started.");
@@ -42,3 +43,4 @@ public static class StockTickerFunction
         return new OkResult();
     }
 }
+

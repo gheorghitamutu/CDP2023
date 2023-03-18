@@ -28,6 +28,7 @@ jobs:
           
       - name: Install ServiceBus dependency
         shell: pwsh
+        working-directory: ./Homework02/StockTicker
         run: |
           dotnet add package Microsoft.Azure.WebJobs.Extensions.ServiceBus
 

@@ -18,10 +18,12 @@ builder.Services.ConfigureSwaggerGen(setup =>
 
 var app = builder.Build();
 
+// Ensure the Swagger definitions are always generated
+app.UseSwagger();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
     app.UseSwaggerUI();
 }
 

@@ -95,25 +95,6 @@ namespace StockTickerAPI.Controllers
                 _logger.LogError("Cannot read container throuthput.");
                 _logger.LogError($"Exception : {cosmosException.ResponseBody}");
             }
-
-            // try
-            // {
-            //     // Read the item to see if it exists
-            //     ItemResponse<Family> wakefieldFamilyResponse = await this.container.ReadItemAsync<Family>(wakefieldFamily.Id, new PartitionKey(wakefieldFamily.PartitionKey));
-            //     Console.WriteLine("Item in database with id: {0} already exists\n", wakefieldFamilyResponse.Resource.Id);
-            // }
-            // catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            // {
-            //     // Create an item in the container representing the Wakefield family. Note we provide the value of the partition key for this item, which is "Wakefield"
-            //     ItemResponse<Family> wakefieldFamilyResponse = await this.container.CreateItemAsync<Family>(wakefieldFamily, new PartitionKey(wakefieldFamily.PartitionKey));
-            // 
-            //     // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse. We can also access the RequestCharge property to see the amount of RUs consumed on this request.
-            //     Console.WriteLine("Created item in database with id: {0} Operation consumed {1} RUs.\n", wakefieldFamilyResponse.Resource.Id, wakefieldFamilyResponse.RequestCharge);
-            // }
-
-            // await this.ReplaceFamilyItemAsync();
-            // await this.DeleteFamilyItemAsync();
-            // await this.DeleteDatabaseAndCleanupAsync();
         }
 
         [ApiController]

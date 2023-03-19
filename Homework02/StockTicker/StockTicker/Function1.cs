@@ -13,7 +13,7 @@ public static class StockTickerFunction
     const string EVENT_HUB_CONNECTION_STRING_PLAIN = "Endpoint=sb://stock-ticker.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Q6Xjs7/o1044U2SH/RwKNB4UbcWuzPfe6+AEhAdW6uQ=";
 
     [FunctionName("GenerateStockDataToEventHub")]
-    public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run([TimerTrigger("0 */30 * * * *")] TimerInfo _,
+    public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run([TimerTrigger("0 */30 * * * *")] TimerInfo timeInfo,
         [ServiceBus("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {
@@ -96,7 +96,7 @@ public static class StockTickerFunction
     // private readonly static EventProcessorClient processor = new(
     //     storageClient, EventHubConsumerClient.DefaultConsumerGroupName, EVENT_HUB_CONNECTION_STRING, "stockticker_1679176237014");
 
-    [FunctionName("EventHubTriggerCSharp")]
+    [FunctionName("EventHubTriggerStockTickerData")]
     public static async Task Run(
         [ServiceBusTrigger("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] EventData message,
         DateTime enqueuedTimeUtc,

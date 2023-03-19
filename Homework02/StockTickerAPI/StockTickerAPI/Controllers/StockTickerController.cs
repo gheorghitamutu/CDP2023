@@ -18,7 +18,7 @@ namespace StockTickerAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet(Name = "GetStockTicker")]
         public IEnumerable<StockTicker> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new StockTicker

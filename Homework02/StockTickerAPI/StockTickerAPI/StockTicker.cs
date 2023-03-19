@@ -1,7 +1,15 @@
+using Newtonsoft.Json;
+
 namespace StockTickerAPI
 {
     public class StockTicker
     {
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+        
+        [JsonProperty(PropertyName = "partitionKey")]
+        public string PartitionKey { get; set; }
+
         public string? Symbol { get; set; }
 
         public double Price { get; set; }
@@ -14,6 +22,9 @@ namespace StockTickerAPI
 
         public DateTime Date { get; set; }
 
-        public string? Summary { get; set; }
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

@@ -5,17 +5,11 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
-using System.Linq.Expressions;
 using System.Collections.Generic;
 
 public static class StockTickerFunction
 {
-    // used in attributes:
     const string EVENT_HUB_CONNECTION_STRING_PLAIN = "Endpoint=sb://stock-ticker.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Q6Xjs7/o1044U2SH/RwKNB4UbcWuzPfe6+AEhAdW6uQ=";
-
-    // used.. somewhere else?
-    public readonly static Expression EVENT_HUB_CONNECTION_STRING = Expression.Constant(Environment.GetEnvironmentVariable("EventHub_stockticker_1679176237014"));
-    public readonly static Expression BLOB_STORAGE_CONNECTION_STRING = Expression.Constant(Environment.GetEnvironmentVariable("BlobStorage_stockticker"));
 
     [FunctionName("SendStockDataToEventHub")]
     public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run(

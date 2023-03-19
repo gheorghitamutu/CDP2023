@@ -20,7 +20,7 @@ public static class StockTickerFunction
     [FunctionName("SendStockDataToEventHub")]
     public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "/sendStockData")] HttpRequest req,
-        [ServiceBus("StockTickerRealTime", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
+        [ServiceBus("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {
         log.LogInformation($"StockTickerFunction HTTP trigger function started {req}.");
@@ -50,7 +50,7 @@ public static class StockTickerFunction
 
     [FunctionName("GenerateStockDataToEventHub")]
     public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run([TimerTrigger("0 */30 * * * *")] TimerInfo _,
-        [ServiceBus("StockTickerRealTime", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
+        [ServiceBus("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {
         Console.WriteLine($"C# Timer trigger function executed at: {DateTime.Now}");

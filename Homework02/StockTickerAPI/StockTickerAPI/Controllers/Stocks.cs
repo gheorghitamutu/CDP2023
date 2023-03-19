@@ -6,17 +6,17 @@ using Azure.Messaging.EventHubs.Processor;
 using Azure.Storage.Blobs;
 using System.Text;
 using Microsoft.Azure.Cosmos;
-
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.WebJobs;
+using Newtonsoft.Json.Linq;
 
 namespace StockTickerAPI.Controllers
 {
     [ApiController]
     [Route("/get_stocks")]
-    public class StockTickerController : ControllerBase
+    public class Stocks : ControllerBase
     {
-        // private readonly static string? EVENT_HUB_CONNECTION_STRING = Environment.GetEnvironmentVariable("EventHub_stockticker_1679176237014");
-        // private readonly static string? BLOB_STORAGE_CONNECTION_STRING = Environment.GetEnvironmentVariable("BlobStorage_stockticker");
-
         // The Azure Cosmos DB endpoint for running this sample.
         private static readonly string? EndpointUri = System.Configuration.ConfigurationManager.AppSettings["EndPointUri"];
 
@@ -24,13 +24,13 @@ namespace StockTickerAPI.Controllers
         private static readonly string? PrimaryKey = System.Configuration.ConfigurationManager.AppSettings["PrimaryKey"];
 
         // The Cosmos client instance
-        private CosmosClient cosmosClient;
+        private CosmosClient? cosmosClient;
 
         // The database we will create
-        private Database database;
+        private Database? database;
 
         // The container we will create.
-        private Container container;
+        private Container? container;
 
         // The name of the database and container we will create
         private readonly string databaseId = "StockEntries";
@@ -43,12 +43,9 @@ namespace StockTickerAPI.Controllers
         // private readonly static EventProcessorClient processor = new(
         //     storageClient, EventHubConsumerClient.DefaultConsumerGroupName, EVENT_HUB_CONNECTION_STRING, "stockticker_1679176237014");
 
-        private readonly ILogger<StockTickerController> _logger;
+        private readonly ILogger<Stocks> _logger;
 
-        public StockTickerController(ILogger<StockTickerController> logger)
-        {
-            _logger = logger;
-        }
+        public Stocks(ILogger<Stocks> logger) => _logger = logger;
 
         [HttpGet(Name = "GetStockTicker")]
         public async Task<IEnumerable<StockTicker>> Get()
@@ -59,7 +56,7 @@ namespace StockTickerAPI.Controllers
             Console.WriteLine("Running query: {0}\n", sqlQueryText);
 
             QueryDefinition queryDefinition = new(sqlQueryText);
-            FeedIterator<StockTicker> queryResultSetIterator = container.GetItemQueryIterator<StockTicker>(queryDefinition);
+            FeedIterator<StockTicker>? queryResultSetIterator = container?.GetItemQueryIterator<StockTicker>(queryDefinition);
 
             List<StockTicker> stocks = new();
             while (queryResultSetIterator.HasMoreResults)
@@ -119,6 +116,43 @@ namespace StockTickerAPI.Controllers
             // await this.DeleteDatabaseAndCleanupAsync();
         }
 
+        [ApiController]
+        [Route("/set_stock")]
+        public class SetStock : ControllerBase
+        {
+            private readonly static string? EVENT_HUB_CONNECTION_STRING = Environment.GetEnvironmentVariable("EventHub_stockticker_1679176237014");
+            // private readonly static string? BLOB_STORAGE_CONNECTION_STRING = Environment.GetEnvironmentVariable("BlobStorage_stockticker");
+            const string EVENT_HUB_CONNECTION_STRING_PLAIN = "Endpoint=sb://stock-ticker.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Q6Xjs7/o1044U2SH/RwKNB4UbcWuzPfe6+AEhAdW6uQ=";
 
+            [FunctionName("SetStock")]
+            public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "/sendStockData")] HttpRequest req,
+            [ServiceBus("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
+            ILogger log)
+            {
+                log.LogInformation($"StockTickerFunction HTTP trigger function started {req}.");
+
+                if (req.ContentType == "application/json")
+                {
+                    var data = JObject.Parse(req.Body.ToString());
+
+                    string symbol = data["Symbol"].ToString();
+                    double price = double.Parse(data["Price"].ToString());
+                    int volume = int.Parse(data["Volume"].ToString());
+                    double change = double.Parse(data["Change"].ToString());
+                    double changePercent = double.Parse(data["ChangePercent"].ToString());
+                    DateTime date = DateTime.Parse(data["Date"].ToString());
+
+                    // Send stock data to Event Hub
+                    var dataString = $"{symbol},{price},{volume},{change},{changePercent},{date}";
+                    await eventHubMessages.AddAsync(dataString);
+                    log.LogInformation($"Stock data sent to Event Hub: {dataString}");
+
+                    return new OkResult();
+                }
+
+                return new BadRequestResult();
+            }
+        }
     }
 }

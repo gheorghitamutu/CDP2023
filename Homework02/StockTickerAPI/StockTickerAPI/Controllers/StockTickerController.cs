@@ -86,17 +86,17 @@ namespace StockTickerAPI.Controllers
                 int? throughput = await container.ReadThroughputAsync();
                 if (throughput.HasValue)
                 {
-                    Console.WriteLine("Current provisioned throughput : {0}\n", throughput.Value);
+                    _logger.LogInformation($"Current provisioned throughput : {throughput.Value}");
                     int newThroughput = throughput.Value + 100;
                     // Update throughput
                     await container.ReplaceThroughputAsync(newThroughput);
-                    Console.WriteLine("New provisioned throughput : {0}\n", newThroughput);
+                    _logger.LogInformation($"New provisioned throughput : : {newThroughput}");
                 }
             }
             catch (CosmosException cosmosException) when (cosmosException.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
-                Console.WriteLine("Cannot read container throuthput.");
-                Console.WriteLine(cosmosException.ResponseBody);
+                _logger.LogError("Cannot read container throuthput.");
+                _logger.LogError($"Exception : {cosmosException.ResponseBody}");
             }
 
             // try

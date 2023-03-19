@@ -25,12 +25,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Install ServiceBus dependency
-        shell: pwsh
-        working-directory: ./Homework02/StockTicker
-        run: |
-          dotnet add StockTicker package Microsoft.Azure.WebJobs.Extensions.ServiceBus
           
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh

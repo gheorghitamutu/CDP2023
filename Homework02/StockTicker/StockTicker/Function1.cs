@@ -1,15 +1,12 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
-using System.Net.WebSockets;
 using System.Linq.Expressions;
 using System.Collections.Generic;
-using System.Text;
 
 public static class StockTickerFunction
 {
@@ -20,62 +17,39 @@ public static class StockTickerFunction
     public readonly static Expression EVENT_HUB_CONNECTION_STRING = Expression.Constant(Environment.GetEnvironmentVariable("EventHub_stockticker_1679176237014"));
     public readonly static Expression BLOB_STORAGE_CONNECTION_STRING = Expression.Constant(Environment.GetEnvironmentVariable("BlobStorage_stockticker"));
 
-    [FunctionName("SendStockDataToEventHubViaWebSockets")]
-    public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "/sendStockData")] HttpRequest req,
+    [FunctionName("SendStockDataToEventHub")]
+    public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "/sendStockData")] HttpRequest req,
         [ServiceBus("StockTickerRealTime", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {
         log.LogInformation($"StockTickerFunction HTTP trigger function started {req}.");
 
-        // Get the WebSocket connection
-        WebSocket webSocket = await req.HttpContext.WebSockets.AcceptWebSocketAsync();
-        log.LogInformation("WebSocket connection accepted.");
-
-        // Read stock data from WebSocket
-        while (webSocket.State == WebSocketState.Open)
+        if (req.ContentType == "application/json")
         {
-            var buffer = new byte[1024 * 4];
-            var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), System.Threading.CancellationToken.None);
+            var data = JObject.Parse(req.Body.ToString());
 
-            if (result.MessageType == WebSocketMessageType.Text)
-            {
-                var data = JObject.Parse(Encoding.UTF8.GetString(buffer, 0, result.Count));
+            string symbol = data["Symbol"].ToString();
+            double price = double.Parse(data["Price"].ToString());
+            int volume = int.Parse(data["Volume"].ToString());
+            double change = double.Parse(data["Change"].ToString());
+            double changePercent = double.Parse(data["ChangePercent"].ToString());
+            DateTime date = DateTime.Parse(data["Date"].ToString());
 
-                string symbol = data["Symbol"].ToString();
-                double price = double.Parse(data["Price"].ToString());
-                int volume = int.Parse(data["Volume"].ToString());
-                double change = double.Parse(data["Change"].ToString());
-                double changePercent = double.Parse(data["ChangePercent"].ToString());
-                DateTime date = DateTime.Parse(data["Date"].ToString());
+            // Send stock data to Event Hub
+            var dataString = $"{symbol},{price},{volume},{change},{changePercent},{date}";
+            await eventHubMessages.AddAsync(dataString);
+            log.LogInformation($"Stock data sent to Event Hub: {dataString}");
 
-                // Send stock data to Event Hub
-                var dataString = $"{symbol},{price},{volume},{change},{changePercent},{date}";
-                await eventHubMessages.AddAsync(dataString);
-                log.LogInformation($"Stock data sent to Event Hub: {dataString}");
-
-                await webSocket.SendAsync(
-                    new ArraySegment<byte>(Encoding.UTF8.GetBytes(dataString)),
-                    WebSocketMessageType.Text,
-                    false,
-                    System.Threading.CancellationToken.None);
-            }
-            else 
-            {
-                await webSocket.SendAsync(
-                    new ArraySegment<byte>(Encoding.UTF8.GetBytes("{\"Error\": \"Invalid message type received!\"}")),
-                    WebSocketMessageType.Text, 
-                    false, 
-                    System.Threading.CancellationToken.None);
-            }
+            return new Microsoft.AspNetCore.Mvc.OkResult();
         }
 
-        return new OkResult();
+        return new Microsoft.AspNetCore.Mvc.BadRequestResult();
     }
 
 
     [FunctionName("GenerateStockDataToEventHub")]
-    public static async Task<IActionResult> Run([TimerTrigger("0 */30 * * * *")] TimerInfo _,
+    public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run([TimerTrigger("0 */30 * * * *")] TimerInfo _,
         [ServiceBus("StockTickerRealTime", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {
@@ -83,14 +57,14 @@ public static class StockTickerFunction
 
         List<StockTicker> stockData = GenerateStockData();
 
-        foreach(var data in stockData)
+        foreach (var data in stockData)
         {
             var dataString = $"{data.Symbol},{data.Price},{data.Volume},{data.Change},{data.ChangePercent},{data.Date}";
             await eventHubMessages.AddAsync(dataString);
             log.LogInformation($"Stock data sent to Event Hub: {dataString}");
         }
 
-        return new OkResult();
+        return new Microsoft.AspNetCore.Mvc.OkResult();
     }
 
     private static List<StockTicker> GenerateStockData()

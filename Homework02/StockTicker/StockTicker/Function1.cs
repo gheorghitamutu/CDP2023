@@ -98,7 +98,7 @@ public static class StockTickerFunction
 
     [FunctionName("EventHubTriggerCSharp")]
     public static async Task Run(
-        [ServiceBusTrigger("samples-workitems", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] EventData message,
+        [ServiceBusTrigger("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] EventData message,
         DateTime enqueuedTimeUtc,
         long sequenceNumber,
         string offset,

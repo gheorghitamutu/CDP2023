@@ -96,44 +96,48 @@ namespace StockTickerAPI.Controllers
                 _logger.LogError($"Exception : {cosmosException.ResponseBody}");
             }
         }
+    }
 
-        [ApiController]
-        [Route("/set_stock")]
-        public class SetStock : ControllerBase
+
+    [ApiController]
+    [Route("/set_stock")]
+    public class SetStock : ControllerBase
+    {
+        private readonly static string? EVENT_HUB_CONNECTION_STRING = Environment.GetEnvironmentVariable("EventHub_stockticker_1679176237014");
+        // private readonly static string? BLOB_STORAGE_CONNECTION_STRING = Environment.GetEnvironmentVariable("BlobStorage_stockticker");
+        const string EVENT_HUB_CONNECTION_STRING_PLAIN = "Endpoint=sb://stock-ticker.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Q6Xjs7/o1044U2SH/RwKNB4UbcWuzPfe6+AEhAdW6uQ=";
+
+        [FunctionName("SetStock")]
+        public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "/sendStockData")] HttpRequest req,
+        [ServiceBus("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
+        ILogger log)
         {
-            private readonly static string? EVENT_HUB_CONNECTION_STRING = Environment.GetEnvironmentVariable("EventHub_stockticker_1679176237014");
-            // private readonly static string? BLOB_STORAGE_CONNECTION_STRING = Environment.GetEnvironmentVariable("BlobStorage_stockticker");
-            const string EVENT_HUB_CONNECTION_STRING_PLAIN = "Endpoint=sb://stock-ticker.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Q6Xjs7/o1044U2SH/RwKNB4UbcWuzPfe6+AEhAdW6uQ=";
+            log.LogInformation($"StockTickerFunction HTTP trigger function started {req}.");
 
-            [FunctionName("SetStock")]
-            public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "/sendStockData")] HttpRequest req,
-            [ServiceBus("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
-            ILogger log)
+            if (req.ContentType == "application/json")
             {
-                log.LogInformation($"StockTickerFunction HTTP trigger function started {req}.");
+                // Send stock data to Event Hub
 
-                if (req.ContentType == "application/json")
+                var data = JObject.Parse(req.Body.ToString());
+                StockTicker st = new()
                 {
-                    var data = JObject.Parse(req.Body.ToString());
+                    Symbol = data["Symbol"].ToString(),
+                    Price = double.Parse(data["Price"].ToString()),
+                    Volume = int.Parse(data["Volume"].ToString()),
+                    Change = double.Parse(data["Change"].ToString()),
+                    ChangePercent = double.Parse(data["ChangePercent"].ToString()),
+                    Date = DateTime.Parse(data["Date"].ToString())
+                };
 
-                    string symbol = data["Symbol"].ToString();
-                    double price = double.Parse(data["Price"].ToString());
-                    int volume = int.Parse(data["Volume"].ToString());
-                    double change = double.Parse(data["Change"].ToString());
-                    double changePercent = double.Parse(data["ChangePercent"].ToString());
-                    DateTime date = DateTime.Parse(data["Date"].ToString());
 
-                    // Send stock data to Event Hub
-                    var dataString = $"{symbol},{price},{volume},{change},{changePercent},{date}";
-                    await eventHubMessages.AddAsync(dataString);
-                    log.LogInformation($"Stock data sent to Event Hub: {dataString}");
+                await eventHubMessages.AddAsync(st.ToString());
+                log.LogInformation($"Stock data sent to Event Hub: {st}");
 
-                    return new OkResult();
-                }
-
-                return new BadRequestResult();
+                return new OkResult();
             }
+
+            return new BadRequestResult();
         }
     }
 }

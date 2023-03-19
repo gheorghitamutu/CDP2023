@@ -53,6 +53,20 @@ public static class StockTickerFunction
                 var dataString = $"{symbol},{price},{volume},{change},{changePercent},{date}";
                 await eventHubMessages.AddAsync(dataString);
                 log.LogInformation($"Stock data sent to Event Hub: {dataString}");
+
+                await webSocket.SendAsync(
+                    new ArraySegment<byte>(Encoding.UTF8.GetBytes(dataString)),
+                    WebSocketMessageType.Text,
+                    false,
+                    System.Threading.CancellationToken.None);
+            }
+            else 
+            {
+                await webSocket.SendAsync(
+                    new ArraySegment<byte>(Encoding.UTF8.GetBytes("{\"Error\": \"Invalid message type received!\"}")),
+                    WebSocketMessageType.Text, 
+                    false, 
+                    System.Threading.CancellationToken.None);
             }
         }
 

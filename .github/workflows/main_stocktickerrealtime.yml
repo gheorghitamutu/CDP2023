@@ -10,7 +10,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_NAME: 'StockTickerRealTime'   # set this to your function app name on Azure
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './Homework02/StockTicker' # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x' # set this to the dotnet version to use
 
 jobs:
@@ -25,6 +26,12 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Install ServiceBus dependency
+        shell: pwsh
+        working-directory: ./Homework02/StockTicker
+        run: |
+          dotnet add StockTicker package Microsoft.Azure.WebJobs.Extensions.ServiceBus
+          
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh
         run: |

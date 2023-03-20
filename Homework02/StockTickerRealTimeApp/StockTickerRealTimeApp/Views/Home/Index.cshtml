@@ -6,3 +6,51 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<!--- <div id="@ViewBag.Message"></div> --->
+<div class="table-responsive">
+    <table class="table table-fixed" id="Stocks">
+    <thead class="thead-dark">
+        <tr>
+            <th>Symbol</th>
+            <th>Price</th>
+            <th>Volume</th>
+            <th>Change</th>
+            <th>ChangePercent</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody id="Stocks-Body">
+    <!--- Table data populated from JS script. --->
+    </tbody>
+</table>
+</div>
+
+<script>
+    (async function () {
+        // let res = await fetch(`/negotiate?id=StockTickerRealTimeApp}`);
+        // let url = await res.text();
+        let ws = new WebSocket("@ViewBag.Message");
+        // let ws = new WebSocket(url);
+        ws.onopen = () => console.log('connected');
+        ws.onclose = () => console.log('disconnected');
+
+        let stocks = document.querySelector('#Stocks-Body');
+        ws.onmessage = event => {
+            const row = document.createElement('tr');
+            const data = JSON.parse(event.data);
+
+            if (data.Change >= 0)
+            {
+                row.setAttribute("class", "table-success");
+            }
+            else 
+            {
+                row.setAttribute("class", "table-danger");
+            }
+
+            row.innerHTML = `<td>${data.Symbol}</td><td>${data.Price}</td><td>${data.Volume}</td><td>${data.Change}</td><td>${data.ChangePercent}</td><td>${data.Date}</td>`;
+            stocks.appendChild(row);
+        };
+    })();
+</script>

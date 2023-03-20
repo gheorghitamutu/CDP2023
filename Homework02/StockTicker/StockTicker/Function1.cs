@@ -146,7 +146,7 @@ public class StockTickerFunction
                 await actions.AddAsync(new SendToAllAction
                 {
                     Data = BinaryData.FromString(json),
-                    DataType = WebPubSubDataType.Text
+                    DataType = WebPubSubDataType.Json
                 });
             }
             catch (Exception ex)

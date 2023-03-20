@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.table-responsive {
+    height: 100vh;
+    overflow-x: auto;
+    overflow-y: auto;
+}

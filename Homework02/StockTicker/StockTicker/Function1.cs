@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using System.Text;
 using Microsoft.Azure.Cosmos;
 using Azure.Messaging.EventHubs;
+using Microsoft.Azure.WebJobs.Extensions.WebPubSub;
+using Microsoft.Azure.WebPubSub.Common;
 
 public class StockTickerFunction
 {
@@ -83,6 +85,7 @@ public class StockTickerFunction
     [FunctionName("EventHubTriggerStockTickerData")]
     public async Task EventHubTriggerAdditionToDatabase(
         [EventHubTrigger("stocktickerdata", Connection = "EVENT_HUB_CONNECTION_STRING_PLAIN")] EventData[] events,
+        [WebPubSub(Hub = "stocks", Connection = "WEB_PUB_SUB_CONNECTION_STRING_PLAIN")] IAsyncCollector<WebPubSubAction> actions,
         ILogger log)
     {
         // The Azure Cosmos DB endpoint for running this sample.
@@ -133,6 +136,19 @@ public class StockTickerFunction
             catch (CosmosException ex)
             {
                 log.LogInformation($"Failed: {ex.ResponseBody}.");
+            }
+
+            try
+            {
+                await actions.AddAsync(new SendToAllAction
+                {
+                    Data = BinaryData.FromString(json),
+                    DataType = WebPubSubDataType.Text
+                });
+            }
+            catch (Exception ex)
+            {
+                log.LogInformation($"Failed: {ex.Message}.");
             }
         }
 

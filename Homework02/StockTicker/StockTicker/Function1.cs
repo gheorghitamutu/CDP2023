@@ -88,6 +88,24 @@ public class StockTickerFunction
         [WebPubSub(Hub = "stocks", Connection = "WEB_PUB_SUB_CONNECTION_STRING_PLAIN")] IAsyncCollector<WebPubSubAction> actions,
         ILogger log)
     {
+        foreach (EventData data in events)
+        {
+            var json = Encoding.UTF8.GetString(data.Body.ToArray());
+
+            try
+            {
+                await actions.AddAsync(new SendToAllAction
+                {
+                    Data = BinaryData.FromString(json),
+                    DataType = WebPubSubDataType.Json
+                });
+            }
+            catch (Exception ex)
+            {
+                log.LogInformation($"Failed: {ex.Message}.");
+            }
+        }
+
         // The Azure Cosmos DB endpoint for running this sample.
         string EndpointUri = "https://stockticker.documents.azure.com:443/";
 
@@ -134,24 +152,12 @@ public class StockTickerFunction
                 container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
                 ItemResponse<StockTicker> response = await container.CreateItemAsync(stockTicker);
 
-                log.LogInformation($"Created item in database {stockTicker}.");
+                log.LogInformation($"Added item in database: {stockTicker}.");
             }
             catch (CosmosException ex)
             {
-                log.LogInformation($"Failed: {ex.ResponseBody}.");
-            }
-
-            try
-            {
-                await actions.AddAsync(new SendToAllAction
-                {
-                    Data = BinaryData.FromString(json),
-                    DataType = WebPubSubDataType.Json
-                });
-            }
-            catch (Exception ex)
-            {
-                log.LogInformation($"Failed: {ex.Message}.");
+                log.LogError($"Failed: {ex.ResponseBody}.");
+                log.LogError($"Failed: {stockTicker}.");
             }
         }
 

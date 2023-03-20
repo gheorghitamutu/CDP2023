@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "History";
+}
+
+<div class="text-center">
+    <h1 class="display-4">History (all data available)</h1>
+</div>
+
+<!--- <div id="@ViewBag.Message"></div> --->
+<div class="table-responsive">
+    <table class="table table-fixed" id="Stocks">
+    <thead class="thead-dark">
+        <tr>
+            <th>Symbol</th>
+            <th>Price</th>
+            <th>Volume</th>
+            <th>Change</th>
+            <th>ChangePercent</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody id="Stocks-Body">
+    <!--- Table data populated from JS script. --->
+    </tbody>
+</table>
+</div>
+
+<script>
+    (async function () {
+        fetch("https://stocktickerapi.azurewebsites.net/get_stocks", { method: "GET" })
+            .then((response) => response.json())
+            .then((json) => 
+            {
+                if (Object.keys(json) == 0)
+                {
+                    return;
+                }
+
+                let stocks = document.querySelector('#Stocks-Body');
+                json.forEach((item) => 
+                {
+                    const row = document.createElement('tr');
+                    if (item.change >= 0) 
+                    {
+                        row.setAttribute("class", "table-success");
+                    }
+                    else 
+                    {
+                        row.setAttribute("class", "table-danger");
+                    }
+
+                    row.innerHTML = `<td>${item.symbol}</td><td>${item.price}</td><td>${item.volume}</td><td>${item.change}</td><td>${item.changePercent}</td><td>${item.date}</td>`;
+                    stocks.appendChild(row);
+                });
+            });
+    })();
+</script>

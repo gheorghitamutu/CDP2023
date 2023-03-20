@@ -63,31 +63,15 @@ namespace StockTickerRealTimeApp.Controllers
             return View();
         }
 
+        public IActionResult History()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        [FunctionName("connect")]
-        public static WebPubSubEventResponse Connect(
-            [WebPubSubTrigger("stocks", WebPubSubEventType.System, "connect")] ConnectEventRequest request)
-        {
-            Console.WriteLine($"Received client connect with connectionId: {request.ConnectionContext.ConnectionId}");
-            return request.CreateResponse(request.ConnectionContext.UserId, null, null, null);
-        }
-
-        [FunctionName("disconnect")]
-        [return: WebPubSub(Hub = "%WebPubSubHub%")]
-        public static WebPubSubAction Disconnect(
-            [WebPubSubTrigger("stocks", WebPubSubEventType.System, "disconnected")] WebPubSubConnectionContext connectionContext)
-        {
-            Console.WriteLine("Disconnect.");
-            return new SendToAllAction
-            {
-                Data = BinaryData.FromString($"{connectionContext.UserId} disconnect."),
-                DataType = WebPubSubDataType.Text
-            };
         }
     }
 }

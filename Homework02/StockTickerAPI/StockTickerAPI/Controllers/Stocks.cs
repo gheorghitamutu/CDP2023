@@ -109,6 +109,8 @@ namespace StockTickerAPI.Controllers
 
             StockTicker st = new()
             {
+                Id = Guid.NewGuid().ToString(),
+                PartitionKey = "1",
                 Symbol = symbol,
                 Price = price,
                 Volume = volume,

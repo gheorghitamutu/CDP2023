@@ -9,6 +9,7 @@ using Microsoft.Azure.Cosmos;
 using Azure.Messaging.EventHubs;
 using Microsoft.Azure.WebJobs.Extensions.WebPubSub;
 using Microsoft.Azure.WebPubSub.Common;
+using static StockTickerFunction;
 
 public class StockTickerFunction
 {

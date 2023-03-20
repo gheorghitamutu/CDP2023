@@ -30,6 +30,10 @@ jobs:
         working-directory: ./Homework02/StockTickerRealTimeApp
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      - name: List app files
+        shell: cmd
+        run: dir /s ${{env.DOTNET_ROOT}}/myapp
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:

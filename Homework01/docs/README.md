@@ -1,9 +1,22 @@
-## Homework 01
+# Homework 01
+
+- [Homework 01](#homework-01)
+  - [Project Structure](#project-structure)
+  - [Structures](#structures)
+  - [Client](#client)
+  - [Server](#server)
+  - [Command line arguments](#command-line-arguments)
+  - [Results (round 1 =\> streaming UDP vs stop-and-wait TCP)](#results-round-1--streaming-udp-vs-stop-and-wait-tcp)
+  - [Results (round 2 =\> streaming and stop-and-wait for both UDP and TCP)](#results-round-2--streaming-and-stop-and-wait-for-both-udp-and-tcp)
+  - [Conclusions (round 1)](#conclusions-round-1)
+  - [TCP](#tcp)
+  - [UDP](#udp)
+
 The homework is explained in [Requirements file](PCD_Homework1.pdf)
 
 The project is written in Python. It is a simple client-server application where the client uploads files to a server via TCP (stop-and-wait) or UDP (streaming) protocols.
 
-### Project Structure
+## Project Structure
 File          | Description
 ------------- | -------------
 config.cfg    | Simple config with settings for client, server & common (alternative to the command line arguments)
@@ -11,7 +24,7 @@ structures.py | Definition of packages sent via TCP or UDP
 client.py     | The client that uploads files once it connects to the server
 server.py     | The server that receives the files from the client and writes them to disk
 
-### Structures
+## Structures
 Structure     | Description
 ------------- | -------------
 Protocol      | TCP or UDP
@@ -20,19 +33,19 @@ PackageType   | Header (file size, number of packages, etc) or Block (actual ind
 HeaderTCP     | Filename, file size and number of packages which will be sent
 HeaderUDP     | Depending on the type and state => initial header (metadata), actual block or 'Done' (end) marker
 
-### Client
+## Client
 Flow          | Description
 ------------- | -------------
 TCP           | send_data_via_tcp(source_path) => connection & source path folder iteration => for every file split it in packages and send them with confirmation
 UDP           | send_data_via_udp(source_path) => connection & source path folder iteration => for every file split it in packages and send them (no confirmation)
 
-### Server
+## Server
 Flow          | Description
 ------------- | -------------
 TCP           | receive_data_via_tcp(destination_path) => connection => for each file received (identification via initial header) write all its packets (iterative, sorted, with confirmation for every one of them)
 UDP           | receive_data_via_udp(destination_path) => connection => create a map with all the files and packages received => write everything when the client sends `Done` marker (keeping in mind that packages need to be reordered, some may be missing or maybe the initial header (containing filename, packages count, etc) is missing)
 
-### Command line arguments
+## Command line arguments
 Script        | Description
 ------------- | -------------
 client.py     | python3 <protocol> <source folder> <ip> <port> 
@@ -40,7 +53,7 @@ client.py     | python3 UDP ./test/source 127.0.0.1 7003
 server.py     | python3 <protocol> <destination folder> <ip> <port> 
 server.py     | python3 UDP ./test/destination 127.0.0.1 7003 
   
-### Results (round 1 => streaming UDP vs stop-and-wait TCP)
+## Results (round 1 => streaming UDP vs stop-and-wait TCP)
 Entity        | Description | Messages | Bytes | Time 
 ------------- | ----------- | -------- | ----- | ---- 
 Message       | Batches of 100 bytes (+ UDP header to sort blocks)
@@ -50,7 +63,7 @@ TCP (Server)  | Via TCP protocol | Messages received: 4020687 | Bytes received: 
 UDP (Client)  | Via UDP protocol | Messages sent: 4011889 | Bytes sent: 551118578 | Time to send: 186.11 seconds | 
 UDP (Sever)   | Via UDP protocol | Messages received: 750097 | Bytes received: 102253457 | Time to receive/process: 215.37 seconds |
 
-### Results (round 2 => streaming and stop-and-wait for both UDP and TCP)
+## Results (round 2 => streaming and stop-and-wait for both UDP and TCP)
 
 Batches of 512 bytes (+ UDP header to sort blocks).
 
@@ -76,12 +89,12 @@ UDP (Client) | ACK         | NO                 | 791821   | 400246350 | 656.73s
 UDP (Server) | ACK         | NO                 | 791821   | 400246350 | 658.72s
 
 
-### Conclusions (round 1)
+## Conclusions (round 1)
 Lost packages via UDP: 81.30%.
   
 Lost packages via TCP: 0%.
 
-### TCP
+## TCP
 (+) Correct order of packages with confirmation.
   
 (+) Way more reliable and less coding overhead than UDP.
@@ -92,7 +105,7 @@ Lost packages via TCP: 0%.
 
 (+) All packages were delivered regardless of the mechanism.
   
-### UDP 
+## UDP 
 (+) Faster than TCP (79% faster).
   
 (-) Lost packages percentage may vary. Not recommendable for files.

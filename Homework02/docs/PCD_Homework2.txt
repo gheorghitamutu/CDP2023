@@ -1,0 +1,8 @@
+Homework 2:
+A) Create a distributed application that uses a cloud ecosystem (e.g. Google, Amazon, et.al.). 
+Requirements - the application has at least three components:
+- one is using at least three native cloud services (one is Statefull)
+- the other can be an on-premise application but is required to use at least one service from Google Cloud (or similar services for other Clouds Providers): Cloud BigTable, BigQuery, Cloud DataProc, or services such as Cloud Endpoints, Prediction API
+- the other is a FaaS (AWS Lambda, Google Cloud Functions, IBM OpenWhisk or Microsoft Azure Functions)
+At least one Real-Time Web Technology (e.g. WebSocket) must be used in a proper manner in your system. (Don't forget about performance metrics that fit to your distributed application). More details are offered during the laboratory.
+B) Create a scientific report based on the services chosen in point A, which are used in various distributed architectures of real systems (e.g. Twitter). Analyze the characteristics of your system: performance, latency, reliability, transparency dimensions et.al (see C1-2, C6)

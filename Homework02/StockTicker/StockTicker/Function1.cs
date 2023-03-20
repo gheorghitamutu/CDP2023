@@ -13,7 +13,7 @@ using Microsoft.Azure.WebPubSub.Common;
 public class StockTickerFunction
 {
     [FunctionName("GenerateStockDataToEventHub")]
-    public void GenerateStockDataToEventHub([TimerTrigger("* * */10 * * *")] TimerInfo timeInfo,
+    public void GenerateStockDataToEventHub([TimerTrigger("0 0 */2 * * *")] TimerInfo timeInfo,
         [ServiceBus("stocktickerdata", Connection = "EVENT_HUB_CONNECTION_STRING_PLAIN")] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {

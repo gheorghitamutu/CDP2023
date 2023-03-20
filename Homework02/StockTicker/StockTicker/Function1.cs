@@ -11,30 +11,14 @@ using Azure.Messaging.EventHubs;
 public class StockTickerFunction
 {
     [FunctionName("GenerateStockDataToEventHub")]
-    public void GenerateStockDataToEventHub([TimerTrigger("* * */6 * * *")] TimerInfo timeInfo,
+    public void GenerateStockDataToEventHub([TimerTrigger("* * */10 * * *")] TimerInfo timeInfo,
         [ServiceBus("stocktickerdata", Connection = "EVENT_HUB_CONNECTION_STRING_PLAIN")] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {
-        Console.WriteLine($"C# Timer trigger function executed at: {DateTime.Now}");
-
-        List<StockTicker> stockData = GenerateStockData();
-
-        foreach (var data in stockData)
+        foreach (var data in GenerateStockData())
         {
-            StockTicker st = new()
-            {
-                // Id = "1",
-                // PartitionKey = "1",
-                Symbol = data.Symbol,
-                Price = data.Price,
-                Volume = data.Volume,
-                Change = data.Change,
-                ChangePercent = data.ChangePercent,
-                Date = data.Date
-            };
-
-            eventHubMessages.AddAsync(st.ToString());
-            log.LogInformation($"Stock data sent to Event Hub: {st}");
+            eventHubMessages.AddAsync(data.ToString());
+            log.LogInformation($"Stock data sent to Event Hub: {data}");
         }
     }
 
@@ -49,6 +33,8 @@ public class StockTickerFunction
         {
             stockData.Add(new StockTicker()
             {
+                Id = Guid.NewGuid().ToString(),
+                PartitionKey = "1",
                 Symbol = symbol,
                 Price = rnd.Next(100, 1000),
                 Volume = rnd.Next(100000, 1000000),

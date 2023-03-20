@@ -108,11 +108,14 @@ public class StockTickerFunction
             int? throughput = await container.ReadThroughputAsync();
             if (throughput.HasValue)
             {
-                log.LogInformation($"Current provisioned throughput : {throughput.Value}");
-                int newThroughput = throughput.Value + 100;
-                // Update throughput
-                await container.ReplaceThroughputAsync(newThroughput);
-                log.LogInformation($"New provisioned throughput : : {newThroughput}");
+                if (throughput.Value <= 900) // max basic account throughput is 1000
+                {
+                    log.LogInformation($"Current provisioned throughput : {throughput.Value}");
+                    int newThroughput = throughput.Value + 100;
+                    // Update throughput
+                    await container.ReplaceThroughputAsync(newThroughput);
+                    log.LogInformation($"New provisioned throughput : : {newThroughput}");
+                }
             }
         }
         catch (CosmosException cosmosException) when (cosmosException.StatusCode == System.Net.HttpStatusCode.BadRequest)

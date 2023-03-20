@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Add Data";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Send stock data</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<form id="stock-form" method="post">
+    <label for="Symbol">Symbol</label>
+    <input name="Symbol" type="text" class="form-control" id="Symbol" rows="1" value="TEST" />
+    <label for="Price">Price</label>
+    <input name="Price" type="text" class="form-control" id="Price" rows="1" value="100" />
+    <label for="Volume">Volume</label>
+    <input name="Volume" type="text" class="form-control" id="Volume" rows="1" value="100" />
+    <label for="Change">Change</label>
+    <input name="Change" type="text" class="form-control" id="Change" rows="1" value="100" />
+    <label for="ChangePercent">ChangePercent</label>
+    <input name="ChangePercent" type="text" class="form-control" id="ChangePercent" rows="1" value="100" />
+    <label for="Date">Date</label>
+    <input name="Date" type="text" class="form-control" id="Date" rows="1" value="2023-03-20T10:54:44.9969319Z" />
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+    (function () 
+    {
+        window.addEventListener('load', function () 
+        {
+            var form = document.getElementById('stock-form');
+            form.addEventListener('submit', function (event) 
+            {
+                const XHR = new XMLHttpRequest();
+                const FD = new FormData();
+                const data = new $('form').serializeArray();
+
+                for (const item of data) 
+                {
+                    FD.append(item.name, item.value);
+                }
+
+                // Define what happens in case of an error
+                XHR.addEventListener('error', (event) => 
+                {
+                    console.log(event);
+                    alert('Oops! Something went wrong.');
+                });
+
+                // Set up our request
+                XHR.open('POST', 'https://stocktickerapi.azurewebsites.net/set_stock');
+
+                // Send our FormData object; HTTP headers are set automatically
+                XHR.send(FD);
+
+            }, false);
+        }, false);
+    })();
+</script>

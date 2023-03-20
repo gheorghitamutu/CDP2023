@@ -5,16 +5,14 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Text;
-using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.Cosmos;
+using Azure.Messaging.EventHubs;
 
-public static class StockTickerFunction
+public class StockTickerFunction
 {
-    const string EVENT_HUB_CONNECTION_STRING_PLAIN = "Endpoint=sb://stock-ticker.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Q6Xjs7/o1044U2SH/RwKNB4UbcWuzPfe6+AEhAdW6uQ=";
-
     [FunctionName("GenerateStockDataToEventHub")]
-    public static async Task<Microsoft.AspNetCore.Mvc.IActionResult> Run([TimerTrigger("0 */30 * * * *")] TimerInfo timeInfo,
-        [ServiceBus("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] IAsyncCollector<string> eventHubMessages,
+    public void GenerateStockDataToEventHub([TimerTrigger("* * */6 * * *")] TimerInfo timeInfo,
+        [ServiceBus("stocktickerdata", Connection = "EVENT_HUB_CONNECTION_STRING_PLAIN")] IAsyncCollector<string> eventHubMessages,
         ILogger log)
     {
         Console.WriteLine($"C# Timer trigger function executed at: {DateTime.Now}");
@@ -25,6 +23,8 @@ public static class StockTickerFunction
         {
             StockTicker st = new()
             {
+                // Id = "1",
+                // PartitionKey = "1",
                 Symbol = data.Symbol,
                 Price = data.Price,
                 Volume = data.Volume,
@@ -33,11 +33,9 @@ public static class StockTickerFunction
                 Date = data.Date
             };
 
-            await eventHubMessages.AddAsync(st.ToString());
+            eventHubMessages.AddAsync(st.ToString());
             log.LogInformation($"Stock data sent to Event Hub: {st}");
         }
-
-        return new Microsoft.AspNetCore.Mvc.OkResult();
     }
 
     private static List<StockTicker> GenerateStockData()
@@ -97,11 +95,8 @@ public static class StockTickerFunction
     //     storageClient, EventHubConsumerClient.DefaultConsumerGroupName, EVENT_HUB_CONNECTION_STRING, "stockticker_1679176237014");
 
     [FunctionName("EventHubTriggerStockTickerData")]
-    public static async Task Run(
-        [ServiceBusTrigger("StockTickerData", Connection = EVENT_HUB_CONNECTION_STRING_PLAIN)] EventData message,
-        DateTime enqueuedTimeUtc,
-        long sequenceNumber,
-        string offset,
+    public async Task EventHubTriggerAdditionToDatabase(
+        [EventHubTrigger("stocktickerdata", Connection = "EVENT_HUB_CONNECTION_STRING_PLAIN")] EventData[] events,
         ILogger log)
     {
         // The Azure Cosmos DB endpoint for running this sample.
@@ -117,7 +112,7 @@ public static class StockTickerFunction
         // Create a new instance of the Cosmos Client
         CosmosClient cosmosClient = new(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "StockTickerRealTime" });
         Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
-        Microsoft.Azure.Cosmos.Container container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
+        Container container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
 
         try
         {
@@ -137,19 +132,24 @@ public static class StockTickerFunction
             log.LogError($"Exception : {cosmosException.ResponseBody}");
         }
 
-        var dataAsJson = Encoding.UTF8.GetString(message.Body.Array);
-        var stockTicker = JsonConvert.DeserializeObject<StockTicker>(dataAsJson);
-
-        try
+        foreach (EventData data in events)
         {
-            container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
-            ItemResponse<StockTicker> response = await container.CreateItemAsync(stockTicker);
+            var json = Encoding.UTF8.GetString(data.Body.ToArray());
+            var stockTicker = JsonConvert.DeserializeObject<StockTicker>(json);
 
-            log.LogInformation($"Created item in database {stockTicker}.");
+            try
+            {
+                container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
+                ItemResponse<StockTicker> response = await container.CreateItemAsync(stockTicker);
+
+                log.LogInformation($"Created item in database {stockTicker}.");
+            }
+            catch (CosmosException ex)
+            {
+                log.LogInformation($"Failed: {ex.ResponseBody}.");
+            }
         }
-        catch (CosmosException ex)
-        {
-            log.LogInformation($"Failed: {ex.ResponseBody}.");
-        }
+
+        cosmosClient.Dispose();
     }
 }

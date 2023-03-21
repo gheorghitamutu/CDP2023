@@ -7,54 +7,31 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
-<form id="stock-form" method="post">
+<form id="stockform">
     <label for="Symbol">Symbol</label>
-    <input name="Symbol" type="text" class="form-control" id="Symbol" rows="1" value="TEST" />
+    <input name="symbol" type="text" class="form-control" id="symbol" rows="1" value="TEST" />
     <label for="Price">Price</label>
-    <input name="Price" type="text" class="form-control" id="Price" rows="1" value="100" />
+    <input name="price" type="text" class="form-control" id="price" rows="1" value="100" />
     <label for="Volume">Volume</label>
-    <input name="Volume" type="text" class="form-control" id="Volume" rows="1" value="100" />
+    <input name="volume" type="text" class="form-control" id="volume" rows="1" value="100" />
     <label for="Change">Change</label>
-    <input name="Change" type="text" class="form-control" id="Change" rows="1" value="100" />
+    <input name="change" type="text" class="form-control" id="change" rows="1" value="100" />
     <label for="ChangePercent">ChangePercent</label>
-    <input name="ChangePercent" type="text" class="form-control" id="ChangePercent" rows="1" value="100" />
+    <input name="changePercent" type="text" class="form-control" id="changePercent" rows="1" value="100" />
     <label for="Date">Date</label>
-    <input name="Date" type="text" class="form-control" id="Date" rows="1" value="2023-03-20T10:54:44.9969319Z" />
+    <input name="date" type="text" class="form-control" id="date" rows="1" value="2023-03-20T10:54:44.9969319Z" />
     <br />
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 <script>
-    (function () 
-    {
-        window.addEventListener('load', function () 
+    stockform.onsubmit = async (e) => {
+        e.preventDefault();
+
+        let params = new $('form').serialize();
+        await fetch(`https://stocktickerapi.azurewebsites.net/set_stock?${params}`, 
         {
-            var form = document.getElementById('stock-form');
-            form.addEventListener('submit', function (event) 
-            {
-                const XHR = new XMLHttpRequest();
-                const FD = new FormData();
-                const data = new $('form').serializeArray();
-
-                for (const item of data) 
-                {
-                    FD.set(item.name, item.value);
-                }
-
-                // Define what happens in case of an error
-                XHR.addEventListener('error', (event) => 
-                {
-                    console.log(event);
-                    alert('Oops! Something went wrong.');
-                });
-
-                // Set up our request
-                XHR.open('POST', 'https://stocktickerapi.azurewebsites.net/set_stock');
-
-                // Send our FormData object; HTTP headers are set automatically
-                XHR.send(FD);
-
-            }, false);
-        }, false);
-    })();
+            method: 'POST',
+        });
+    };
 </script>

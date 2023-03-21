@@ -1,5 +1,7 @@
 # Homework 02
 
+The homework requirements are explained in [Requirements file](PCD_Homework2.txt)
+
 - [Homework 02](#homework-02)
   - [Technologies (Azure)](#technologies-azure)
     - [Cosmos DB](#cosmos-db)
@@ -27,8 +29,6 @@
     - [Scalability](#scalability)
     - [Throughput](#throughput)
     - [Cost-effectiveness](#cost-effectiveness)
-
-The homework is explained in [Requirements file](PCD_Homework2.txt)
 
 ## Technologies (Azure)
 

@@ -1,5 +1,7 @@
 # Homework 01
 
+The homework requirements are explained in [Requirements file](PCD_Homework1.pdf)
+
 - [Homework 01](#homework-01)
   - [Project Structure](#project-structure)
   - [Structures](#structures)
@@ -11,8 +13,6 @@
   - [Conclusions (round 1)](#conclusions-round-1)
   - [TCP](#tcp)
   - [UDP](#udp)
-
-The homework is explained in [Requirements file](PCD_Homework1.pdf)
 
 The project is written in Python. It is a simple client-server application where the client uploads files to a server via TCP (stop-and-wait) or UDP (streaming) protocols.
 

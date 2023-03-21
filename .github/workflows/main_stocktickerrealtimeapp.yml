@@ -32,7 +32,7 @@ jobs:
 
       - name: List app files
         shell: cmd
-        run: dir /s ${{env.DOTNET_ROOT}}/myapp
+        run: dir /s "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2

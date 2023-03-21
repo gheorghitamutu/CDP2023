@@ -10,7 +10,7 @@ The homework requirements are explained in [Requirements file](PCD_Homework2.txt
     - [Azure Functions](#azure-functions)
     - [Web PubSub](#web-pubsub)
     - [Client/Web Apps](#clientweb-apps)
-  - [Requirements](#requirements)
+  - [Description (Requirements facing)](#description-requirements-facing)
     - [Components enumeration](#components-enumeration)
     - [Stateful vs Stateless](#stateful-vs-stateless)
     - [Functions as a Service (FaaS)](#functions-as-a-service-faas)
@@ -89,7 +89,8 @@ Azure Web Apps provides tools for monitoring and debugging web applications, as 
 
 Overall, Azure Web Apps provides a comprehensive platform for building, deploying, and managing web applications in a scalable and secure manner. It allows developers to focus on building their applications rather than managing the underlying infrastructure, making it an ideal choice for organizations of all sizes.
 
-## Requirements
+## Description (Requirements facing)
+A stock ticker is a report of the price for certain securities, updated continuously throughout the trading session by the various stock exchanges.
 
 ### Components enumeration
 Azure Cosmos DB, Azure Event Hub, Azure API App, Azure Functions, Azure Web PubSub, and Azure Web Apps.

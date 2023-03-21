@@ -14,6 +14,7 @@ The homework requirements are explained in [Requirements file](PCD_Homework2.txt
     - [Components enumeration](#components-enumeration)
     - [Stateful vs Stateless](#stateful-vs-stateless)
     - [Functions as a Service (FaaS)](#functions-as-a-service-faas)
+    - [Websockets](#websockets)
   - [System description](#system-description)
     - [Data Sources](#data-sources)
     - [Event Processor](#event-processor)
@@ -109,6 +110,15 @@ Functions as a Service (FaaS), such as Azure Functions, are stateless by default
 For example, a FaaS application can be designed to store state externally in a database or other storage service. This allows the function to access and update the state as needed, allowing it to maintain state across function invocations.
 
 However, it's generally recommended to design FaaS applications as stateless to take advantage of the scalability benefits of serverless computing. By keeping the functions stateless, the provider can easily spin up new instances of the function to handle increased load without worrying about managing state across multiple instances.
+
+### Websockets
+Azure Web PubSub is a cloud-based service provided by Microsoft Azure that enables real-time messaging scenarios. WebSockets are one of the primary protocols used by Azure Web PubSub to provide real-time bi-directional communication between clients and the server.
+
+When a client connects to Azure Web PubSub using WebSockets, a persistent connection is established between the client and the server. This connection remains open for the duration of the client's session, allowing the server to push messages to the client in real-time.
+
+Azure Web PubSub supports both JSON and MessagePack encoding for WebSocket messages. JSON encoding is the default and is used when the message is small or when interoperability with other WebSocket clients is necessary. MessagePack encoding is a more compact binary format that can be used when bandwidth efficiency is a concern or when dealing with large volumes of data.
+
+Azure Web PubSub also provides features such as authentication and authorization, message broadcasting, and message filtering, which can be used in conjunction with WebSockets to create a variety of real-time messaging scenarios.
 
 ## System description
 The system gets data about stocks (ticks) while sending them to the users and also storing them.

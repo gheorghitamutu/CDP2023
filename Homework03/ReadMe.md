@@ -2,6 +2,34 @@
 
 The homework requirements are explained in [Requirements file](PCD_Homework3.txt)
 
+- [Homework 03](#homework-03)
+- [Proposals (10 examples using Azure Cloud)](#proposals-10-examples-using-azure-cloud)
+  - [Smart Irrigation System](#smart-irrigation-system)
+  - [Autonomous Crop Monitoring System](#autonomous-crop-monitoring-system)
+  - [Livestock Monitoring System](#livestock-monitoring-system)
+  - [Precision Farming System](#precision-farming-system)
+  - [Crop Yield Prediction System](#crop-yield-prediction-system)
+  - [Supply Chain Management System](#supply-chain-management-system)
+  - [Environmental Monitoring System](#environmental-monitoring-system)
+  - [Plant Disease Detection System](#plant-disease-detection-system)
+  - [Farm Equipment Monitoring System](#farm-equipment-monitoring-system)
+  - [Agrochemical Management System](#agrochemical-management-system)
+- [Easiest to implement (2 examples from 10 above)](#easiest-to-implement-2-examples-from-10-above)
+  - [Livestock Monitoring System](#livestock-monitoring-system-1)
+  - [Environmental Monitoring System](#environmental-monitoring-system-1)
+- [Hardest to implement (2 examples from 10 above)](#hardest-to-implement-2-examples-from-10-above)
+  - [Autonomous Crop Monitoring System](#autonomous-crop-monitoring-system-1)
+  - [Supply Chain Management System](#supply-chain-management-system-1)
+- [A more detailed explanation for the simplest 2 examples](#a-more-detailed-explanation-for-the-simplest-2-examples)
+  - [Livestock Monitoring System](#livestock-monitoring-system-2)
+  - [Environmental Monitoring System](#environmental-monitoring-system-2)
+- [Architecture diagrams](#architecture-diagrams)
+  - [Livestock Monitoring System (easy)](#livestock-monitoring-system-easy)
+  - [Environmental Monitoring System (easy)](#environmental-monitoring-system-easy)
+  - [Precision Agriculture System (difficult)](#precision-agriculture-system-difficult)
+  - [Smart Irrigation System (difficult)](#smart-irrigation-system-difficult)
+- [Work in progress...](#work-in-progress)
+
 # Proposals (10 examples using Azure Cloud)
 
 ## Smart Irrigation System
@@ -211,4 +239,4 @@ Overall, the environmental monitoring system can also be relatively easy and cos
     |    (data visualization and monitoring) |
     +----------------------------------------+
 
-### Work in progress...
+# Work in progress...

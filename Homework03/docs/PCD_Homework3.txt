@@ -1,0 +1,17 @@
+Indicatii asupra rezolvarii temei 3:
+
+Realizati un raport stiintific asupra directiei de cercetare primite
+Indicatii:
+- prezentati pe scurt conceptele implicate 
+- propuneti o miniaplicatie care utilizeaza partea teoretica descrisa si prezentati: modul de implementare si detalii tehnice
+- raportul va fi in limba engleza
+- nu este permisa copierea documentatiilor oficiale, partea de concept/analiza prezentata trebuie sa fie o sinteza asupra temei abordate si trebuie sa fie o contributie personala
+- documentul va avea o sectiune in care de referinte Bibliografice
+In saptamana sunt planificate prezentarile veti face o prezentare a documentului pratica a demoului. 
+Nu este nevoie de o prezentare ppt. alaturi de demonstratia
+
+--------------------------------------------------------------------------
+
+Tema 3: Direction: Distributed architectures for Smart Agriculture (at least 2 systems). 
+e.g. Analyze/Discuss/Present a distributed architecture for self driving robots that kills 100.000 weeds an hour 
+e.g. https://www.thefuturescentre.org/signal/a-self-driving-farm-robot-that-kills-100000-weeds-an-hour-might-save-the-land-from-herbicides

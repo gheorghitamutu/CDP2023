@@ -28,6 +28,9 @@ The homework requirements are explained in [Requirements file](PCD_Homework3.txt
   - [Environmental Monitoring System (easy)](#environmental-monitoring-system-easy)
   - [Precision Agriculture System (difficult)](#precision-agriculture-system-difficult)
   - [Smart Irrigation System (difficult)](#smart-irrigation-system-difficult)
+- [Examples of IoT data](#examples-of-iot-data)
+  - [Livestock Monitoring System](#livestock-monitoring-system-3)
+  - [Environmental Monitoring System](#environmental-monitoring-system-3)
 - [Work in progress...](#work-in-progress)
 
 # Proposals (10 examples using Azure Cloud)
@@ -238,5 +241,45 @@ Overall, the environmental monitoring system can also be relatively easy and cos
     |            Power BI                    |
     |    (data visualization and monitoring) |
     +----------------------------------------+
+
+# Examples of IoT data
+
+## Livestock Monitoring System
+
+    {
+      "animal_id": "A123",
+      "body_temperature": 39.2,
+      "activity_level": 8,
+      "heart_rate": 72,
+      "respiration_rate": 14,
+      "location": {
+        "latitude": 37.7749,
+        "longitude": -122.4194
+      },
+      "feed_intake": 4.5,
+      "water_consumption": 15,
+      "milk_production": 12.5,
+      "weight": 450
+    }
+
+## Environmental Monitoring System
+
+    {
+      "sensor_id": "S123",
+      "temperature": 22.1,
+      "humidity": 54.3,
+      "co2_level": 1280,
+      "particulate_matter": 10,
+      "soil_moisture": 32,
+      "light_level": 2300,
+      "wind_speed": 5.3,
+      "wind_direction": 270,
+      "precipitation": 0,
+      "water_quality": {
+        "ph_level": 7.2,
+        "dissolved_oxygen": 7.5
+      },
+      "noise_level": 45
+    }
 
 # Work in progress...

@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+message EnvironmentalData {
+  message Temperature {
+    float value = 1;
+    string unit = 2;
+  }
+  
+  message Humidity {
+    float value = 1;
+    string unit = 2;
+  }
+  
+  message Pressure {
+    float value = 1;
+    string unit = 2;
+  }
+  
+  message Wind {
+    float speed = 1;
+    float direction = 2;
+    string unit = 3;
+  }
+  
+  message DateTime {
+    int64 timestamp = 1;
+    string timezone = 2;
+  }
+  
+  message Location {
+    float latitude = 1;
+    float longitude = 2;
+  }
+
+  Temperature temperature = 1;
+  Humidity humidity = 2;
+  Pressure pressure = 3;
+  Wind wind = 4;
+  DateTime datetime = 5;
+  Location location = 6;
+}

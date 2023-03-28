@@ -32,6 +32,7 @@ The homework requirements are explained in [Requirements file](PCD_Homework3.txt
   - [Livestock Monitoring System](#livestock-monitoring-system-3)
   - [Environmental Monitoring System](#environmental-monitoring-system-3)
 - [Work in progress...](#work-in-progress)
+- [Bibliography](#bibliography)
 
 # Proposals (10 examples using Azure Cloud)
 
@@ -283,3 +284,7 @@ Overall, the environmental monitoring system can also be relatively easy and cos
     }
 
 # Work in progress...
+
+# Bibliography
+[Synthetic Data Generation for the Internet of Things](https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1035&context=computing_pubs)
+[IoSynth - IoT device/sensor simulator and synthetic data generator](https://github.com/rradev/iosynth)

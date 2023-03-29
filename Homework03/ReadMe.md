@@ -31,6 +31,15 @@ The homework requirements are explained in [Requirements file](PCD_Homework3.txt
 - [Examples of IoT data](#examples-of-iot-data)
   - [Livestock Monitoring System](#livestock-monitoring-system-3)
   - [Environmental Monitoring System](#environmental-monitoring-system-3)
+- [Protobuf](#protobuf)
+  - [How would you use this Protobuf template to generate a .NET class?](#how-would-you-use-this-protobuf-template-to-generate-a-net-class)
+  - [Would you store Protobufs in any Azure database? If so, why?](#would-you-store-protobufs-in-any-azure-database-if-so-why)
+  - [Protobuf template for the Environmental Monitoring System data](#protobuf-template-for-the-environmental-monitoring-system-data)
+  - [Protobuf template for the Livestock Monitoring System data](#protobuf-template-for-the-livestock-monitoring-system-data)
+- [Technologies](#technologies)
+  - [Environmental Monitoring System](#environmental-monitoring-system-4)
+  - [Livestock Monitoring System](#livestock-monitoring-system-4)
+  - [Cost Comparison](#cost-comparison)
 - [Work in progress...](#work-in-progress)
 - [Bibliography](#bibliography)
 
@@ -283,8 +292,193 @@ Overall, the environmental monitoring system can also be relatively easy and cos
       "noise_level": 45
     }
 
+# Protobuf
+
+## How would you use this Protobuf template to generate a .NET class?
+
+To generate a .NET class from the Protobuf template, you can use the protoc compiler along with the C# plugin. Here are the steps to generate the .NET class:
+
+Install the protobuf compiler and the C# plugin. You can follow the instructions in the official Protobuf documentation to download and install these tools.
+
+Create a .proto file that includes the Protobuf template. You can save the template in a file named environmental_data.proto.
+
+Run the following command to generate the .NET class:
+
+    protoc --csharp_out=. environmental_data.proto
+
+
+This command generates a C# class file named environmental_data.cs in the current directory.
+
+Use the generated C# class in your .NET application to encode and decode data using the Protobuf format.
+
+## Would you store Protobufs in any Azure database? If so, why?
+
+Yes, you can store Protobufs in any Azure database that supports binary data, such as Azure Blob Storage, Azure Cosmos DB, and Azure Data Lake Storage. Here are some reasons why you might want to store Protobufs in an Azure database:
+
+Efficient storage and retrieval: Protobufs are binary data that are designed to be compact and efficient, which means that they can take up less storage space and be retrieved faster than equivalent JSON or XML data. By storing Protobufs in an Azure database, you can take advantage of the optimized storage and retrieval capabilities of the database to efficiently store and retrieve large amounts of data.
+
+Interoperability: Protobufs are a language- and platform-independent format that can be used to represent data in a variety of programming languages, including C++, Java, Python, and C#. By storing Protobufs in an Azure database, you can enable interoperability between different applications and systems that use different programming languages and platforms.
+
+Compatibility with cloud services: Many Azure cloud services, such as Azure Event Hubs and Azure Stream Analytics, support Protobufs as a data format. By storing Protobufs in an Azure database, you can easily integrate your data with these cloud services and take advantage of their data processing and analytics capabilities.
+
+Schema evolution: Protobufs support schema evolution, which means that you can change the structure of your data over time without breaking compatibility with older versions of the data. By storing Protobufs in an Azure database, you can take advantage of this feature to evolve your data schema over time as your application and business needs change.
+
+Overall, storing Protobufs in an Azure database can provide a number of benefits for your application, including efficient storage and retrieval, interoperability, compatibility with cloud services, and schema evolution.
+
+## Protobuf template for the Environmental Monitoring System data
+
+    syntax = "proto3";
+    
+    message EnvironmentalData {
+      message Temperature {
+        float value = 1;
+        string unit = 2;
+      }
+    
+      message Humidity {
+        float value = 1;
+        string unit = 2;
+      }
+    
+      message Pressure {
+        float value = 1;
+        string unit = 2;
+      }
+    
+      message Wind {
+        float speed = 1;
+        float direction = 2;
+        string unit = 3;
+      }
+    
+      message DateTime {
+        int64 timestamp = 1;
+        string timezone = 2;
+      }
+    
+      message Location {
+        float latitude = 1;
+        float longitude = 2;
+      }
+    
+      Temperature temperature = 1;
+      Humidity humidity = 2;
+      Pressure pressure = 3;
+      Wind wind = 4;
+      DateTime datetime = 5;
+      Location location = 6;
+    }
+
+## Protobuf template for the Livestock Monitoring System data
+
+    syntax = "proto3";
+    
+    package livestock;
+    
+    message SensorReading {
+      string sensor_id = 1;
+      double body_temperature = 2;
+      int32 activity_level = 3;
+      double heart_rate = 4;
+      double respiration_rate = 5;
+      int64 timestamp = 6;
+      string animal_id = 7;
+    }
+    
+    message AnimalLocation {
+      string animal_id = 1;
+      double latitude = 2;
+      double longitude = 3;
+      int64 timestamp = 4;
+    }
+    
+    message FeedIntake {
+      string animal_id = 1;
+      double amount = 2;
+      int64 timestamp = 3;
+    }
+    
+    message WaterConsumption {
+      string animal_id = 1;
+      double amount = 2;
+      int64 timestamp = 3;
+    }
+    
+    message MilkProduction {
+      string animal_id = 1;
+      double amount = 2;
+      int64 timestamp = 3;
+    }
+    
+    message AnimalWeight {
+      string animal_id = 1;
+      double weight = 2;
+      int64 timestamp = 3;
+    }
+
+This template defines six message types:
+
+SensorReading: Represents a reading from a sensor attached to an animal. The message contains the ID of the sensor, the body temperature, activity level, heart rate, respiration rate, timestamp, and the ID of the animal.
+
+AnimalLocation: Represents the current location of an animal. The message contains the ID of the animal, the latitude and longitude coordinates, and the timestamp.
+
+FeedIntake: Represents the amount of feed consumed by an animal. The message contains the ID of the animal, the amount of feed consumed, and the timestamp.
+
+WaterConsumption: Represents the amount of water consumed by an animal. The message contains the ID of the animal, the amount of water consumed, and the timestamp.
+
+MilkProduction: Represents the amount of milk produced by a lactating animal. The message contains the ID of the animal, the amount of milk produced, and the timestamp.
+
+AnimalWeight: Represents the weight of an animal. The message contains the ID of the animal, the weight, and the timestamp.
+
+# Technologies
+
+## Environmental Monitoring System
+
+There are several Azure technologies that can be involved in an Environmental Monitoring System, depending on the specific needs and requirements of the system. Some possible examples include:
+
+Azure IoT Hub: to receive and process data from various sensors and devices installed in the environment, such as temperature, humidity, air quality, water quality, or noise level sensors.
+
+Azure Stream Analytics: to analyze real-time data streams from the sensors and devices and extract insights such as trends, patterns, or anomalies.
+
+Azure Functions: to trigger custom logic in response to specific events or conditions in the system, such as sending alerts or notifications to users, or triggering automated actions based on certain data patterns.
+
+Azure Cosmos DB: to store and manage large volumes of data from the sensors and devices, with features such as high availability, low latency, and flexible querying.
+
+Azure Maps: to visualize the data from the sensors and devices on maps and geospatial visualizations, and to provide location-based services such as routing, geocoding, or geofencing.
+
+Azure Machine Learning: to build predictive models or machine learning algorithms that can detect early signs of environmental risks or predict future trends based on historical data.
+
+Azure Virtual Machines: to run software applications or services that require a dedicated, customizable environment, such as a dashboard or a monitoring system that visualizes the data from the sensors and devices.
+
+Azure Active Directory: to manage user access and permissions to the Environmental Monitoring System, with features such as multi-factor authentication, single sign-on, and identity protection.
+
+## Livestock Monitoring System
+
+Azure IoT Hub: to receive and process data from IoT devices attached to the livestock, and to send commands and alerts back to those devices.
+
+Azure Stream Analytics: to analyze real-time data streams from the IoT devices and extract insights such as anomalies, trends, or correlations.
+
+Azure Functions: to trigger custom logic in response to specific events or conditions in the system, such as sending notifications to farmers or triggering automated actions based on certain data patterns.
+
+Azure Cosmos DB: to store and manage large volumes of data from the IoT devices, with features such as high availability, low latency, and flexible querying.
+
+Azure Machine Learning: to build predictive models or machine learning algorithms that can detect early signs of diseases or predict future growth and productivity of the livestock based on historical data.
+
+Azure Virtual Machines: to run software applications or services that require a dedicated, customizable environment, such as a dashboard or a monitoring system that visualizes the data from the IoT devices.
+
+Azure Active Directory: to manage user access and permissions to the Livestock Monitoring System, with features such as multi-factor authentication, single sign-on, and identity protection.
+
+## Cost Comparison
+
+The Livestock Monitoring System would likely be more expensive to implement compared to the Environmental Monitoring System due to the need for more specialized hardware and sensors for tracking the various physiological parameters of the animals.
+
+In terms of Azure technologies, some of the more expensive ones would depend on the specific implementation and requirements of the system. For example, if the Livestock Monitoring System required the use of Azure IoT Hub for collecting and processing data from thousands of sensors attached to the animals, then the cost of the IoT Hub would be a significant factor. Similarly, if the Environmental Monitoring System required the use of Azure Stream Analytics for processing large volumes of real-time data from multiple sources, then the cost of the Stream Analytics service would be a significant factor.
+
+In general, however, some of the more expensive Azure technologies include services that require a lot of processing power or storage, such as Azure Machine Learning, Azure Data Lake Storage, and Azure Cosmos DB. These services can provide significant value for certain use cases but may also come with a higher cost.
+
 # Work in progress...
 
 # Bibliography
 [Synthetic Data Generation for the Internet of Things](https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1035&context=computing_pubs)
+
 [IoSynth - IoT device/sensor simulator and synthetic data generator](https://github.com/rradev/iosynth)

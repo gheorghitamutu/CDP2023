@@ -1,0 +1,152 @@
+[
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.0,
+        "activity_level": 7,
+        "heart_rate": 70,
+        "respiration_rate": 15,
+        "location": {
+            "latitude": 37.7748,
+            "longitude": -122.4195
+        },
+        "feed_intake": 4.0,
+        "water_consumption": 14,
+        "milk_production": 12.0,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.1,
+        "activity_level": 6,
+        "heart_rate": 75,
+        "respiration_rate": 13,
+        "location": {
+            "latitude": 37.7751,
+            "longitude": -122.4193
+        },
+        "feed_intake": 4.2,
+        "water_consumption": 16,
+        "milk_production": 12.2,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.3,
+        "activity_level": 8,
+        "heart_rate": 73,
+        "respiration_rate": 14,
+        "location": {
+            "latitude": 37.7747,
+            "longitude": -122.4196
+        },
+        "feed_intake": 4.5,
+        "water_consumption": 15,
+        "milk_production": 12.5,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.2,
+        "activity_level": 8,
+        "heart_rate": 72,
+        "respiration_rate": 14,
+        "location": {
+            "latitude": 37.7749,
+            "longitude": -122.4194
+        },
+        "feed_intake": 4.3,
+        "water_consumption": 13,
+        "milk_production": 12.3,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.1,
+        "activity_level": 7,
+        "heart_rate": 74,
+        "respiration_rate": 13,
+        "location": {
+            "latitude": 37.7747,
+            "longitude": -122.4196
+        },
+        "feed_intake": 4.1,
+        "water_consumption": 14,
+        "milk_production": 12.1,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.0,
+        "activity_level": 6,
+        "heart_rate": 71,
+        "respiration_rate": 15,
+        "location": {
+            "latitude": 37.7750,
+            "longitude": -122.4195
+        },
+        "feed_intake": 4.4,
+        "water_consumption": 12,
+        "milk_production": 12.2,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.2,
+        "activity_level": 8,
+        "heart_rate": 70,
+        "respiration_rate": 14,
+        "location": {
+            "latitude": 37.7748,
+            "longitude": -122.4193
+        },
+        "feed_intake": 4.2,
+        "water_consumption": 15,
+        "milk_production": 12.0,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.1,
+        "activity_level": 7,
+        "heart_rate": 73,
+        "respiration_rate": 15,
+        "location": {
+            "latitude": 37.7748,
+            "longitude": -122.4195
+        },
+        "feed_intake": 4.1,
+        "water_consumption": 14,
+        "milk_production": 12.4,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.2,
+        "activity_level": 6,
+        "heart_rate": 72,
+        "respiration_rate": 13,
+        "location": {
+            "latitude": 37.7747,
+            "longitude": -122.4194
+        },
+        "feed_intake": 4.3,
+        "water_consumption": 15,
+        "milk_production": 12.1,
+        "weight": 450
+    },
+    {
+        "animal_id": "A123",
+        "body_temperature": 39.0,
+        "activity_level": 8,
+        "heart_rate": 74,
+        "respiration_rate": 14,
+        "location": {
+            "latitude": 37.7749,
+            "longitude": -122.4194
+        },
+        "feed_intake": 4.4,
+        "water_consumption": 13,
+        "milk_production": 12.3,
+        "weight": 450
+    }
+]

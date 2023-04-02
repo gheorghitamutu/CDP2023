@@ -33,7 +33,7 @@ The homework requirements are explained in [Requirements file](PCD_Homework3.txt
   - [Environmental Monitoring System](#environmental-monitoring-system-3)
 - [Protobuf](#protobuf)
   - [How would you use this Protobuf template to generate a .NET class?](#how-would-you-use-this-protobuf-template-to-generate-a-net-class)
-  - [Would you store Protobufs in any Azure database? If so, why?](#would-you-store-protobufs-in-any-azure-database-if-so-why)
+  - [Why would you store Protobufs in an Azure database?](#why-would-you-store-protobufs-in-an-azure-database)
   - [Protobuf template for the Environmental Monitoring System data](#protobuf-template-for-the-environmental-monitoring-system-data)
   - [Protobuf template for the Livestock Monitoring System data](#protobuf-template-for-the-livestock-monitoring-system-data)
 - [Technologies](#technologies)
@@ -46,60 +46,60 @@ The homework requirements are explained in [Requirements file](PCD_Homework3.txt
 # Proposals (10 examples using Azure Cloud)
 
 ## Smart Irrigation System
-Azure IoT Hub and Azure Stream Analytics can be used to build a smart irrigation system using Azure Cloud. The system can use IoT sensors to collect real-time data on soil moisture, weather conditions, and plant water usage. The data collected can be processed and analyzed using Azure Stream Analytics to determine crop water needs and develop customized irrigation schedules. In addition, the system can use Azure Functions to automate irrigation control based on the analyzed data, resulting in more efficient water use and better crop yields.
+Azure Cloud may be used to create a smart irrigation system utilizing Azure IoT Hub and Azure Stream Analytics. Real-time data on soil moisture, weather, and plant water use can be gathered by the system using IoT sensors. To ascertain crop water requirements and create individualized irrigation schedules, the data gathered can be processed and analyzed using Azure Stream Analytics. Additionally, based on the data analysis, the system can automate irrigation control using Azure Functions, improving crop yields and water efficiency.
 
 ## Autonomous Crop Monitoring System
-Azure Cognitive Services and Azure IoT Edge can be used to build an autonomous crop monitoring system using Azure Cloud. The system can use drones equipped with cameras and sensors to collect data on crop health, soil conditions, and weather patterns. The data collected can be processed and analyzed locally on the drone using Azure IoT Edge, and then sent to Azure Cognitive Services for further analysis. Azure Cognitive Services can be used to analyze images collected by the drones to identify plant diseases or pests. This information can then be used to create a customized treatment plan for each plant or plot.
+An autonomous agricultural monitoring system can be created utilizing Azure Cloud and Azure Cognitive Services and Azure IoT Edge. Drones with cameras and sensors can be used by the system to gather information on weather patterns, crop health, and soil conditions. With Azure IoT Edge, the drone can process and analyze the data collected locally before sending it to Azure Cognitive Services for additional analysis. Images captured by the drones may be analyzed using Azure Cognitive Services to spot pests or diseases that affect plants. A treatment plan that is unique to each plant or plot can subsequently be constructed using the information provided.
 
 ## Livestock Monitoring System
-Azure IoT Hub and Azure Functions can be used to build a livestock monitoring system. The system can use IoT sensors to collect real-time data on animal health, behavior, and location. This data can be analyzed using Azure Functions to detect any anomalies and alert farmers in case of any potential health issues.
+A system for monitoring cattle can be created using Azure IoT Hub and Azure Functions. The system can gather current information on animal health, behavior, and location via IoT sensors. Azure Functions may evaluate this data to look for anomalies and notify farmers of any health problems.
 
 ## Precision Farming System
-Azure IoT Hub and Azure Machine Learning can be used to build a precision farming system. The system can use IoT sensors to collect real-time data on soil moisture, nutrient levels, and weather conditions. This data can be analyzed using Azure Machine Learning to generate customized fertilization and irrigation schedules for each crop or field.
+A precision farming system can be created using Azure IoT Hub and Azure Machine Learning. Real-time data on soil moisture, nutrient levels, and weather conditions can be gathered by the system using IoT sensors. Azure Machine Learning may be used to analyze this data and create unique fertilization and irrigation schedules for each crop or field.
 
 ## Crop Yield Prediction System
-Azure Machine Learning and Azure Databricks can be used to build a crop yield prediction system. The system can use historical weather data, crop growth data, and other relevant data to predict crop yield for each field. This information can be used by farmers to make informed decisions regarding crop management and harvesting.
+A crop yield forecast system can be created using Azure Databricks and Azure Machine Learning. The system can forecast agricultural yield for each field using previous weather information, crop growth information, and other pertinent data. Farmers can use this information to utilize it to make well-informed decisions about crop management and harvesting.
 
 ## Supply Chain Management System
-Azure Blockchain and Azure Functions can be used to build a supply chain management system for agriculture. The system can use blockchain technology to track and verify the origin and quality of each crop. Azure Functions can be used to automate processes such as payment and inventory management.
+A supply chain management system for agricultural can be created using Azure Blockchain and Azure Functions. The system can trace and confirm the provenance and caliber of each crop using blockchain technology. Automation of procedures such as payment and inventory management is possible with Azure Functions.
 
 ## Environmental Monitoring System
-Azure IoT Hub and Azure Time Series Insights can be used to build an environmental monitoring system. The system can use IoT sensors to collect real-time data on air quality, water quality, and weather conditions. This data can be analyzed using Azure Time Series Insights to identify any potential environmental hazards or risks.
+A system for environmental monitoring can be created using Azure IoT Hub and Azure Time Series Insights. Real-time data on weather, water quality, and air quality can be collected by the system using IoT sensors. Azure Time Series Insights may be used to evaluate this data and find any potential environmental risks or dangers.
 
 ## Plant Disease Detection System
-Azure Cognitive Services and Azure Functions can be used to build a plant disease detection system. The system can use image recognition technology to identify any signs of plant disease or pest infestation. Azure Functions can be used to automate the treatment process based on the identified disease or pest.
+It is possible to create a plant disease detection system using Azure Cognitive Services and Azure Functions. The device can recognize any indications of plant disease or pest infestation using picture recognition technology. Depending on the identified disease or pest, the treatment process can be automated using Azure Functions.
 
 ## Farm Equipment Monitoring System
-Azure IoT Hub and Azure Event Grid can be used to build a farm equipment monitoring system. The system can use IoT sensors to collect real-time data on equipment health, usage, and location. This data can be analyzed using Azure Event Grid to detect any potential equipment failures and alert farmers.
+A monitoring system for farm equipment can be created using Azure Event Grid and Azure IoT Hub. IoT sensors can be used by the system to gather real-time information on the location, use, and health of the equipment. Azure Event Grid can be used to analyze this data in order to find any potential equipment faults and notify farmers.
 
 ## Agrochemical Management System
-Azure Cognitive Services and Azure Functions can be used to build an agrochemical management system. The system can use image recognition technology to identify the types and quantities of agrochemicals used in each field. Azure Functions can be used to automate the ordering and delivery of agrochemicals based on the identified needs.
+Building an agrochemical management system can make use of Azure Cognitive Services and Azure Functions. The device can determine the kinds and amounts of agrochemicals used in each field using picture recognition technology. According on the specified demands, agrochemical ordering and delivery can be automated using Azure Functions.
 
 # Easiest to implement (2 examples from 10 above)
 
 ## Livestock Monitoring System
-The livestock monitoring system is relatively easy to implement and has a lower cost as it requires only basic IoT sensors to collect real-time data on animal health, behavior, and location. This data can be processed and analyzed using Azure Functions, which is a serverless compute service that charges only for the amount of processing power used, resulting in lower costs.
+Since the livestock monitoring system only needs simple IoT sensors to capture real-time data on animal health, activity, and location, it is relatively simple to set up and less expensive. Azure Functions, a serverless compute solution that only charges for the amount of processing power utilized and reduces expenses, can be used to process and analyze this data.
 
 ## Environmental Monitoring System
-The environmental monitoring system is also relatively easy to implement and has a lower cost as it requires only basic IoT sensors to collect real-time data on air quality, water quality, and weather conditions. This data can be analyzed using Azure Time Series Insights, which is a fully managed analytics, storage, and visualization service that charges based on the amount of data stored and queried, resulting in lower costs.
+Since the environmental monitoring system only needs simple IoT sensors to gather real-time data on weather, water quality, and air quality, it is also relatively simple to set up and less expensive. Azure Time Series Insights is a fully managed analytics, storage, and visualization service that can be used to analyze this data at a lower cost because it only charges for the quantity of data that is saved and queried.
 
 # Hardest to implement (2 examples from 10 above)
 
 ## Autonomous Crop Monitoring System
-The autonomous crop monitoring system involves the use of drones equipped with cameras and sensors to collect data on crop health, soil conditions, and weather patterns. Implementing this system may require specialized hardware and software development, which can be costly. Additionally, processing and analyzing the data collected using Azure Cognitive Services may also incur higher costs.
+Drones with cameras and sensors are used as part of the autonomous crop monitoring system to gather information on crop health, soil conditions, and weather patterns. The creation of specialist hardware and software may be necessary for this system's implementation, which can be expensive. Also, it can cost more to handle and analyze the data gathered with Azure Cognitive Services.
 
 ## Supply Chain Management System
-The supply chain management system involves the use of blockchain technology to track and verify the origin and quality of each crop. Implementing this system may require specialized blockchain development and integration with existing systems, which can be complex and potentially costly. Additionally, automating processes such as payment and inventory management using Azure Functions may also add to the costs.
+Blockchain technology is used in the supply chain management system to trace and confirm the provenance and caliber of each crop. This system's implementation might call for specialist blockchain development and system integration, which might be difficult and pricey. However, employing Azure Functions to automate procedures like payment and inventory management may increase the price.
 
 # A more detailed explanation for the simplest 2 examples
 
 ## Livestock Monitoring System
-The livestock monitoring system involves the use of IoT sensors to collect real-time data on animal health, behavior, and location. These sensors can be placed on animals and can measure parameters such as body temperature, heart rate, and activity levels. This data is then transmitted to the Azure IoT Hub, which is a fully managed cloud service that provides secure and reliable communication between IoT devices and other Azure services. From there, the data can be processed and analyzed using Azure Functions, which is a serverless compute service that charges only for the amount of processing power used. Azure Functions can be used to run code in response to IoT device telemetry, allowing for real-time data processing and analysis. The analyzed data can then be visualized and monitored using Power BI, which is a business analytics service that provides interactive data visualization tools. Power BI offers a free version, as well as more advanced paid versions, making it accessible for a variety of use cases.
-Overall, the livestock monitoring system can be relatively easy and cost-effective to implement using Azure Cloud, as it requires only basic IoT sensors and leverages fully managed services like IoT Hub and Azure Functions.
+IoT sensors are used in the livestock monitoring system to gather current information on animal health, behavior, and location. Animals can have these sensors attached to them, and they can detect things like activity levels, heart rates, and body temperatures. The Azure IoT Hub, a fully managed cloud service that enables safe and dependable connectivity between IoT devices and other Azure services, receives this data after it has been sent elsewhere. The data may then be processed and analyzed using Azure Functions, a serverless compute solution that only bills for the processing power actually used. IoT device telemetry can be utilized to trigger code in Azure Functions, enabling real-time data processing and analysis. Using Power BI, a business analytics application that offers interactive data visualization tools, the examined data can then be viewed and tracked. Power BI is accessible for a number of use cases because it has both a free version and more sophisticated commercial editions.
+Overall, because it just requires basic IoT sensors and makes use of fully managed services like IoT Hub and Azure Functions, the livestock monitoring system can be implemented using Azure Cloud in a reasonably simple and affordable manner.
 
 ## Environmental Monitoring System
-The environmental monitoring system involves the use of IoT sensors to collect real-time data on air quality, water quality, and weather conditions. These sensors can be placed in various locations and can measure parameters such as temperature, humidity, air pressure, and pollutant levels. This data is then transmitted to the Azure IoT Hub, where it can be processed and analyzed using Azure Time Series Insights. Azure Time Series Insights is a fully managed analytics, storage, and visualization service that charges based on the amount of data stored and queried. It can be used to store and analyze large amounts of time-stamped data, making it ideal for environmental monitoring applications. The analyzed data can then be visualized using Power BI or other custom dashboards, allowing for real-time monitoring and analysis.
-Overall, the environmental monitoring system can also be relatively easy and cost-effective to implement using Azure Cloud, as it requires only basic IoT sensors and leverages fully managed services like IoT Hub and Azure Time Series Insights.
+IoT sensors are used in the environmental monitoring system to gather real-time data on weather, water quality, and air quality. These sensors can monitor variables including temperature, humidity, air pressure, and pollution levels and can be installed in a variety of places. The Azure IoT Hub receives this data after which Azure Time Series Insights can process and analyze it. A fully managed analytics, storage, and visualization service, Azure Time Series Insights bases its fees on the volume of data stored and queried. It is perfect for applications requiring the storage and analysis of significant amounts of time-stamped data, such as environmental monitoring. Real-time monitoring and analysis are then possible using Power BI or other custom dashboards to visualize the analyzed data.
+Overall, because it just requires basic IoT sensors and makes use of fully managed services like IoT Hub and Azure Time Series Insights, the environmental monitoring system can be implemented using Azure Cloud in a reasonably simple and affordable manner.
 
 # Architecture diagrams
 
@@ -311,19 +311,27 @@ This command generates a C# class file named environmental_data.cs in the curren
 
 Use the generated C# class in your .NET application to encode and decode data using the Protobuf format.
 
-## Would you store Protobufs in any Azure database? If so, why?
+## Why would you store Protobufs in an Azure database?
 
-Yes, you can store Protobufs in any Azure database that supports binary data, such as Azure Blob Storage, Azure Cosmos DB, and Azure Data Lake Storage. Here are some reasons why you might want to store Protobufs in an Azure database:
+The answer is that you can store protobufs in any Azure database that accepts binary data, including Azure Data Lake Storage, Azure Blob Storage, and Azure Cosmos DB. The following are some justifications for why Protobufs could be best kept in an Azure database:
 
-Efficient storage and retrieval: Protobufs are binary data that are designed to be compact and efficient, which means that they can take up less storage space and be retrieved faster than equivalent JSON or XML data. By storing Protobufs in an Azure database, you can take advantage of the optimized storage and retrieval capabilities of the database to efficiently store and retrieve large amounts of data.
+- Efficient storage and retrieval
 
-Interoperability: Protobufs are a language- and platform-independent format that can be used to represent data in a variety of programming languages, including C++, Java, Python, and C#. By storing Protobufs in an Azure database, you can enable interoperability between different applications and systems that use different programming languages and platforms.
+      Protobufs are binary data that are designed to be compact and efficient, which means that they can take up less storage space and be retrieved faster than equivalent JSON or XML data. By storing Protobufs in an Azure database, you can take advantage of the optimized storage and retrieval capabilities of the database to efficiently store and retrieve large amounts of data.
 
-Compatibility with cloud services: Many Azure cloud services, such as Azure Event Hubs and Azure Stream Analytics, support Protobufs as a data format. By storing Protobufs in an Azure database, you can easily integrate your data with these cloud services and take advantage of their data processing and analytics capabilities.
+- Interoperability
+  
+      Programming languages like C++, Java, Python, and C# can all use protobufs, a language- and platform-independent format, to describe data. You may facilitate interoperability across various applications and systems that utilize various programming languages and platforms by storing Protobufs in an Azure database.
 
-Schema evolution: Protobufs support schema evolution, which means that you can change the structure of your data over time without breaking compatibility with older versions of the data. By storing Protobufs in an Azure database, you can take advantage of this feature to evolve your data schema over time as your application and business needs change.
+- Compatibility with cloud services
 
-Overall, storing Protobufs in an Azure database can provide a number of benefits for your application, including efficient storage and retrieval, interoperability, compatibility with cloud services, and schema evolution.
+      Protobufs is a supported data format by many Azure cloud services, including Azure Event Hubs and Azure Stream Analytics. You may quickly link your data with these cloud services and benefit from their data processing and analytics capabilities by storing Protobufs in an Azure database.
+
+- Schema evolution
+
+      Schema evolution is supported by protobufs, allowing you to alter the data's structure over time without jeopardizing compatibility with earlier versions of the data. You can benefit from this functionality to adapt your data schema over time as your application and business demands change by storing Protobufs in an Azure database.
+
+Overall, Protobufs storage in an Azure database can offer your application a variety of advantages, including as effective storage and retrieval, interoperability, compatibility with cloud services, and schema evolution.
 
 ## Protobuf template for the Environmental Monitoring System data
 
@@ -470,11 +478,11 @@ Azure Active Directory: to manage user access and permissions to the Livestock M
 
 ## Cost Comparison
 
-The Livestock Monitoring System would likely be more expensive to implement compared to the Environmental Monitoring System due to the need for more specialized hardware and sensors for tracking the various physiological parameters of the animals.
+Due to the requirement for more specific technology and sensors for monitoring the many physiological characteristics of the animals, the Livestock Monitoring System would probably be more expensive to construct than the Environmental Monitoring System.
 
-In terms of Azure technologies, some of the more expensive ones would depend on the specific implementation and requirements of the system. For example, if the Livestock Monitoring System required the use of Azure IoT Hub for collecting and processing data from thousands of sensors attached to the animals, then the cost of the IoT Hub would be a significant factor. Similarly, if the Environmental Monitoring System required the use of Azure Stream Analytics for processing large volumes of real-time data from multiple sources, then the cost of the Stream Analytics service would be a significant factor.
+Some of the most expensive Azure technologies would depend on how they were implemented and what the system needed. The cost of the IoT Hub would be a major consideration, for instance, if the Livestock Monitoring System needed to use Azure IoT Hub to gather and analyse data from hundreds of sensors mounted to the animals. Similar to this, the cost of the Stream Analytics service would be a major consideration if the Environmental Monitoring System needed the usage of Azure Stream Analytics for processing huge volumes of real-time data from numerous sources.
 
-In general, however, some of the more expensive Azure technologies include services that require a lot of processing power or storage, such as Azure Machine Learning, Azure Data Lake Storage, and Azure Cosmos DB. These services can provide significant value for certain use cases but may also come with a higher cost.
+Nevertheless, generally speaking, some of the most expensive Azure technologies include applications like Azure Machine Learning, Azure Data Lake Storage, and Azure Cosmos DB that demand a lot of computation or storage. For some use situations, these services can offer a lot of value, but they might also be more expensive.
 
 # Work in progress...
 

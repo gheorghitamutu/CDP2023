@@ -27,61 +27,61 @@ The homework requirements are explained in [Requirements file](PCD_Homework2.txt
 
 ## Technologies (Azure)
 
-[Azure Stack](https://azure.microsoft.com/en-us/products/azure-stack) is a portfolio of products that extend Azure services and capabilities to your environment of choice—from the datacenter to edge locations and remote offices. Build and deploy hybrid and edge computing applications and run them consistently across location boundaries.
+A range of products called [Azure Stack](https://azure.microsoft.com/en-us/products/azure-stack) extends Azure services and capabilities to the environment of your choice, including datacenters, edge locations, and remote offices. Create and roll out edge and hybrid computing apps, and run them uniformly across geographic borders.
 
 ### Cosmos DB
-[Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction) is a globally distributed, multi-model NoSQL database service provided by Microsoft Azure. It is designed to handle large-scale, globally distributed applications and supports a variety of data models, including document, key-value, graph, and column-family data.
+[Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction) is a Microsoft Azure multi-model, globally distributed NoSQL database service. It supports a range of data structures, including document, key-value, graph, and column-family data, and is built to manage large-scale, globally dispersed applications.
 
-Cosmos DB provides a highly scalable and highly available database service with low latency and fast throughput for mission-critical applications. It supports ACID transactions and provides multiple consistency levels, enabling developers to choose the right balance of consistency and availability for their applications.
+For mission-critical applications, Cosmos DB offers a highly scalable and highly available database service with low latency and quick throughput. Developers may select the ideal balance of consistency and availability for their applications thanks to its support for ACID transactions and availability of numerous consistency levels.
 
-Cosmos DB can be used for a wide range of applications, including web and mobile applications, IoT, gaming, e-commerce, and more. It supports multiple APIs, including SQL, MongoDB, Cassandra, Azure Tables, and Gremlin (for graph data). This makes it easy for developers to use the API they are most familiar with or that best fits their application's needs.
+Many applications, including IoT, gaming, e-commerce, and web and mobile applications, can be employed with Cosmos DB. Many APIs, including SQL, MongoDB, Cassandra, Azure Tables, and Gremlin are supported (for graph data). This makes it simple for developers to use the API that best suits their application's requirements or with which they are most comfortable.
 
 ### Azure API App
-[Azure API App](https://azure.microsoft.com/en-us/products/app-service/api) is a cloud-based service provided by Microsoft Azure that enables developers to quickly build, deploy, and manage RESTful APIs. It is part of the Azure App Service platform and provides a fully managed hosting environment for building and running APIs.
+A cloud-based service called [Azure API App](https://azure.microsoft.com/en-us/products/app-service/api) is offered by Microsoft Azure and allows developers to easily create, deploy, and manage RESTful APIs. It offers a fully managed hosting environment for developing and running APIs and is a component of the Azure App Service platform.
 
-With Azure API App, developers can use a variety of programming languages and frameworks, including .NET, Java, Node.js, and Python, to build their APIs. They can also take advantage of features such as automatic scaling, built-in authentication and authorization, and integration with Azure services like Azure Active Directory and Azure Functions.
+Developers can create APIs using a range of programming languages and frameworks, including as.NET, Java, Node.js, and Python, with Azure API App. Additionally, they may benefit from attributes like automatic scaling, integrated authentication and authorisation, and compatibility with Azure services like Azure Active Directory and Azure Functions.
 
-Azure API App also provides tools for monitoring and debugging APIs, as well as analytics and reporting capabilities to help developers understand API usage and performance. It also supports continuous deployment and integration with popular development tools like Visual Studio, GitHub, and Jenkins.
+Moreover, Azure API App offers API monitoring and debugging tools, as well as analytics and reporting features to assist developers in comprehending API usage and performance. Additionally, it allows integration with well-known development tools like Microsoft Studio, GitHub, and Jenkins, as well as continuous deployment.
 
-Overall, Azure API App provides a comprehensive platform for building, deploying, and managing APIs in a scalable and secure manner.
+In conclusion, Azure API App offers a complete platform for creating, deploying, and maintaining APIs in a secure and scalable way.
 
 ### Event Hub
-[Azure Event Hub](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-about) is a cloud-based service provided by Microsoft Azure that enables the real-time streaming of large amounts of data from various sources into the cloud. It is designed to handle high volume, low latency, and highly scalable event streams, making it ideal for scenarios such as IoT telemetry, application logging, and analytics.
+A cloud-based service offered by Microsoft Azure, [Azure Event Hub](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-about), enables the real-time streaming of massive amounts of data from diverse sources into the cloud. It is perfect for situations like IoT telemetry, application logging, and analytics since it is built to handle large volume, low latency, and highly scalable event streams.
 
-With Azure Event Hub, developers can capture, process, and store large volumes of data from sources such as applications, devices, and sensors. The service can handle millions of events per second and can store events for days, weeks, or months, depending on the configuration.
+Developers may gather, analyse, and store huge volumes of data from sources like applications, devices, and sensors using Azure Event Hub. Depending on the settings, the service can process millions of events per second and can keep track of occurrences for days, weeks, or months.
 
-Azure Event Hub provides several features to help developers manage their event streams, including partitioning, event ordering, and durable storage. It also supports integration with other Azure services such as Azure Stream Analytics, Azure Functions, and Azure Data Lake Storage, making it easy to process and analyze event data in real-time.
+Partitioning, event ordering, and durable storage are just a few of the features that Azure Event Hub offers to developers to assist them in managing their event streams. In order to make it simple to handle and analyze event data in real-time, it also enables integration with other Azure services including Azure Stream Analytics, Azure Functions, and Azure Data Lake Storage.
 
-Overall, Azure Event Hub provides a highly scalable and reliable platform for capturing, processing, and analyzing large volumes of event data from various sources in real-time.
+Overall, Azure Event Hub offers a highly scalable and trustworthy platform for obtaining, handling, and performing real-time analysis on massive amounts of event data from diverse sources.
 
 ### Azure Functions
-[Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview) is a serverless computing service provided by Microsoft Azure that enables developers to build and run event-driven, serverless applications in the cloud. It allows developers to focus on writing code for their application logic without having to manage the underlying infrastructure.
+Developers can create and execute event-driven, serverless applications in the cloud using [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview), a serverless computing service provided by Microsoft Azure. Without having to worry about managing the supporting infrastructure, it enables developers to concentrate on building code for their application logic.
 
-With Azure Functions, developers can write code in a variety of programming languages, including C#, Java, JavaScript, Python, and PowerShell. They can also choose from a variety of triggers, such as HTTP requests, timers, and messaging services like Azure Service Bus and Event Hubs. This allows them to create functions that execute in response to specific events or requests.
+Developers can use a number of programming languages, such as C#, Java, JavaScript, Python, and PowerShell, with Azure Functions. A range of triggers are also available to them, including timers, HTTP requests, and messaging services like Azure Service Bus and Event Hubs. They can then design functions that run in response to particular events or requests.
 
-Azure Functions provides several features to help developers manage their serverless applications, including automatic scaling, pay-per-use pricing, and integration with other Azure services such as Azure Storage, Azure Cosmos DB, and Azure Event Grid.
+Automatic scaling, pay-per-use pricing, and connection with other Azure services like Azure Storage, Azure Cosmos DB, and Azure Event Grid are just a few of the capabilities that Azure Functions offers to assist developers in managing their serverless applications.
 
-Overall, Azure Functions provides a flexible and scalable platform for building and running event-driven, serverless applications in the cloud. It allows developers to focus on writing code for their application logic without having to worry about managing the underlying infrastructure.
+Overall, Azure Functions offers a scalable and adaptable framework for developing and deploying serverless, event-driven applications. It frees developers from having to worry about overseeing the underlying infrastructure so they can concentrate on building code for their application logic.
 
 ### Web PubSub
-[Azure Web PubSub](https://azure.microsoft.com/en-us/products/web-pubsub) is a cloud-based service provided by Microsoft Azure that enables real-time communication between client and server applications over websockets. It is designed to handle high-frequency, low-latency messaging scenarios, making it ideal for use cases such as real-time chat, gaming, and live broadcasting.
+A cloud-based service called [Azure Web PubSub](https://azure.microsoft.com/en-us/products/web-pubsub) allows for real-time websocket communication between client and server applications. It is perfect for use cases like real-time chat, gaming, and live broadcasting since it is built to handle high-frequency, low-latency messaging scenarios.
 
-With Azure Web PubSub, developers can create and manage hubs, which are channels for sending and receiving messages between clients and server applications. Clients can connect to a hub using websockets and subscribe to one or more channels within the hub to receive messages.
+Developers can establish and manage hubs, which are conduits for messaging between client and server applications, with Azure Web PubSub. Websockets can be used by clients to connect to a hub and subscribe to one or more of the hub's channels to receive messages.
 
-Azure Web PubSub provides several features to help developers manage their messaging scenarios, including broadcasting messages to all connected clients, authorizing and authenticating connections, and scaling up or down the number of instances of the service based on demand.
+To assist developers in managing their messaging scenarios, Azure Web PubSub offers a variety of features, such as the ability to broadcast messages to all connected clients, authorise and authenticate connections, and scale the number of service instances up or down in response to demand.
 
-Azure Web PubSub can integrate with other Azure services, such as Azure Functions and Azure Logic Apps, to trigger serverless functions or workflows in response to messages received by the service.
+As messages are received by the service, Azure Web PubSub can connect to other Azure services, such as Azure Functions and Azure Logic Apps, to launch serverless processes or workflows.
 
-Overall, Azure Web PubSub provides a highly scalable and reliable platform for real-time communication between client and server applications over websockets. It enables developers to build real-time messaging scenarios quickly and easily without worrying about the underlying infrastructure.
+All things considered, Azure Web PubSub offers a highly scalable and dependable platform for websocket-based real-time communication between client and server applications. Developers may create real-time communications scenarios with it rapidly and without having to worry about the supporting infrastructure.
 
 ### Client/Web Apps
-[Azure Web Apps](https://azure.microsoft.com/en-ca/products/app-service/web) is a cloud-based service provided by Microsoft Azure that enables developers to quickly and easily build, deploy, and scale web applications in the cloud. It provides a fully managed hosting environment for web applications, allowing developers to focus on building their applications rather than managing the underlying infrastructure.
+With the help of [Azure Web Apps](https://azure.microsoft.com/en-ca/products/app-service/web), developers can quickly and easily create, deploy, and scale web apps in the cloud. Web application developers may concentrate on creating their apps rather than managing the underlying infrastructure because to the completely managed hosting environment it offers.
 
-With Azure Web Apps, developers can build web applications using a variety of programming languages and frameworks, including .NET, Java, Node.js, PHP, and Python. They can also take advantage of features such as automatic scaling, built-in load balancing, and integration with Azure services such as Azure SQL Database and Azure Storage.
+Developers can create web applications using Azure Web Apps using a range of programming languages and frameworks, such as.NET, Java, Node.js, PHP, and Python. Additionally, they may benefit from functions like built-in load balancing, intelligent scaling, and connection with Azure services like Azure SQL Database and Azure Storage.
 
-Azure Web Apps provides tools for monitoring and debugging web applications, as well as analytics and reporting capabilities to help developers understand application usage and performance. It also supports continuous deployment and integration with popular development tools like Visual Studio, GitHub, and Jenkins.
+In order to help developers understand the usage and performance of their apps, Azure Web Apps offers tools for monitoring and debugging web applications, as well as analytics and reporting capabilities. Additionally, it allows integration with well-known development tools like Microsoft Studio, GitHub, and Jenkins, as well as continuous deployment.
 
-Overall, Azure Web Apps provides a comprehensive platform for building, deploying, and managing web applications in a scalable and secure manner. It allows developers to focus on building their applications rather than managing the underlying infrastructure, making it an ideal choice for organizations of all sizes.
+Generally speaking, Azure Web Apps offers a complete platform for creating, deploying, and managing online apps in a safe and scalable way. It is the best option for businesses of all sizes since it enables developers to concentrate on creating their apps rather than managing the supporting infrastructure.
 
 ## Description (Requirements facing)
 A stock ticker is a report of the price for certain securities, updated continuously throughout the trading session by the various stock exchanges.
@@ -91,29 +91,29 @@ Azure Cosmos DB, Azure Event Hub, Azure API App, Azure Functions, Azure Web PubS
 
 
 ### Stateful vs Stateless
-Azure Cosmos DB and Azure Event Hub are stateful services, meaning they maintain a record of the state of the data that they store or process over time.
+Stateful services, such as Azure Cosmos DB and Azure Event Hub, keep track of the current state of the data they store or process across time.
 
-Azure Cosmos DB is a NoSQL database service that allows for multiple data models to be used and provides features such as global distribution, automatic indexing, and multiple consistency levels. It stores and manages data in a structured format and allows for data retrieval using various query methods.
+Several data models can be used with Azure Cosmos DB, a NoSQL database service that also offers capabilities like worldwide distribution, automatic indexing, and various consistency levels. It enables for data retrieval using a variety of query methods and stores and organizes data in an organized fashion.
 
-Azure Event Hub is a streaming platform designed to handle large amounts of data, such as real-time event streams from IoT devices. It provides features such as partitioning, event ordering, and durable storage, allowing it to maintain the state of the data it processes over time.
+A streaming platform called Azure Event Hub is made to manage enormous amounts of data, like real-time event streams from IoT devices. It has capabilities including event ordering, segmentation, and durable storage, enabling it to preserve the state of the data it processes over time.
 
-On the other hand, Azure API App, Azure Functions, Azure Web PubSub, and Azure Web Apps are all stateless services, meaning they do not maintain any state of the data they process. They execute code in response to events or requests but do not store or manage data over time.
+On the other side, stateless services, such as Azure API App, Azure Functions, Azure Web PubSub, and Azure Web Apps, do not preserve any state of the data they handle. They don't retain or manage data over time; instead, they run code in response to events or requests.
 
 ### Functions as a Service (FaaS)
-Functions as a Service (FaaS), such as Azure Functions, are stateless by default, but they can also be designed to be stateful depending on the use case.
+By default, functions as a service (FaaS) like Azure Functions are stateless, but depending on the use case, they can also be built to be stateful.
 
-For example, a FaaS application can be designed to store state externally in a database or other storage service. This allows the function to access and update the state as needed, allowing it to maintain state across function invocations.
+For instance, a FaaS application may be created to keep state in a database or other external storage service. As a result, the function can keep state across function calls by accessing and updating the state as required.
 
-However, it's generally recommended to design FaaS applications as stateless to take advantage of the scalability benefits of serverless computing. By keeping the functions stateless, the provider can easily spin up new instances of the function to handle increased load without worrying about managing state across multiple instances.
+To benefit from serverless computing's scalability advantages, it is often advised to build FaaS applications as stateless. The provider can quickly create new instances of the function to manage an increase in load by keeping the functions stateless, freeing them from the burden of handling state across many instances.
 
 ### Websockets
-Azure Web PubSub is a cloud-based service provided by Microsoft Azure that enables real-time messaging scenarios. WebSockets are one of the primary protocols used by Azure Web PubSub to provide real-time bi-directional communication between clients and the server.
+Real-time messaging situations are made possible by Microsoft Azure's cloud-based Azure Web PubSub service. Azure Web PubSub uses WebSockets as one of its main protocols to offer real-time bi-directional communication between clients and the server.
 
-When a client connects to Azure Web PubSub using WebSockets, a persistent connection is established between the client and the server. This connection remains open for the duration of the client's session, allowing the server to push messages to the client in real-time.
+A permanent connection is created between the client and the server when a client connects to Azure Web PubSub using WebSockets. The server can push messages to the client in real-time since this connection is kept open during the client's session.
 
-Azure Web PubSub supports both JSON and MessagePack encoding for WebSocket messages. JSON encoding is the default and is used when the message is small or when interoperability with other WebSocket clients is necessary. MessagePack encoding is a more compact binary format that can be used when bandwidth efficiency is a concern or when dealing with large volumes of data.
+For WebSocket messages, Azure Web PubSub supports both JSON and MessagePack encoding. When the message is brief or compatibility with other WebSocket clients is required, JSON encoding—the default—is employed. When dealing with huge amounts of data or when bandwidth efficiency is a problem, MessagePack encoding, a more compact binary format, might be employed.
 
-Azure Web PubSub also provides features such as authentication and authorization, message broadcasting, and message filtering, which can be used in conjunction with WebSockets to create a variety of real-time messaging scenarios.
+In addition, Azure Web PubSub offers capabilities like message filtering, message broadcasting, and authentication and authorisation that may be combined with WebSockets to enable a range of real-time messaging scenarios.
 
 ## System description
 The system gets data about stocks (ticks) while sending them to the users and also storing them.
@@ -143,6 +143,6 @@ Everything is written in .NET with several snippets of Javascript (requests, web
 ![Architecture Diagram](Architecture.drawio.png)
 
 ## System Analysis
-When analyzing the performance of a system architecture, it is important to consider a variety of factors such as scalability, reliability, latency, throughput, and cost-effectiveness.
+It is crucial to take into account a number of variables while examining the performance of a system architecture, including scalability, dependability, latency, throughput, and cost-effectiveness.
 
-The system architecture described includes several Azure components optimized for high performance, low latency, and reliability. Azure Cosmos DB is a distributed database that offers high availability and low latency, with multiple consistency levels to meet application requirements. Azure Event Hub is a streaming platform that handles large volumes of data in real-time, with low-latency event delivery and support for multiple protocols. Azure API App creates and exposes APIs that can handle high request rates, with features like caching and auto-scaling. Azure Functions is a serverless compute service that responds to events and can handle high volumes of requests. Azure Web PubSub is a messaging service for real-time communication that can handle high volumes of connections, with low-latency messaging. Azure Web Apps allows hosting and running web applications in the cloud, with high traffic volume handling, auto-scaling, and load balancing. Each component is optimized for low latency, high performance, and reliability, with managed services that can reduce operational overhead and cost. The architecture is well-designed for a high-performing system, but monitoring and optimization are necessary as the system evolves.
+Many Azure components that are tuned for high performance, low latency, and dependability are included in the system architecture as mentioned. A distributed database with numerous consistency levels to fit application needs, Azure Cosmos DB provides high availability and low latency. Azure Event Hub is a streaming platform with low-latency event delivery, compatibility for numerous protocols, and the ability to manage massive volumes of data in real-time. With capabilities like caching and auto-scaling, Azure API App develops and exposes APIs that can manage large request rates. A serverless computation service that can handle large numbers of requests, Azure Functions reacts to events. A messaging service for real-time communication, Azure Web PubSub, can manage large numbers of connections and provides low-latency messaging. With Azure Web Apps, web applications may be hosted and run in the cloud while handling huge traffic volumes, auto-scaling, and load balancing. Each component has been tailored for low latency, high performance, and dependability, and managed services are available to cut down on operational expenses. The architecture is well-designed for a high-performing system, but as the system develops, monitoring and optimization are required.

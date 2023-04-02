@@ -70,8 +70,6 @@ public class AnomalyDetector
     [ServiceBus("anomalies", entityType: ServiceBusEntityType.Queue, Connection = "ServiceBusConnectionString")] IAsyncCollector<AnomaliesForDevice> anomaliesOut,
      ILogger log)
     {
-
-
         // group by deviceId
         var groupedMessages = newMessages.GroupBy(x => x.deviceId)
                                         .Select(g => g.ToList())

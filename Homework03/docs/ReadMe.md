@@ -40,6 +40,7 @@ The homework requirements are explained in [Requirements file](PCD_Homework3.txt
   - [Environmental Monitoring System](#environmental-monitoring-system-4)
   - [Livestock Monitoring System](#livestock-monitoring-system-4)
   - [Cost Comparison](#cost-comparison)
+- [Architecture - Livestock Monitoring System](#architecture---livestock-monitoring-system)
 - [Work in progress...](#work-in-progress)
 - [Bibliography](#bibliography)
 
@@ -483,6 +484,9 @@ Due to the requirement for more specific technology and sensors for monitoring t
 Some of the most expensive Azure technologies would depend on how they were implemented and what the system needed. The cost of the IoT Hub would be a major consideration, for instance, if the Livestock Monitoring System needed to use Azure IoT Hub to gather and analyse data from hundreds of sensors mounted to the animals. Similar to this, the cost of the Stream Analytics service would be a major consideration if the Environmental Monitoring System needed the usage of Azure Stream Analytics for processing huge volumes of real-time data from numerous sources.
 
 Nevertheless, generally speaking, some of the most expensive Azure technologies include applications like Azure Machine Learning, Azure Data Lake Storage, and Azure Cosmos DB that demand a lot of computation or storage. For some use situations, these services can offer a lot of value, but they might also be more expensive.
+
+# Architecture - Livestock Monitoring System
+![Architecture Diagram](Architecture.drawio.png)
 
 # Work in progress...
 

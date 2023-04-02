@@ -64,10 +64,10 @@ public class AnomalyDetector
 
 
     [FunctionName("AnomalyDetector")]
-    public void Run([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer,
+    public void Run([TimerTrigger("0 */30 * * * *")] TimerInfo myTimer,
     [CosmosDB(databaseName: "StocksDb", containerName: "LivestockIoTData", Connection = "CosmosDbConnectionString")] IAsyncCollector<object> newMessagesOut,
     [CosmosDB(databaseName: "StocksDb", containerName: "LivestockIoTData", Connection = "CosmosDbConnectionString", SqlQuery = "SELECT * FROM c WHERE not IS_DEFINED(c.processed) or c.processed = false ORDER BY c.timestamp")] IEnumerable<DeviceIdAndSensorsData> newMessages,
-    [ServiceBus("anomalies", entityType: ServiceBusEntityType.Queue,  Connection = "ServiceBusConnectionString")] IAsyncCollector<AnomaliesForDevice> anomaliesOut,
+    [ServiceBus("anomalies", entityType: ServiceBusEntityType.Queue, Connection = "ServiceBusConnectionString")] IAsyncCollector<AnomaliesForDevice> anomaliesOut,
      ILogger log)
     {
 
@@ -84,7 +84,7 @@ public class AnomalyDetector
             if (anomalies.Count > 0)
             {
                 log.LogInformation($"Anomaly detected");
-                
+
                 anomaliesOut.AddAsync(new AnomaliesForDevice
                 {
                     deviceId = group[0].deviceId,

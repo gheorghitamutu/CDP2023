@@ -32,7 +32,7 @@ namespace IoTProcessing
 
                     //convert enqueue time to unix timestamp. Enqueued time has format example: 30.03.2023 22:52:30
                     var timestamp = DateTimeOffset.Parse(enqueuedTime).ToUnixTimeSeconds().ToString();
-                    
+
 
                     // de luat data exacta
                     message.deviceId = deviceId;

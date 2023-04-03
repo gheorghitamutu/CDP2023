@@ -3,7 +3,7 @@ syntax = "proto3";
 package livestock;
 
 message Animal {
-  string id = 1;
+  string animal_id = 1;
   double body_temperature = 2;
   double activity_level = 3;
   double heart_rate = 4;

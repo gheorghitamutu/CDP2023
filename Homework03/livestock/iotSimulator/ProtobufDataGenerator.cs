@@ -86,7 +86,7 @@ namespace SimulatedDeviceProtobuf
                     animals.Entries.Add(
                         new Animal
                         {
-                            Id = id,
+                            AnimalId = id,
                             BodyTemperature = GetRandomDouble(randomGenerator, 28.0, 50.0),
                             ActivityLevel = randomGenerator.NextDouble(),
                             HeartRate = randomGenerator.Next(60, 100),
@@ -127,7 +127,7 @@ namespace SimulatedDeviceProtobuf
                     animals.Entries.Add(
                         new Animal
                         {
-                            Id = id,
+                            AnimalId = id,
                             BodyTemperature = GetRandomDouble(randomGenerator, 28.0, 50.0),
                             ActivityLevel = randomGenerator.NextDouble(),
                             HeartRate = randomGenerator.Next(0, 40),  // minimum is 30
@@ -168,7 +168,7 @@ namespace SimulatedDeviceProtobuf
                     animals.Entries.Add(
                         new Animal
                         {
-                            Id = id,
+                            AnimalId = id,
                             BodyTemperature = GetRandomDouble(randomGenerator, 28.0, 50.0),
                             ActivityLevel = randomGenerator.NextDouble(),
                             HeartRate = randomGenerator.Next(60, 100),
@@ -209,7 +209,7 @@ namespace SimulatedDeviceProtobuf
                     animals.Entries.Add(
                         new Animal
                         {
-                            Id = id,
+                            AnimalId = id,
                             BodyTemperature = GetRandomDouble(randomGenerator, 40.0, 80.0), // maximum is 50
                             ActivityLevel = randomGenerator.NextDouble(),
                             HeartRate = randomGenerator.Next(60, 100),

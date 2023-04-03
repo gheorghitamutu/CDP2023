@@ -24,19 +24,19 @@ namespace Livestock {
     static LiveStockMonitorReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChZMaXZlU3RvY2tNb25pdG9yLnByb3RvEglsaXZlc3RvY2si9AEKBkFuaW1h",
-            "bBIKCgJpZBgBIAEoCRIYChBib2R5X3RlbXBlcmF0dXJlGAIgASgBEhYKDmFj",
-            "dGl2aXR5X2xldmVsGAMgASgBEhIKCmhlYXJ0X3JhdGUYBCABKAESGAoQcmVz",
-            "cGlyYXRpb25fcmF0ZRgFIAEoARIlCghsb2NhdGlvbhgGIAEoCzITLmxpdmVz",
-            "dG9jay5Mb2NhdGlvbhITCgtmZWVkX2ludGFrZRgHIAEoARIZChF3YXRlcl9j",
-            "b25zdW1wdGlvbhgIIAEoARIXCg9taWxrX3Byb2R1Y3Rpb24YCSABKAESDgoG",
-            "d2VpZ2h0GAogASgBIi8KCExvY2F0aW9uEhAKCGxhdGl0dWRlGAEgASgBEhEK",
-            "CWxvbmdpdHVkZRgCIAEoASItCgdBbmltYWxzEiIKB2VudHJpZXMYASADKAsy",
-            "ES5saXZlc3RvY2suQW5pbWFsYgZwcm90bzM="));
+            "ChZMaXZlU3RvY2tNb25pdG9yLnByb3RvEglsaXZlc3RvY2si+wEKBkFuaW1h",
+            "bBIRCglhbmltYWxfaWQYASABKAkSGAoQYm9keV90ZW1wZXJhdHVyZRgCIAEo",
+            "ARIWCg5hY3Rpdml0eV9sZXZlbBgDIAEoARISCgpoZWFydF9yYXRlGAQgASgB",
+            "EhgKEHJlc3BpcmF0aW9uX3JhdGUYBSABKAESJQoIbG9jYXRpb24YBiABKAsy",
+            "Ey5saXZlc3RvY2suTG9jYXRpb24SEwoLZmVlZF9pbnRha2UYByABKAESGQoR",
+            "d2F0ZXJfY29uc3VtcHRpb24YCCABKAESFwoPbWlsa19wcm9kdWN0aW9uGAkg",
+            "ASgBEg4KBndlaWdodBgKIAEoASIvCghMb2NhdGlvbhIQCghsYXRpdHVkZRgB",
+            "IAEoARIRCglsb25naXR1ZGUYAiABKAEiLQoHQW5pbWFscxIiCgdlbnRyaWVz",
+            "GAEgAygLMhEubGl2ZXN0b2NrLkFuaW1hbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Livestock.Animal), global::Livestock.Animal.Parser, new[]{ "Id", "BodyTemperature", "ActivityLevel", "HeartRate", "RespirationRate", "Location", "FeedIntake", "WaterConsumption", "MilkProduction", "Weight" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Livestock.Animal), global::Livestock.Animal.Parser, new[]{ "AnimalId", "BodyTemperature", "ActivityLevel", "HeartRate", "RespirationRate", "Location", "FeedIntake", "WaterConsumption", "MilkProduction", "Weight" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Livestock.Location), global::Livestock.Location.Parser, new[]{ "Latitude", "Longitude" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Livestock.Animals), global::Livestock.Animals.Parser, new[]{ "Entries" }, null, null, null, null)
           }));
@@ -70,7 +70,7 @@ namespace Livestock {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Animal(Animal other) : this() {
-      id_ = other.id_;
+      animalId_ = other.animalId_;
       bodyTemperature_ = other.bodyTemperature_;
       activityLevel_ = other.activityLevel_;
       heartRate_ = other.heartRate_;
@@ -88,14 +88,14 @@ namespace Livestock {
       return new Animal(this);
     }
 
-    /// <summary>Field number for the "id" field.</summary>
-    public const int IdFieldNumber = 1;
-    private string id_ = "";
+    /// <summary>Field number for the "animal_id" field.</summary>
+    public const int AnimalIdFieldNumber = 1;
+    private string animalId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Id {
-      get { return id_; }
+    public string AnimalId {
+      get { return animalId_; }
       set {
-        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        animalId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -211,7 +211,7 @@ namespace Livestock {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Id != other.Id) return false;
+      if (AnimalId != other.AnimalId) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(BodyTemperature, other.BodyTemperature)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(ActivityLevel, other.ActivityLevel)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(HeartRate, other.HeartRate)) return false;
@@ -227,7 +227,7 @@ namespace Livestock {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Id.Length != 0) hash ^= Id.GetHashCode();
+      if (AnimalId.Length != 0) hash ^= AnimalId.GetHashCode();
       if (BodyTemperature != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(BodyTemperature);
       if (ActivityLevel != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(ActivityLevel);
       if (HeartRate != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(HeartRate);
@@ -250,9 +250,9 @@ namespace Livestock {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Id.Length != 0) {
+      if (AnimalId.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Id);
+        output.WriteString(AnimalId);
       }
       if (BodyTemperature != 0D) {
         output.WriteRawTag(17);
@@ -298,8 +298,8 @@ namespace Livestock {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Id.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      if (AnimalId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AnimalId);
       }
       if (BodyTemperature != 0D) {
         size += 1 + 8;
@@ -339,8 +339,8 @@ namespace Livestock {
       if (other == null) {
         return;
       }
-      if (other.Id.Length != 0) {
-        Id = other.Id;
+      if (other.AnimalId.Length != 0) {
+        AnimalId = other.AnimalId;
       }
       if (other.BodyTemperature != 0D) {
         BodyTemperature = other.BodyTemperature;
@@ -384,7 +384,7 @@ namespace Livestock {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Id = input.ReadString();
+            AnimalId = input.ReadString();
             break;
           }
           case 17: {

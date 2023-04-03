@@ -20,6 +20,11 @@ public class AnomalyDetector
         // Check for body temperature anomalies
         foreach (var obs in observations)
         {
+            if (obs.animal_id == null) // handle protobuf/versioning
+            {
+                continue;
+            }
+
             if (obs.body_temperature > MAX_TEMPERATURE)
             {
                 anomalies.Add(new Anomaly
@@ -113,8 +118,12 @@ public class AnomalyDetector
         // mark messages as processed
         foreach (var message in newMessages)
         {
-            message.processed = "true";
-            newMessagesOut.AddAsync(message);
+            if (message.animal_id != null) // handle protobuf versioning
+            {
+                message.processed = "true";
+                newMessagesOut.AddAsync(message);
+            }
+        }
         }
 
     }

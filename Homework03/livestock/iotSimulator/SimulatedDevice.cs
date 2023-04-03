@@ -23,7 +23,7 @@ namespace IoTProcessing
         private static DeviceClient s_deviceClient;
 
         // NU trimite mai mult de atatea chiar daca mai sunt obs. in lista citite din fisier
-        public static int MESSAGES_LIMIT { get; set; } = 10;
+        public static int MESSAGES_LIMIT { get; set; } = 100;
         public static TimeSpan MESSAGE_SEND_INTERVAL { get; set; } = TimeSpan.FromSeconds(1);
 
 
@@ -66,6 +66,31 @@ namespace IoTProcessing
             }
         }
 
+
+        // Async method to send simulated telemetry
+        private static async Task SendDeviceToCloudMessagesAsync(Animals animals)
+        {
+
+            foreach (var animal in animals.Entries)
+            {
+                // Create JSON message
+                var message = new Message(Encoding.UTF8.GetBytes(animal.ToString()))
+                {
+                    // Add a custom application property to the message.
+                    // An IoT hub can filter on these properties without access to the message body.
+                    // message.Properties.Add("temperatureAlert", (currentTemperature > 30) ? "true" : "false");
+                    ContentType = "application/json",
+                    ContentEncoding = "utf-8"
+                };
+
+                // Send the tlemetry message
+                await s_deviceClient.SendEventAsync(message).ConfigureAwait(false);
+                Console.WriteLine("{0} > Sending message: {1}", DateTime.Now, animal.ToString());
+
+                await Task.Delay(MESSAGE_SEND_INTERVAL).ConfigureAwait(false);
+            }
+        }
+
         private static async Task Main()
         {
             Console.WriteLine("IoT Hub Quickstarts - Simulated device. Ctrl-C to exit.\n");
@@ -77,6 +102,11 @@ namespace IoTProcessing
             var entriesAnimalsHeartRateAnomalies = protobufDataGenerator.AnimalsHeartRateAnomalies.Entries.ToString();
             var entriesAnimalsLocationAnomalies = protobufDataGenerator.AnimalsLocationAnomalies.Entries.ToString();
             var entriesAnimalsTemperatureAnomalies = protobufDataGenerator.AnimalsTemperatureAnomalies.Entries.ToString();
+
+
+            // Connect to the IoT hub using the MQTT protocol
+            s_deviceClient = DeviceClient.CreateFromConnectionString(s_connectionString_device01, TransportType.Mqtt);
+            await SendDeviceToCloudMessagesAsync(protobufDataGenerator.AnimalsNormal);
 
             // conditii normale
             // var observations = await ReadMessagesFromFileAsync("./data/normal_conditions_obs.json");
@@ -90,8 +120,6 @@ namespace IoTProcessing
             // cu valori anormale de heart rate (anormal = valori < 30 hardcoded in AnomalyDetector)
             //var observations = await ReadMessagesFromFileAsync("./data/abnormal_heart_rate_obs.json");
 
-            // Connect to the IoT hub using the MQTT protocol
-            s_deviceClient = DeviceClient.CreateFromConnectionString(s_connectionString_device01, TransportType.Mqtt);
             await SendDeviceToCloudMessagesAsync(observations);
             Console.ReadLine();
         }

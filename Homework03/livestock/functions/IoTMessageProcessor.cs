@@ -15,7 +15,6 @@ namespace IoTProcessing
         [FunctionName("IoTMessageProcessor")]
         public static async Task Run([EventHubTrigger("iothub-ehub-livestockm-24895990-3d3480a3f5", Connection = "IotEventHubConnectionString")] EventData[] events,
          [CosmosDB(databaseName: "StocksDb", containerName: "LivestockIoTData", Connection = "CosmosDbConnectionString")] IAsyncCollector<object> documents,
-         [CosmosDB(databaseName: "StocksDb", containerName: "LivestockIoTDataProtobuf", Connection = "CosmosDbConnectionString")] IAsyncCollector<object> protodocs,
          ILogger log)
         {
             var exceptions = new List<Exception>();
@@ -40,16 +39,8 @@ namespace IoTProcessing
                     message.id = Guid.NewGuid().ToString();
                     message.dateTime = enqueuedTime;
                     message.timestamp = timestamp;
-                    message.isProtobuf = message.AnimalId != null; // handle protobuf
 
-                    if (message.isProtobuf)
-                    {
-                        await protodocs.AddAsync(message);
-                    }
-                    else
-                    {
-                        await documents.AddAsync(message);
-                    }
+                    await documents.AddAsync(message);
                 }
                 catch (Exception e)
                 {

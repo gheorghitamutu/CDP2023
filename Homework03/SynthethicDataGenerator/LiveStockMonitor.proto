@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package livestock;
+
+message Animal {
+  string id = 1;
+  double body_temperature = 2;
+  double activity_level = 3;
+  double heart_rate = 4;
+  double respiration_rate = 5;
+  Location location = 6;
+  double feed_intake = 7;
+  double water_consumption = 8;
+  double milk_production = 9;
+  double weight = 10;
+}
+
+message Location {
+  double latitude = 1;
+  double longitude = 2;
+}
+
+message Animals {
+    repeated Animal entries=1;
+}

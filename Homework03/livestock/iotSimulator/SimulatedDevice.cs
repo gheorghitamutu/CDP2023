@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using IoTProcessing.Models;
 using System.IO;
 using System.Linq;
+using SimulatedDeviceProtobuf;
+using Livestock;
 
 namespace IoTProcessing
 {
@@ -28,7 +30,6 @@ namespace IoTProcessing
         // The device connection string to authenticate the device with your IoT hub.
         private const string s_connectionString_device01 = "HostName=livestockMonitorsIotHub.azure-devices.net;DeviceId=healthSec01;SharedAccessKey=4exqjIvWuFd/KsLY0sbScxdfv+1ptRqsqvplFHrjZU8=";
         private const string s_connectionString_device02 = "HostName=livestockMonitorsIotHub.azure-devices.net;DeviceId=healthSec02;SharedAccessKey=0fC6vInfU+vInlrAuvSIUIL1vOm27X4zKpk9uN/zNHM=";
-
 
         private static async Task<List<DeviceSensorsData>> ReadMessagesFromFileAsync(string path)
         {
@@ -68,6 +69,14 @@ namespace IoTProcessing
         private static async Task Main()
         {
             Console.WriteLine("IoT Hub Quickstarts - Simulated device. Ctrl-C to exit.\n");
+
+            ProtobufDataGenerator protobufDataGenerator = new();
+            protobufDataGenerator.SerializeToFile();
+
+            var entriesAnimalsNormal = protobufDataGenerator.AnimalsNormal.Entries.ToString();
+            var entriesAnimalsHeartRateAnomalies = protobufDataGenerator.AnimalsHeartRateAnomalies.Entries.ToString();
+            var entriesAnimalsLocationAnomalies = protobufDataGenerator.AnimalsLocationAnomalies.Entries.ToString();
+            var entriesAnimalsTemperatureAnomalies = protobufDataGenerator.AnimalsTemperatureAnomalies.Entries.ToString();
 
             // conditii normale
             // var observations = await ReadMessagesFromFileAsync("./data/normal_conditions_obs.json");

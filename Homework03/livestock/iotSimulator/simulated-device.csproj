@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.22.1" />
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.*" />
+    <PackageReference Include="protobuf-net" Version="3.2.16" />
   </ItemGroup>
 
   <!-- Copy file at ./data/normal_conditions_obs.json if newer-->

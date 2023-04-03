@@ -25,7 +25,7 @@ namespace Livestock {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChZMaXZlU3RvY2tNb25pdG9yLnByb3RvEglsaXZlc3RvY2sinQIKBkFuaW1h",
-            "bBIKCgJJZBgBIAEoCRIUCgxQYXJ0aXRpb25LZXkYAiABKAkSEQoJYW5pbWFs",
+            "bBIKCgJpZBgBIAEoCRIUCgxQYXJ0aXRpb25LZXkYAiABKAkSEQoJYW5pbWFs",
             "X2lkGAMgASgJEhgKEGJvZHlfdGVtcGVyYXR1cmUYBCABKAESFgoOYWN0aXZp",
             "dHlfbGV2ZWwYBSABKAESEgoKaGVhcnRfcmF0ZRgGIAEoARIYChByZXNwaXJh",
             "dGlvbl9yYXRlGAcgASgBEiUKCGxvY2F0aW9uGAggASgLMhMubGl2ZXN0b2Nr",
@@ -91,7 +91,7 @@ namespace Livestock {
       return new Animal(this);
     }
 
-    /// <summary>Field number for the "Id" field.</summary>
+    /// <summary>Field number for the "id" field.</summary>
     public const int IdFieldNumber = 1;
     private string id_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

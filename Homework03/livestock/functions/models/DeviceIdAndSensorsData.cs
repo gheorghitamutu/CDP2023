@@ -31,17 +31,3 @@ public class DeviceIdAndSensorsData
     public double milk_production { get; set; }
     public double weight { get; set; }
 }
-
-public class DeviceMetadataWithPayload
-{
-    /// Device metadata
-    public string deviceId { get; set; }
-    public string id { get; set; }
-    public string dateTime { get; set; }
-    public string timestamp { get; set; }
-
-    public string processed { get; set; }
-
-
-    Livestock.Animal animal { get; set; }
-}

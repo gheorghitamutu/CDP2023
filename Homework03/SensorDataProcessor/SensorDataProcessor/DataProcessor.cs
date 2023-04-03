@@ -6,6 +6,7 @@ using Livestock;
 using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Cosmos;
+using Newtonsoft.Json;
 
 namespace SensorDataProcessor
 {
@@ -48,7 +49,7 @@ namespace SensorDataProcessor
 
             }
 
-            if (animal.HeartRate > MIN_HEART_RATE)
+            if (animal.HeartRate < MIN_HEART_RATE)
             {
 
             }
@@ -65,8 +66,6 @@ namespace SensorDataProcessor
         [FunctionName("ProcessData")]
         public async Task Run(
             [EventHubTrigger("LivestockMonitoring", Connection = "IOT_HUB_CONNECTION_STRING")] EventData message,
-            // [CosmosDB(databaseName: "livestocknosql", containerName: "SensorsDataAnimals", Connection = "COSMOS_DB_CONNECTION_STRING", CreateIfNotExists = true)] IAsyncCollector<object> documents,
-            // [CosmosDB(databaseName: "livestocknosql", containerName: "SensorsDataAnimals", Connection = "COSMOS_DB_CONNECTION_STRING", CreateIfNotExists = true, SqlQuery = "SELECT TOP 1 * FROM c ORDER BY c._ts DESC")] IEnumerable<object> animals,
             ILogger log)
         {
             var body = message.EventBody.ToString();
@@ -86,28 +85,25 @@ namespace SensorDataProcessor
             Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
             Container container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
 
-            var sqlQueryText = "SELECT TOP 1 * FROM c ORDER BY c._ts DESC";
-
-            QueryDefinition queryDefinition = new(sqlQueryText);
+            QueryDefinition queryDefinition = new("SELECT TOP 1 * FROM c ORDER BY c._ts DESC");
             FeedIterator<Animal> queryResultSetIterator = container?.GetItemQueryIterator<Animal>(queryDefinition);
 
             List<Animal> animals = new();
             while (queryResultSetIterator.HasMoreResults)
             {
                 FeedResponse<Animal> currentResultSet = await queryResultSetIterator.ReadNextAsync();
-                foreach (Animal stock in currentResultSet)
+                foreach (Animal resultAnimal in currentResultSet)
                 {
-                    animals.Add(stock);
+                    animals.Add(resultAnimal);
                 }
             }
 
             Animal previousAnimal = null;
             foreach (var obj in animals)
             {
-                var previous = Animal.Parser.ParseJson(obj.ToString());
-                if (previous.AnimalId == animal.AnimalId)
+                if (obj.AnimalId == animal.AnimalId)
                 {
-                    previousAnimal = previous;
+                    previousAnimal = obj;
                 }
             }
             DetectAnomaliesQueueingAlerts(animal, previousAnimal);
@@ -115,7 +111,8 @@ namespace SensorDataProcessor
             try
             {
                 container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
-                ItemResponse<Animal> response = await container.CreateItemAsync(animal);
+                var payload = JsonConvert.DeserializeObject(body);
+                ItemResponse<object> response = await container.CreateItemAsync(payload);
 
                 log.LogInformation($"Added item in database: {body}.");
             }

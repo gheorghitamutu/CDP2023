@@ -7,13 +7,15 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
+using Microsoft.Azure.WebJobs.ServiceBus;
+using Newtonsoft.Json.Linq;
 
 namespace SensorDataProcessor
 {
     public class DataProcessor
     {
         private const double MAX_TEMPERATURE = 50;
-        private const double MAX_DISTANCE_KM = 40;
+        private const double MAX_DISTANCE_KM = 1000;
         private const double MIN_HEART_RATE = 30;
 
         public static double DistanceTo(Location l1, Location l2, char unit = 'K')
@@ -42,30 +44,63 @@ namespace SensorDataProcessor
             return dist;
         }
 
-        public void DetectAnomaliesQueueingAlerts(Animal animal, Animal previousEntryAnimal)
+        public JObject DetectAnomaliesQueueingAlerts(string animalJSON, Animal animal, Animal previousEntryAnimal, string date)
         {
+            JObject obj = null;
+
             if (animal.BodyTemperature > MAX_TEMPERATURE)
             {
-
+                if (obj == null)
+                {
+                    obj = (JObject)JsonConvert.DeserializeObject("{}");
+                    obj["Animal"] = (JObject)JsonConvert.DeserializeObject(animalJSON);
+                    obj["Indicators"] = new JArray { };
+                    obj["Descriptions"] = new JArray { };
+                    obj["Date"] = date;
+                }
+                ((JArray)obj["Indicators"]).Add("High body temperature");
+                ((JArray)obj["Descriptions"]).Add($"Body temperature is higher than {MAX_TEMPERATURE} degrees Celsius");
             }
 
             if (animal.HeartRate < MIN_HEART_RATE)
             {
-
+                if (obj == null)
+                {
+                    obj = (JObject)JsonConvert.DeserializeObject("{}");
+                    obj["Animal"] = (JObject)JsonConvert.DeserializeObject(animalJSON);
+                    obj["Indicators"] = new JArray { };
+                    obj["Descriptions"] = new JArray { };
+                    obj["Date"] = date;
+                }
+                ((JArray)obj["Indicators"]).Add("Low heart rate");
+                ((JArray)obj["Descriptions"]).Add($"Heart rate lower than {MIN_HEART_RATE} bpm");
             }
 
             if (previousEntryAnimal != null)
             {
-                if (DistanceTo(animal.Location, previousEntryAnimal.Location) > MAX_DISTANCE_KM)
+                var distance = DistanceTo(animal.Location, previousEntryAnimal.Location);
+                if (distance > MAX_DISTANCE_KM)
                 {
-
+                    if (obj == null)
+                    {
+                        obj = (JObject)JsonConvert.DeserializeObject("{}");
+                        obj["Animal"] = (JObject)JsonConvert.DeserializeObject(animalJSON);
+                        obj["Indicators"] = new JArray { };
+                        obj["Descriptions"] = new JArray { };
+                        obj["Date"] = date;
+                    }
+                    ((JArray)obj["Indicators"]).Add("Livestock left the farm");
+                    ((JArray)obj["Descriptions"]).Add(obj["Description"] = $"Livestock is outside the farm. Distance: {distance} km away from the farm");
                 }
             }
+
+            return obj;
         }
 
         [FunctionName("ProcessData")]
         public async Task Run(
             [EventHubTrigger("LivestockMonitoring", Connection = "IOT_HUB_CONNECTION_STRING")] EventData message,
+            [ServiceBus("anomalies", entityType: ServiceBusEntityType.Queue, Connection = "SERVICE_BUS_CONNECTION_STRING")] IAsyncCollector<object> anomalies,
             ILogger log)
         {
             var body = message.EventBody.ToString();
@@ -106,7 +141,11 @@ namespace SensorDataProcessor
                     previousAnimal = obj;
                 }
             }
-            DetectAnomaliesQueueingAlerts(animal, previousAnimal);
+            var anomaly = DetectAnomaliesQueueingAlerts(body, animal, previousAnimal, message.EnqueuedTime.ToString());
+            if (anomaly != null)
+            {
+                await anomalies.AddAsync(anomaly);
+            }
 
             try
             {

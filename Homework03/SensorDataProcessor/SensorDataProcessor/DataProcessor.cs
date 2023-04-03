@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Livestock;
 using System;
 using System.Collections.Generic;
+using Microsoft.Azure.Cosmos;
 
 namespace SensorDataProcessor
 {
@@ -64,26 +65,69 @@ namespace SensorDataProcessor
         [FunctionName("ProcessData")]
         public async Task Run(
             [EventHubTrigger("LivestockMonitoring", Connection = "IOT_HUB_CONNECTION_STRING")] EventData message,
-            [CosmosDB(databaseName: "livestocknosql", containerName: "SensorsDataAnimals", Connection = "COSMOS_DB_CONNECTION_STRING")] IAsyncCollector<object> documents,
-            [CosmosDB(databaseName: "livestocknosql", containerName: "SensorsDataAnimals", Connection = "COSMOS_DB_CONNECTION_STRING", SqlQuery = "SELECT TOP 1 * FROM c ORDER BY c._ts DESC")] IEnumerable<Animal> animals,
+            // [CosmosDB(databaseName: "livestocknosql", containerName: "SensorsDataAnimals", Connection = "COSMOS_DB_CONNECTION_STRING", CreateIfNotExists = true)] IAsyncCollector<object> documents,
+            // [CosmosDB(databaseName: "livestocknosql", containerName: "SensorsDataAnimals", Connection = "COSMOS_DB_CONNECTION_STRING", CreateIfNotExists = true, SqlQuery = "SELECT TOP 1 * FROM c ORDER BY c._ts DESC")] IEnumerable<object> animals,
             ILogger log)
         {
             var body = message.EventBody.ToString();
             var animal = Animal.Parser.ParseJson(body);
 
-            Animal previousAnimal = null;
-            foreach (var previous in animals)
+            // The Azure Cosmos DB endpoint for running this sample.
+            string EndpointUri = "https://livestocknosql.documents.azure.com:443/";
+
+            // The primary key for the Azure Cosmos account.
+            string PrimaryKey = "n9k8tbhcCB9APopbKAplQoK4373bWfX0RrXkEV2L8sHuaz0WFCOjloiFfi0XFp7lMOrR2MgBQJ34ACDbLkudfA==";
+
+            // The name of the database and container we will create
+            string databaseId = "SensorDataAnimals";
+            string containerId = "Items";
+
+            CosmosClient cosmosClient = new(EndpointUri, PrimaryKey, new CosmosClientOptions() { ApplicationName = "SensorDataProcessor" });
+            Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+            Container container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
+
+            var sqlQueryText = "SELECT TOP 1 * FROM c ORDER BY c._ts DESC";
+
+            QueryDefinition queryDefinition = new(sqlQueryText);
+            FeedIterator<Animal> queryResultSetIterator = container?.GetItemQueryIterator<Animal>(queryDefinition);
+
+            List<Animal> animals = new();
+            while (queryResultSetIterator.HasMoreResults)
             {
+                FeedResponse<Animal> currentResultSet = await queryResultSetIterator.ReadNextAsync();
+                foreach (Animal stock in currentResultSet)
+                {
+                    animals.Add(stock);
+                }
+            }
+
+            Animal previousAnimal = null;
+            foreach (var obj in animals)
+            {
+                var previous = Animal.Parser.ParseJson(obj.ToString());
                 if (previous.AnimalId == animal.AnimalId)
                 {
                     previousAnimal = previous;
                 }
             }
             DetectAnomaliesQueueingAlerts(animal, previousAnimal);
-            
-            await documents.AddAsync(body);
+
+            try
+            {
+                container = await database.CreateContainerIfNotExistsAsync(containerId, "/partitionKey");
+                ItemResponse<Animal> response = await container.CreateItemAsync(animal);
+
+                log.LogInformation($"Added item in database: {body}.");
+            }
+            catch (CosmosException ex)
+            {
+                log.LogError($"Failed: {ex.ResponseBody}.");
+                log.LogError($"Failed: {animal}.");
+            }
 
             log.LogInformation($"C# IoT Hub trigger function processed a message: {animal}");
+
+            cosmosClient.Dispose();
         }
     }
 }

@@ -86,6 +86,8 @@ namespace SimulatedDeviceProtobuf
                     animals.Entries.Add(
                         new Animal
                         {
+                            Id = Guid.NewGuid().ToString(),
+                            PartitionKey = "1",
                             AnimalId = id,
                             BodyTemperature = GetRandomDouble(randomGenerator, 28.0, 50.0),
                             ActivityLevel = randomGenerator.NextDouble(),
@@ -127,6 +129,8 @@ namespace SimulatedDeviceProtobuf
                     animals.Entries.Add(
                         new Animal
                         {
+                            Id = Guid.NewGuid().ToString(),
+                            PartitionKey = "1",
                             AnimalId = id,
                             BodyTemperature = GetRandomDouble(randomGenerator, 28.0, 50.0),
                             ActivityLevel = randomGenerator.NextDouble(),
@@ -168,6 +172,8 @@ namespace SimulatedDeviceProtobuf
                     animals.Entries.Add(
                         new Animal
                         {
+                            Id = Guid.NewGuid().ToString(),
+                            PartitionKey = "1",
                             AnimalId = id,
                             BodyTemperature = GetRandomDouble(randomGenerator, 28.0, 50.0),
                             ActivityLevel = randomGenerator.NextDouble(),
@@ -209,6 +215,8 @@ namespace SimulatedDeviceProtobuf
                     animals.Entries.Add(
                         new Animal
                         {
+                            Id = Guid.NewGuid().ToString(),
+                            PartitionKey = "1",
                             AnimalId = id,
                             BodyTemperature = GetRandomDouble(randomGenerator, 40.0, 80.0), // maximum is 50
                             ActivityLevel = randomGenerator.NextDouble(),

@@ -3,16 +3,18 @@ syntax = "proto3";
 package livestock;
 
 message Animal {
-  string animal_id = 1;
-  double body_temperature = 2;
-  double activity_level = 3;
-  double heart_rate = 4;
-  double respiration_rate = 5;
-  Location location = 6;
-  double feed_intake = 7;
-  double water_consumption = 8;
-  double milk_production = 9;
-  double weight = 10;
+  string Id = 1;
+  string PartitionKey = 2;
+  string animal_id = 3;
+  double body_temperature = 4;
+  double activity_level = 5;
+  double heart_rate = 6;
+  double respiration_rate = 7;
+  Location location = 8;
+  double feed_intake = 9;
+  double water_consumption = 10;
+  double milk_production = 11;
+  double weight = 12;
 }
 
 message Location {

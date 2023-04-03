@@ -41,7 +41,6 @@ The homework requirements are explained in [Requirements file](PCD_Homework3.txt
   - [Livestock Monitoring System](#livestock-monitoring-system-4)
   - [Cost Comparison](#cost-comparison)
 - [Architecture - Livestock Monitoring System](#architecture---livestock-monitoring-system)
-- [Work in progress...](#work-in-progress)
 - [Bibliography](#bibliography)
 
 # Proposals (10 examples using Azure Cloud)
@@ -487,8 +486,6 @@ Nevertheless, generally speaking, some of the most expensive Azure technologies 
 
 # Architecture - Livestock Monitoring System
 ![Architecture Diagram](Architecture.drawio.png)
-
-# Work in progress...
 
 # Bibliography
 [Synthetic Data Generation for the Internet of Things](https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1035&context=computing_pubs)

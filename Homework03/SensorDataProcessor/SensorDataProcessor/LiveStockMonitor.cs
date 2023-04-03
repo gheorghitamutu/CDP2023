@@ -24,19 +24,20 @@ namespace Livestock {
     static LiveStockMonitorReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChZMaXZlU3RvY2tNb25pdG9yLnByb3RvEglsaXZlc3RvY2si+wEKBkFuaW1h",
-            "bBIRCglhbmltYWxfaWQYASABKAkSGAoQYm9keV90ZW1wZXJhdHVyZRgCIAEo",
-            "ARIWCg5hY3Rpdml0eV9sZXZlbBgDIAEoARISCgpoZWFydF9yYXRlGAQgASgB",
-            "EhgKEHJlc3BpcmF0aW9uX3JhdGUYBSABKAESJQoIbG9jYXRpb24YBiABKAsy",
-            "Ey5saXZlc3RvY2suTG9jYXRpb24SEwoLZmVlZF9pbnRha2UYByABKAESGQoR",
-            "d2F0ZXJfY29uc3VtcHRpb24YCCABKAESFwoPbWlsa19wcm9kdWN0aW9uGAkg",
-            "ASgBEg4KBndlaWdodBgKIAEoASIvCghMb2NhdGlvbhIQCghsYXRpdHVkZRgB",
-            "IAEoARIRCglsb25naXR1ZGUYAiABKAEiLQoHQW5pbWFscxIiCgdlbnRyaWVz",
-            "GAEgAygLMhEubGl2ZXN0b2NrLkFuaW1hbGIGcHJvdG8z"));
+            "ChZMaXZlU3RvY2tNb25pdG9yLnByb3RvEglsaXZlc3RvY2sinQIKBkFuaW1h",
+            "bBIKCgJJZBgBIAEoCRIUCgxQYXJ0aXRpb25LZXkYAiABKAkSEQoJYW5pbWFs",
+            "X2lkGAMgASgJEhgKEGJvZHlfdGVtcGVyYXR1cmUYBCABKAESFgoOYWN0aXZp",
+            "dHlfbGV2ZWwYBSABKAESEgoKaGVhcnRfcmF0ZRgGIAEoARIYChByZXNwaXJh",
+            "dGlvbl9yYXRlGAcgASgBEiUKCGxvY2F0aW9uGAggASgLMhMubGl2ZXN0b2Nr",
+            "LkxvY2F0aW9uEhMKC2ZlZWRfaW50YWtlGAkgASgBEhkKEXdhdGVyX2NvbnN1",
+            "bXB0aW9uGAogASgBEhcKD21pbGtfcHJvZHVjdGlvbhgLIAEoARIOCgZ3ZWln",
+            "aHQYDCABKAEiLwoITG9jYXRpb24SEAoIbGF0aXR1ZGUYASABKAESEQoJbG9u",
+            "Z2l0dWRlGAIgASgBIi0KB0FuaW1hbHMSIgoHZW50cmllcxgBIAMoCzIRLmxp",
+            "dmVzdG9jay5BbmltYWxiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Livestock.Animal), global::Livestock.Animal.Parser, new[]{ "AnimalId", "BodyTemperature", "ActivityLevel", "HeartRate", "RespirationRate", "Location", "FeedIntake", "WaterConsumption", "MilkProduction", "Weight" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Livestock.Animal), global::Livestock.Animal.Parser, new[]{ "Id", "PartitionKey", "AnimalId", "BodyTemperature", "ActivityLevel", "HeartRate", "RespirationRate", "Location", "FeedIntake", "WaterConsumption", "MilkProduction", "Weight" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Livestock.Location), global::Livestock.Location.Parser, new[]{ "Latitude", "Longitude" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Livestock.Animals), global::Livestock.Animals.Parser, new[]{ "Entries" }, null, null, null, null)
           }));
@@ -70,6 +71,8 @@ namespace Livestock {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Animal(Animal other) : this() {
+      id_ = other.id_;
+      partitionKey_ = other.partitionKey_;
       animalId_ = other.animalId_;
       bodyTemperature_ = other.bodyTemperature_;
       activityLevel_ = other.activityLevel_;
@@ -88,8 +91,30 @@ namespace Livestock {
       return new Animal(this);
     }
 
+    /// <summary>Field number for the "Id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private string id_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Id {
+      get { return id_; }
+      set {
+        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "PartitionKey" field.</summary>
+    public const int PartitionKeyFieldNumber = 2;
+    private string partitionKey_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PartitionKey {
+      get { return partitionKey_; }
+      set {
+        partitionKey_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "animal_id" field.</summary>
-    public const int AnimalIdFieldNumber = 1;
+    public const int AnimalIdFieldNumber = 3;
     private string animalId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string AnimalId {
@@ -100,7 +125,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "body_temperature" field.</summary>
-    public const int BodyTemperatureFieldNumber = 2;
+    public const int BodyTemperatureFieldNumber = 4;
     private double bodyTemperature_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double BodyTemperature {
@@ -111,7 +136,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "activity_level" field.</summary>
-    public const int ActivityLevelFieldNumber = 3;
+    public const int ActivityLevelFieldNumber = 5;
     private double activityLevel_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double ActivityLevel {
@@ -122,7 +147,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "heart_rate" field.</summary>
-    public const int HeartRateFieldNumber = 4;
+    public const int HeartRateFieldNumber = 6;
     private double heartRate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double HeartRate {
@@ -133,7 +158,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "respiration_rate" field.</summary>
-    public const int RespirationRateFieldNumber = 5;
+    public const int RespirationRateFieldNumber = 7;
     private double respirationRate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double RespirationRate {
@@ -144,7 +169,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "location" field.</summary>
-    public const int LocationFieldNumber = 6;
+    public const int LocationFieldNumber = 8;
     private global::Livestock.Location location_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Livestock.Location Location {
@@ -155,7 +180,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "feed_intake" field.</summary>
-    public const int FeedIntakeFieldNumber = 7;
+    public const int FeedIntakeFieldNumber = 9;
     private double feedIntake_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double FeedIntake {
@@ -166,7 +191,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "water_consumption" field.</summary>
-    public const int WaterConsumptionFieldNumber = 8;
+    public const int WaterConsumptionFieldNumber = 10;
     private double waterConsumption_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double WaterConsumption {
@@ -177,7 +202,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "milk_production" field.</summary>
-    public const int MilkProductionFieldNumber = 9;
+    public const int MilkProductionFieldNumber = 11;
     private double milkProduction_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double MilkProduction {
@@ -188,7 +213,7 @@ namespace Livestock {
     }
 
     /// <summary>Field number for the "weight" field.</summary>
-    public const int WeightFieldNumber = 10;
+    public const int WeightFieldNumber = 12;
     private double weight_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public double Weight {
@@ -211,6 +236,8 @@ namespace Livestock {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Id != other.Id) return false;
+      if (PartitionKey != other.PartitionKey) return false;
       if (AnimalId != other.AnimalId) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(BodyTemperature, other.BodyTemperature)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(ActivityLevel, other.ActivityLevel)) return false;
@@ -227,6 +254,8 @@ namespace Livestock {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (Id.Length != 0) hash ^= Id.GetHashCode();
+      if (PartitionKey.Length != 0) hash ^= PartitionKey.GetHashCode();
       if (AnimalId.Length != 0) hash ^= AnimalId.GetHashCode();
       if (BodyTemperature != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(BodyTemperature);
       if (ActivityLevel != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(ActivityLevel);
@@ -250,44 +279,52 @@ namespace Livestock {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (AnimalId.Length != 0) {
+      if (Id.Length != 0) {
         output.WriteRawTag(10);
+        output.WriteString(Id);
+      }
+      if (PartitionKey.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(PartitionKey);
+      }
+      if (AnimalId.Length != 0) {
+        output.WriteRawTag(26);
         output.WriteString(AnimalId);
       }
       if (BodyTemperature != 0D) {
-        output.WriteRawTag(17);
+        output.WriteRawTag(33);
         output.WriteDouble(BodyTemperature);
       }
       if (ActivityLevel != 0D) {
-        output.WriteRawTag(25);
+        output.WriteRawTag(41);
         output.WriteDouble(ActivityLevel);
       }
       if (HeartRate != 0D) {
-        output.WriteRawTag(33);
+        output.WriteRawTag(49);
         output.WriteDouble(HeartRate);
       }
       if (RespirationRate != 0D) {
-        output.WriteRawTag(41);
+        output.WriteRawTag(57);
         output.WriteDouble(RespirationRate);
       }
       if (location_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(66);
         output.WriteMessage(Location);
       }
       if (FeedIntake != 0D) {
-        output.WriteRawTag(57);
+        output.WriteRawTag(73);
         output.WriteDouble(FeedIntake);
       }
       if (WaterConsumption != 0D) {
-        output.WriteRawTag(65);
+        output.WriteRawTag(81);
         output.WriteDouble(WaterConsumption);
       }
       if (MilkProduction != 0D) {
-        output.WriteRawTag(73);
+        output.WriteRawTag(89);
         output.WriteDouble(MilkProduction);
       }
       if (Weight != 0D) {
-        output.WriteRawTag(81);
+        output.WriteRawTag(97);
         output.WriteDouble(Weight);
       }
       if (_unknownFields != null) {
@@ -298,6 +335,12 @@ namespace Livestock {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (Id.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      }
+      if (PartitionKey.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PartitionKey);
+      }
       if (AnimalId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(AnimalId);
       }
@@ -338,6 +381,12 @@ namespace Livestock {
     public void MergeFrom(Animal other) {
       if (other == null) {
         return;
+      }
+      if (other.Id.Length != 0) {
+        Id = other.Id;
+      }
+      if (other.PartitionKey.Length != 0) {
+        PartitionKey = other.PartitionKey;
       }
       if (other.AnimalId.Length != 0) {
         AnimalId = other.AnimalId;
@@ -384,45 +433,53 @@ namespace Livestock {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
+            Id = input.ReadString();
+            break;
+          }
+          case 18: {
+            PartitionKey = input.ReadString();
+            break;
+          }
+          case 26: {
             AnimalId = input.ReadString();
             break;
           }
-          case 17: {
+          case 33: {
             BodyTemperature = input.ReadDouble();
             break;
           }
-          case 25: {
+          case 41: {
             ActivityLevel = input.ReadDouble();
             break;
           }
-          case 33: {
+          case 49: {
             HeartRate = input.ReadDouble();
             break;
           }
-          case 41: {
+          case 57: {
             RespirationRate = input.ReadDouble();
             break;
           }
-          case 50: {
+          case 66: {
             if (location_ == null) {
               Location = new global::Livestock.Location();
             }
             input.ReadMessage(Location);
             break;
           }
-          case 57: {
+          case 73: {
             FeedIntake = input.ReadDouble();
             break;
           }
-          case 65: {
+          case 81: {
             WaterConsumption = input.ReadDouble();
             break;
           }
-          case 73: {
+          case 89: {
             MilkProduction = input.ReadDouble();
             break;
           }
-          case 81: {
+          case 97: {
             Weight = input.ReadDouble();
             break;
           }

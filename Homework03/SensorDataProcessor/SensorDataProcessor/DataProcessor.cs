@@ -99,7 +99,7 @@ namespace SensorDataProcessor
 
         [FunctionName("ProcessData")]
         public async Task Run(
-            [EventHubTrigger("LivestockMonitoring", Connection = "IOT_HUB_CONNECTION_STRING")] EventData message,
+            [EventHubTrigger("LivestockMonitoring", Connection = "IOT_HUB_CONNECTION_STRING", ConsumerGroup = "data_processor")] EventData message,
             [ServiceBus("anomalies", entityType: ServiceBusEntityType.Queue, Connection = "SERVICE_BUS_CONNECTION_STRING")] IAsyncCollector<object> anomalies,
             ILogger log)
         {

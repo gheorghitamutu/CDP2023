@@ -229,7 +229,7 @@ namespace SimulatedDeviceProtobuf
             return animals;
         }
 
-        public void SerializeToJSON(string filepath, Animals animals)
+        static public void SerializeToJSON(string filepath, Animals animals)
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(animals, options);

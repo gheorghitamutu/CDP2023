@@ -20,11 +20,6 @@ public class AnomalyDetector
         // Check for body temperature anomalies
         foreach (var obs in observations)
         {
-            if (obs.animal_id == null) // handle protobuf/versioning
-            {
-                continue;
-            }
-
             if (obs.body_temperature > MAX_TEMPERATURE)
             {
                 anomalies.Add(new Anomaly
@@ -87,8 +82,8 @@ public class AnomalyDetector
     }
 
 
-    [FunctionName("AnomalyDetector")]
-    public void Run([TimerTrigger("0 */30 * * * *")] TimerInfo myTimer,
+    [FunctionName("AnomalyDetectorFunction")]
+    public void AnomalyDetectorFunction([TimerTrigger("0 */30 * * * *")] TimerInfo myTimer,
     [CosmosDB(databaseName: "StocksDb", containerName: "LivestockIoTData", Connection = "CosmosDbConnectionString")] IAsyncCollector<object> newMessagesOut,
     [CosmosDB(databaseName: "StocksDb", containerName: "LivestockIoTData", Connection = "CosmosDbConnectionString", SqlQuery = "SELECT * FROM c WHERE not IS_DEFINED(c.processed) or c.processed = false ORDER BY c.timestamp")] IEnumerable<DeviceIdAndSensorsData> newMessages,
     [ServiceBus("anomalies", entityType: ServiceBusEntityType.Queue, Connection = "ServiceBusConnectionString")] IAsyncCollector<AnomaliesForDevice> anomaliesOut,
@@ -118,12 +113,41 @@ public class AnomalyDetector
         // mark messages as processed
         foreach (var message in newMessages)
         {
-            if (message.animal_id != null) // handle protobuf versioning
-            {
-                message.processed = "true";
-                newMessagesOut.AddAsync(message);
-            }
+            message.processed = "true";
+            newMessagesOut.AddAsync(message);
         }
+
+    }
+
+    [FunctionName("AnomalyDetectorProtobuf")]
+    public void AnomalyDetectorProtobufFunction([TimerTrigger("0 */30 * * * *")] TimerInfo myTimer,
+    [CosmosDB(databaseName: "StocksDb", containerName: "LivestockIoTDataProtobuf", Connection = "CosmosDbConnectionString")] IAsyncCollector<object> objects,
+    [CosmosDB(databaseName: "StocksDb", containerName: "LivestockIoTDataProtobuf", Connection = "CosmosDbConnectionString", SqlQuery = "SELECT * FROM c WHERE not IS_DEFINED(c.processed) or c.processed = false ORDER BY c.timestamp")] IEnumerable<string> messages,
+    [ServiceBus("anomalies", entityType: ServiceBusEntityType.Queue, Connection = "ServiceBusConnectionString")] IAsyncCollector<AnomaliesForDevice> anomalies,
+     ILogger log)
+    {
+        foreach (var message in messages)
+        {
+            var ann = message;
+            // var anomalies = GetAnomalies(animal);
+
+            // if (anomalies.Count > 0)
+            // {
+            //     log.LogInformation($"Anomaly detected");
+            // 
+            //     anomaliesOut.AddAsync(new AnomaliesForDevice
+            //     {
+            //         deviceId = group[0].deviceId,
+            //         anomalies = anomalies
+            //     });
+            // }
+        }
+
+        // mark messages as processed
+        foreach (var message in messages)
+        {
+            // message.processed = "true";
+            objects.AddAsync(message);
         }
 
     }

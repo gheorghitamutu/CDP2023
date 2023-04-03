@@ -69,10 +69,10 @@ namespace IoTProcessing
             Console.WriteLine("IoT Hub Quickstarts - Simulated device. Ctrl-C to exit.\n");
 
             // conditii normale
-            // var observations = await ReadMessagesFromFileAsync("./data/normal_conditions_obs.json");
+            var observations = await ReadMessagesFromFileAsync("./data/normal_conditions_obs.json");
 
             // cu anomalii de spatiu (primele 5 intrari au o locatie, celelalte alta locatie cu macar 80 km diferenta)
-            var observations = await ReadMessagesFromFileAsync("./data/location_anomaly_obs.json");
+            // var observations = await ReadMessagesFromFileAsync("./data/location_anomaly_obs.json");
 
             // cu valori anormale de temperatura (ultimele intrari au valori de temperatura anormale - au > 50 for example)
             // var observations = await ReadMessagesFromFileAsync("./data/anormal_temperatures_obs.json");

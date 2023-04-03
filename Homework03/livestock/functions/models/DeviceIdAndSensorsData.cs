@@ -13,9 +13,9 @@ public class DeviceIdAndSensorsData
     public string deviceId { get; set; }
     public string id { get; set; }
     public string dateTime { get; set; }
-    public string timestamp { get; set; }
+    public string? timestamp { get; set; }
 
-    public string processed { get; set; }
+    public string? processed { get; set; }
 
 
 

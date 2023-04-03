@@ -11,11 +11,13 @@ public class AnomalyDetector
 {
     private const double MAX_TEMPERATURE = 50;
     private const double MAX_DISTANCE_KM = 40;
+    private const double MIN_HEART_RATE = 30;
 
     private List<Anomaly> GetAnomalies(List<DeviceIdAndSensorsData> observations)
     {
         var anomalies = new List<Anomaly>();
 
+        // Check for body temperature anomalies
         foreach (var obs in observations)
         {
             if (obs.body_temperature > MAX_TEMPERATURE)
@@ -31,6 +33,7 @@ public class AnomalyDetector
             }
         }
 
+        // Check for distance anomalies
         for (int obsIndex = 0; obsIndex < observations.Count; obsIndex++)
         {
 
@@ -56,6 +59,22 @@ public class AnomalyDetector
 
                     return anomalies;
                 }
+            }
+        }
+
+        // Check for heart rate anomalies
+        foreach (var obs in observations)
+        {
+            if (obs.heart_rate < MIN_HEART_RATE)
+            {
+                anomalies.Add(new Anomaly
+                {
+                    name = "Low heart rate",
+                    description = $"Heart rate lower than {MIN_HEART_RATE} bpm",
+                    deviceId = obs.deviceId,
+                    timestamp = obs.timestamp,
+                    observationsWhereHappened = new List<DeviceIdAndSensorsData> { obs }
+                });
             }
         }
 

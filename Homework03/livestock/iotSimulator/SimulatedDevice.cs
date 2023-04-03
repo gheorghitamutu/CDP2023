@@ -23,7 +23,7 @@ namespace IoTProcessing
         // NU trimite mai mult de atatea chiar daca mai sunt obs. in lista citite din fisier
         public static int MESSAGES_LIMIT { get; set; } = 10;
         public static TimeSpan MESSAGE_SEND_INTERVAL { get; set; } = TimeSpan.FromSeconds(1);
-        
+
 
         // The device connection string to authenticate the device with your IoT hub.
         private const string s_connectionString_device01 = "HostName=livestockMonitorsIotHub.azure-devices.net;DeviceId=healthSec01;SharedAccessKey=4exqjIvWuFd/KsLY0sbScxdfv+1ptRqsqvplFHrjZU8=";
@@ -77,6 +77,9 @@ namespace IoTProcessing
 
             // cu valori anormale de temperatura (ultimele intrari au valori de temperatura anormale - au > 50 for example)
             // var observations = await ReadMessagesFromFileAsync("./data/anormal_temperatures_obs.json");
+
+            // cu valori anormale de heart rate (anormal = valori < 30 hardcoded in AnomalyDetector)
+            //var observations = await ReadMessagesFromFileAsync("./data/abnormal_heart_rate_obs.json");
 
             // Connect to the IoT hub using the MQTT protocol
             s_deviceClient = DeviceClient.CreateFromConnectionString(s_connectionString_device01, TransportType.Mqtt);

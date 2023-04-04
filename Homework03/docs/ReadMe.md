@@ -2,6 +2,8 @@
 
 The homework requirements are explained in [Requirements file](PCD_Homework3.txt)
 
+Report (brief version) editable docs available at [Report](https://docs.google.com/document/d/1Mkwwx5JjSsQhBBjtA_KQoBXViOnQ2CnuW_qKvAHOneU/edit#)
+
 - [Homework 03](#homework-03)
 - [Proposals (10 examples using Azure Cloud)](#proposals-10-examples-using-azure-cloud)
   - [Smart Irrigation System](#smart-irrigation-system)

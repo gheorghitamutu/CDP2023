@@ -1,6 +1,6 @@
-<mxfile modified="2023-04-03T20:15:22.706Z" host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62" etag="H9j9Lbv9vVIdlG4jCjqe" version="21.1.2" type="github">
+<mxfile modified="2023-04-04T06:33:41.160Z" host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62" etag="sxL-M5VH5LGKfr0ecDyI" version="21.1.2" type="github">
   <diagram id="WI9T0HZ2pTsCkuznbFz-" name="Page-1">
-    <mxGraphModel dx="2890" dy="985" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="3287" dy="1212" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -306,8 +306,8 @@
         <mxCell id="baJetdSDCo7hxCwzstAu-2" value="Azure IoT Hub" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/iot/IoT_Hub.svg;" vertex="1" parent="1">
           <mxGeometry x="220" y="840" width="64" height="64" as="geometry" />
         </mxCell>
-        <mxCell id="baJetdSDCo7hxCwzstAu-4" value="Generate Protobuf Data" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="56" y="842" width="150" height="30" as="geometry" />
+        <mxCell id="baJetdSDCo7hxCwzstAu-4" value="Generate Protobuf Data&lt;br&gt;(CronJob)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="56" y="837" width="150" height="40" as="geometry" />
         </mxCell>
         <mxCell id="baJetdSDCo7hxCwzstAu-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="baJetdSDCo7hxCwzstAu-5" target="baJetdSDCo7hxCwzstAu-8">
           <mxGeometry relative="1" as="geometry" />
@@ -392,6 +392,18 @@
         </mxCell>
         <mxCell id="baJetdSDCo7hxCwzstAu-27" value="Time Series" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="200.49" y="617.5" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="baJetdSDCo7hxCwzstAu-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0.1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="baJetdSDCo7hxCwzstAu-33" target="RLjyjs_sm2IHfBNOWAbh-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1240" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-110" y="688" />
+              <mxPoint x="-110" y="1150" />
+              <mxPoint x="1360" y="1150" />
+              <mxPoint x="1360" y="170" />
+              <mxPoint x="1240" y="170" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="baJetdSDCo7hxCwzstAu-33" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/iot/Time_Series_Insights_Environments.svg;" vertex="1" parent="1">
           <mxGeometry x="-41" y="649.9399999999999" width="75" height="76.12" as="geometry" />

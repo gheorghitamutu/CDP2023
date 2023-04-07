@@ -12,6 +12,7 @@ The homework is explained in:
 - [Homework 02 ReadMe PDF](Homework02/docs/ReadMe.pdf)
 
       All services have been disabled in order not to generate any costs.
+      07.04.2023: all the services/instances have been deleted. Redeployment will be done on demand.
 
 ## Homework 03 (Work In Progress)
 The homework is explained in:
@@ -19,3 +20,4 @@ The homework is explained in:
 - [Homework 03 ReadMe PDF](Homework03/docs/ReadMe.pdf)
 
       All services have been disabled in order not to generate any costs.
+      07.04.2023: all the services/instances have been deleted. Redeployment will be done on demand.

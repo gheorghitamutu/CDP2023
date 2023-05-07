@@ -24,5 +24,5 @@ The homework is explained in:
 
 ## Homework 04 (Work in Progress)
 The homework is explained in:
-- [Homework 04 ReadMe MD](Homework04/docs/ReadMe.md)
+- [Homework 04 ReadMe MD](Homework04/docs/README.md)
 - [Homework 04 ReadMe PDF](Homework04/docs/ReadMe.pdf)

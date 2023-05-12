@@ -22,7 +22,7 @@ The homework is explained in:
       All services have been disabled in order not to generate any costs.
       07.04.2023: all the services/instances have been deleted. Redeployment will be done on demand.
 
-## Homework 04 (Work in Progress)
+## Homework 04
 The homework is explained in:
 - [Homework 04 ReadMe MD](Homework04/docs/README.md)
 - [Homework 04 ReadMe PDF](Homework04/docs/ReadMe.pdf)
